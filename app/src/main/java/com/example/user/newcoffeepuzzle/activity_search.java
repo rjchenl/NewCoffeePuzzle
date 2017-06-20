@@ -1,7 +1,13 @@
 package com.example.user.newcoffeepuzzle;
 
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,10 +16,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class activity_search extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private ActionBarDrawerToggle actionbardrawertoggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +28,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //把home鍵打開
+        setUpActionBar();
+        initDrawer();
+
+    }
+
+    private void initDrawer() {
+        //建立drawer與toolbar間的連結
+        final DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        actionbardrawertoggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.app_name, R.string.app_name);
+        actionbardrawertoggle.syncState();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            drawerlayout.addDrawerListener(actionbardrawertoggle);
+        }else{
+            drawerlayout.setDrawerListener(actionbardrawertoggle);
+        }
+
+
+    }
+
+    private void setUpActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
 

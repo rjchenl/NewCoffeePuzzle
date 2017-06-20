@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/news"
+            android:title="@string/text_news"/>
+        <item
+            android:id="@+id/browerActivities"
+            android:title="瀏覽活動清單"/>
+        <item
+            android:id="@+id/selectActivities"
+            android:title="活動紀錄查詢"/>
+
+        <item
+            android:id="@+id/collectedStore"
+            android:title="收藏店家清單"/>
+        <item
+            android:id="@+id/susCoffeeStore"
+            android:title="瀏覽寄杯活動店家"/>
+        <item
+            android:id="@+id/mysusCofee"
+            android:title="我的寄杯"/>
+        <item
+            android:id="@+id/takeOutorderIn"
+            android:title="瀏覽外帶外送店家"/>
+        <item
+            android:id="@+id/traceOrder"
+            android:title="memInfo"/>
+        <item
+            android:id="@+id/registerout"
+            android:title="登出"/>
+    </group>
+
+</menu>
