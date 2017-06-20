@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:text="訪客登入78"
+            android:text="訪客登入789"
             android:layout_marginStart="40dp"
             android:id="@+id/guest_text"
             android:layout_centerVertical="true"/>
