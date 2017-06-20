@@ -2,4 +2,6 @@
     <string name="app_name">NewCoffeePuzzle</string>
     <string name="title_activity_maps">Map</string>
     <string name="text_news">最新消息</string>
+    <string name="tv_memName">會員名稱</string>
+    <string name="tv_memMail">會員信箱</string>
 </resources>

@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.homepage_layout);
 
-
     }
 
     public void onGeneralMemberClick(View view) {
