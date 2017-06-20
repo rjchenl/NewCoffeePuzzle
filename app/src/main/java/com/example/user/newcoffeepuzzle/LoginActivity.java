@@ -10,7 +10,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etID;
     private EditText etPsw;
-    private String test;
+    private String test2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
