@@ -8,9 +8,9 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     private EditText etID;
     private EditText etPsw;
+    private String test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
