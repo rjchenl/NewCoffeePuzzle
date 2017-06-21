@@ -6,7 +6,7 @@
             android:title="@string/text_news"/>
         <item
             android:id="@+id/browerActivities"
-            android:title="瀏覽活動清單"/>
+            android:title="@string/activities"/>
         <item
             android:id="@+id/selectActivities"
             android:title="活動紀錄查詢"/>
