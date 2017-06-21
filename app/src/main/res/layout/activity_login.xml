@@ -22,7 +22,7 @@ android:orientation="vertical"
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="請輸入帳號"
+        android:text="請輸入帳號RR"
         android:layout_marginLeft="100dp"/>
     <EditText
         android:id="@+id/etID"
