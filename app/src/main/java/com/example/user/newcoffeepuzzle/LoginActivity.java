@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.user.newcoffeepuzzle.search.SearchActivity;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etID;

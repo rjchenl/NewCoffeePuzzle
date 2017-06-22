@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle;
+package com.example.user.newcoffeepuzzle.elsee;
 
 import android.support.v4.app.Fragment;
 
