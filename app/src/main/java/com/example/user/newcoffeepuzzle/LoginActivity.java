@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void onbtLoginClick(View view) {
-        Intent intent = new Intent(this,activity_search.class);
+        Intent intent = new Intent(this,SearchActivity.class);
         startActivity(intent);
 
     }
