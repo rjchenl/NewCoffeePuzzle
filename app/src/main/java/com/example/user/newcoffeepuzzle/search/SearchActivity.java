@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity  {
         askPermissions();
         setUpActionBar();
         initDrawer();
-        initBody();
+//        initBody();
 
     }
 
@@ -156,11 +156,11 @@ public class SearchActivity extends AppCompatActivity  {
 
 
     private void switchFragment(Fragment fragment) {
-//        FragmentTransaction fragmentTransaction =
-//                getSupportFragmentManager().beginTransaction();
-//
-//        fragmentTransaction.replace(R.id.undersearch, fragment);
-//        fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.replace(R.id.undersearch, fragment);
+        fragmentTransaction.commit();
 
     }
 
