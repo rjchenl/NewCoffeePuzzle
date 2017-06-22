@@ -20,9 +20,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.v7.widget.Toolbar>
-        <include layout="@layout/activity_maps"/>
+        <FrameLayout
+            android:id="@+id/undersearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
+        </FrameLayout>
 
     </LinearLayout>
     <android.support.design.widget.NavigationView
@@ -35,8 +39,5 @@
         app:menu="@menu/menufiles">
 
     </android.support.design.widget.NavigationView>
-
-
-
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle;
+package com.example.user.newcoffeepuzzle.search;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,10 +18,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.activities.Activities_fragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,31 +36,26 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class SearchActivity extends AppCompatActivity  {
 
-    private GoogleMap mMap;
     private ActionBarDrawerToggle actionbardrawertoggle;
     private static final int REQ_PERMISSIONS = 0;
+    private FragmentManager fragmentManager;
+    private static String TAG = "SearchActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
 
+        fragmentManager = getSupportFragmentManager();
         askPermissions();
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        getMaps();
-        //把home鍵打開
         setUpActionBar();
         initDrawer();
-//        initBody();
+        initBody();
 
     }
 
-    private void getMaps() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -123,9 +122,24 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void initBody() {
-        Fragment fragment = new Activities_fragment();
-        switchFragment(fragment);
-        setTitle("活動列表");
+        Log.d(TAG, "initBody: 1");
+        Fragment majorFragment = fragmentManager.findFragmentById(R.id.undersearch);
+        Log.d(TAG, "initBody: 2");
+        if(majorFragment == null){
+            GoogleMapFragment googlemapframent = new GoogleMapFragment();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.add(R.id.undersearch,googlemapframent,TAG);
+            transaction.commit();
+            Log.d(TAG, "initBody: 3");
+        }else{
+            showToast("fragment attached");
+            Log.d(TAG, "initBody: 4");
+        }
+
+    }
+
+    private void showToast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     private void setUpActionBar() {
@@ -140,31 +154,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
 
     private void switchFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
-
-        fragmentTransaction.replace(R.id.map, fragment);
-        fragmentTransaction.commit();
+//        FragmentTransaction fragmentTransaction =
+//                getSupportFragmentManager().beginTransaction();
+//
+//        fragmentTransaction.replace(R.id.undersearch, fragment);
+//        fragmentTransaction.commit();
 
     }
 
