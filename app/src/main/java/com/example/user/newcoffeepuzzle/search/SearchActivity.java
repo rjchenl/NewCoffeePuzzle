@@ -144,7 +144,7 @@ public class SearchActivity extends AppCompatActivity  {
 
     private void setUpActionBar() {
 
-        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
+        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用i
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
