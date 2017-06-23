@@ -23,6 +23,7 @@ public class Activities_fragment extends Fragment {
 
     private final static String TAG = "Activities_fragment";
     private RecyclerView rvactivities;
+    private int count;
 
     @Nullable
     @Override
@@ -96,6 +97,8 @@ public class Activities_fragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            count = count+1;
+            Log.d(TAG, "onBindViewHolder: "+count);
             ActivityVO actVO = actList.get(position);
             String activ_name = actVO.getActiv_name();
             holder.activity_name.setText(activ_name);
