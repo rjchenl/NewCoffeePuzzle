@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.activities.Activities_fragment;
+import com.example.user.newcoffeepuzzle.activities.ActivityListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -122,20 +123,9 @@ public class SearchActivity extends AppCompatActivity  {
     }
 
     private void initBody() {
-        Log.d(TAG, "initBody: 1");
-        Fragment majorFragment = fragmentManager.findFragmentById(R.id.undersearch);
-        Log.d(TAG, "initBody: 2");
-        if(majorFragment == null){
-            GoogleMapFragment googlemapframent = new GoogleMapFragment();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.undersearch,googlemapframent,TAG);
-            transaction.commit();
-            Log.d(TAG, "initBody: 3");
-        }else{
-            showToast("fragment attached");
-            Log.d(TAG, "initBody: 4");
-        }
-
+        Fragment fragment = new ActivityListFragment();
+        switchFragment(fragment);
+        setTitle("Activity");
     }
 
     private void showToast(String s) {
