@@ -108,7 +108,7 @@ public class SearchActivity extends AppCompatActivity  {
                     Fragment fragment;
                     switch(item.getItemId()){
                         case R.id.browerActivities:
-                            fragment = new Activities_fragment();
+                            fragment = new ActivityListFragment();
                             switchFragment(fragment);
                             setTitle("活動");
                             break;

@@ -3,10 +3,12 @@ package com.example.user.newcoffeepuzzle.activities;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.LocaleDisplayNames;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.user.newcoffeepuzzle.R;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedWriter;
@@ -28,17 +30,26 @@ public class ActivityGetImageTask extends AsyncTask<Object, Integer, Bitmap> {
     @Override
     protected Bitmap doInBackground(Object[] params) {
         String url = params[0].toString();
-        int activ_id = Integer.parseInt(params[1].toString());
+        String activ_id = params[1].toString();
+
+        Log.d(TAG, "doInBackground:"+url+"\n"+activ_id);
         int imageSize = Integer.parseInt(params[2].toString());
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("id", activ_id);
+        jsonObject.addProperty("activ_id", activ_id);
         jsonObject.addProperty("imageSize", imageSize);
 
         Bitmap bitmap;
 
         try {
             bitmap = getRemoteImage(url, jsonObject.toString());
+            Log.d(TAG, "jsonObject.toString(): "+jsonObject.toString());
+            Log.d(TAG, "bitmap "+bitmap);
+            if(bitmap==null){
+                Log.d(TAG, "doInBackground: bitmap is null!!!!");
+            }
+
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             return null;
@@ -46,6 +57,22 @@ public class ActivityGetImageTask extends AsyncTask<Object, Integer, Bitmap> {
 
 
         return bitmap;
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        if(isCancelled()){
+            bitmap = null;
+        }
+        ImageView imageView = imageViewWeakReference.get();
+        if(imageView !=null){
+            if(bitmap != null){
+                imageView.setImageBitmap(bitmap);
+            }else{
+                imageView.setImageResource(R.drawable.coffeeshop_member);
+            }
+        }
+        super.onPostExecute(bitmap);
     }
 
     private Bitmap getRemoteImage(String url, String jsonOut) throws IOException {

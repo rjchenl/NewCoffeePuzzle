@@ -1,9 +1,12 @@
 package com.example.user.newcoffeepuzzle.activities;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
@@ -27,16 +30,31 @@ public class ActivityListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rvactivities;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: yesyes");
+        View view = inflater.inflate(R.layout.activity_list_fragment, container, false);
+
+        rvactivities = (RecyclerView) view.findViewById(R.id.rvactivities);
+        rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+
+
+
+        return view;
+    }
 
     @Override
     public void onStart() {
         super.onStart();
-        showAllSpots();
+        showAllActs();
     }
 
-    private void showAllSpots() {
+    private void showAllActs() {
         if (Common.networkConnected(getActivity())) {
-            String url = Common.URL + "ActivityServlet";
+            String url = Common.URL + "NewsServlet2";
             List<ActivityVO> acts = null;
             try {
                 acts = new ActivityGetAllTask().execute(url).get();
@@ -46,7 +64,7 @@ public class ActivityListFragment extends Fragment {
             if (acts == null || acts.isEmpty()) {
                 Common.showToast(getActivity(), "No acts found");
             } else {
-//                rvactivities.setAdapter(new ActivitiesRecyclerViewAdapter());
+                rvactivities.setAdapter(new ActivitiesRecyclerViewAdapter(getActivity(),acts));
             }
         }
     }
@@ -75,7 +93,7 @@ public class ActivityListFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             final ActivityVO act = acts.get(position);
-            String url = Common.URL + "ActivityServlet";
+            String url = Common.URL + "NewsServlet2";
             String activid = act.getActiv_id();
             int imageSize = 250;
             new ActivityGetImageTask(holder.itemImage).execute(url, activid, imageSize);
