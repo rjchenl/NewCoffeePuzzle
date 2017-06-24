@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ActivityGetImageTask extends AsyncTask<Object, Integer, Bitmap> {
-    private final static String TAG = "SpotGetImageTask";
+    private final static String TAG = "ActivityGetImageTask";
     private final static String ACTION = "getImage";
     private final WeakReference<ImageView> imageViewWeakReference;
 
@@ -44,18 +44,10 @@ public class ActivityGetImageTask extends AsyncTask<Object, Integer, Bitmap> {
 
         try {
             bitmap = getRemoteImage(url, jsonObject.toString());
-            Log.d(TAG, "jsonObject.toString(): "+jsonObject.toString());
-            Log.d(TAG, "bitmap "+bitmap);
-            if(bitmap==null){
-                Log.d(TAG, "doInBackground: bitmap is null!!!!");
-            }
-
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             return null;
         }
-
-
         return bitmap;
     }
 
