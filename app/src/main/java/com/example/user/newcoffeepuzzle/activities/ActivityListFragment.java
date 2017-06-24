@@ -39,10 +39,6 @@ public class ActivityListFragment extends Fragment {
         rvactivities = (RecyclerView) view.findViewById(R.id.rvactivities);
         rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-
-
-
         return view;
     }
 
@@ -100,13 +96,6 @@ public class ActivityListFragment extends Fragment {
             holder.activity_name.setText(act.getActiv_name());
             holder.activity_intro.setText(act.getActiv_intro());
 
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Fragment fragment = new
-//                }
-//            });
-
 
         }
 
@@ -123,12 +112,6 @@ public class ActivityListFragment extends Fragment {
             }
         }
 
-        private void switchFragment(Fragment fragment) {
-            FragmentTransaction fragmentTransaction =
-                    getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.body, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
+
     }
 }

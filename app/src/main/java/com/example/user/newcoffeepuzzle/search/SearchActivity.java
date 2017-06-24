@@ -1,6 +1,7 @@
 package com.example.user.newcoffeepuzzle.search;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,7 +23,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.activities.ActivityListFragment;
@@ -33,6 +36,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -46,6 +51,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private FragmentManager fragmentManager;
     private static String TAG = "SearchActivity";
     private GoogleMap map;
+    private ActionBar actionBar;
+    private TextView etLocationName;
+    private Button btSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +63,18 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         fragmentManager = getSupportFragmentManager();
         SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        findViews();
         askPermissions();
         setUpActionBar();
         initDrawer();
 //        initBody();
 
+    }
+
+    private void findViews() {
+        etLocationName = (TextView) findViewById(R.id.etLocationName);
+        btSubmit = (Button) findViewById(R.id.btSubmit);
     }
 
 
@@ -92,7 +107,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void initDrawer() {
-        //建立drawer與toolbar間的連結
+        //建立drawer與toolbar間的toggle
         final DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -117,9 +132,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             fragment = new ActivityListFragment();
                             switchFragment(fragment);
                             setTitle("活動");
+                            //讓搜尋列表和bt不見
+                            etLocationName.setVisibility(View.INVISIBLE);
+                            btSubmit.setVisibility(View.INVISIBLE);
                             break;
                         default:
                             initBody();
+                            Log.d(TAG, "onNavigationItemSelected: initBody has be executed");
                             break;
                     }
                     return true;
@@ -129,6 +148,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void initBody() {
+//        Intent intent = new Intent(this,SearchActivity.class);
+//        startActivity(intent);
         Fragment fragment = new GoogleMapFragment();
         switchFragment(fragment);
         setTitle("GoogleMap page");
@@ -140,11 +161,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUpActionBar() {
 
-        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用f
+        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -155,7 +176,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.map, fragment);
+        fragmentTransaction.replace(R.id.body, fragment);
         fragmentTransaction.commit();
 
     }
@@ -187,10 +208,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void locationNameToMarker(String locationName){
-
         map.clear();
-
-
         //補充
 /*        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
