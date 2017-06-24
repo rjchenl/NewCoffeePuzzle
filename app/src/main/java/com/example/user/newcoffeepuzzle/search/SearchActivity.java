@@ -2,13 +2,14 @@ package com.example.user.newcoffeepuzzle.search;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,29 +21,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.activities.Activities_fragment;
 import com.example.user.newcoffeepuzzle.activities.ActivityListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class SearchActivity extends AppCompatActivity  {
+public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ActionBarDrawerToggle actionbardrawertoggle;
     private static final int REQ_PERMISSIONS = 0;
     private FragmentManager fragmentManager;
     private static String TAG = "SearchActivity";
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class SearchActivity extends AppCompatActivity  {
         setContentView(R.layout.search_activity);
 
         fragmentManager = getSupportFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
         askPermissions();
         setUpActionBar();
         initDrawer();
@@ -61,6 +66,7 @@ public class SearchActivity extends AppCompatActivity  {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        //drawertoggle跟畫面取得連繫
         actionbardrawertoggle.syncState();
     }
 
@@ -123,9 +129,9 @@ public class SearchActivity extends AppCompatActivity  {
     }
 
     private void initBody() {
-        Fragment fragment = new ActivityListFragment();
+        Fragment fragment = new GoogleMapFragment();
         switchFragment(fragment);
-        setTitle("Activity");
+        setTitle("GoogleMap page");
     }
 
     private void showToast(String s) {
@@ -149,8 +155,80 @@ public class SearchActivity extends AppCompatActivity  {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.undersearch, fragment);
+        fragmentTransaction.replace(R.id.map, fragment);
         fragmentTransaction.commit();
+
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        this.map = map;
+        setUpMap();
+    }
+
+    private void setUpMap() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+        }
+        map.getUiSettings().setZoomControlsEnabled(true);
+    }
+
+    public void onLocationNameClick(View view) {
+        EditText etLocationName = (EditText) findViewById(R.id.etLocationName);
+        String locationName = etLocationName.getText().toString().trim();
+        if (locationName.length() > 0) {
+            locationNameToMarker(locationName);
+        } else {
+            showToast("Location Name is empty");
+        }
+    }
+
+    private void locationNameToMarker(String locationName){
+
+        map.clear();
+
+
+        //補充
+/*        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+        });*/
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> addressList = null;
+        int maxResults = 1;
+        try {
+            addressList = geocoder
+                    .getFromLocationName(locationName, maxResults);
+
+            //補充
+//            addressList = geocoder.getFromLocation(24,121,maxResults);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        if (addressList == null || addressList.isEmpty()) {
+            showToast("Location name not found");
+        } else {
+            Address address = addressList.get(0);
+
+            LatLng position = new LatLng(address.getLatitude(),
+                    address.getLongitude());
+
+            String snippet = address.getAddressLine(0);
+
+            map.addMarker(new MarkerOptions().position(position)
+                    .title(locationName).snippet(snippet));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(position).zoom(15).build();
+            map.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+        }
 
     }
 

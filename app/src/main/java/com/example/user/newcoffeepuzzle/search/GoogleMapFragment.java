@@ -29,7 +29,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager
-                .findFragmentById(R.id.undersearch);
+                .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         return mapsview;
