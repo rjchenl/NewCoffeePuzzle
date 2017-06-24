@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -41,9 +42,14 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
 
-        LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng position = new LatLng(24.9677420,121.1917000);
+        map.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(position));
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(position).zoom(15).build();
+        map.animateCamera(CameraUpdateFactory
+                .newCameraPosition(cameraPosition));
 
 
     }
