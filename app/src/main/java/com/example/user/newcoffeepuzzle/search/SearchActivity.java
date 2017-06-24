@@ -148,11 +148,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void initBody() {
-//        Intent intent = new Intent(this,SearchActivity.class);
-//        startActivity(intent);
-        Fragment fragment = new GoogleMapFragment();
-        switchFragment(fragment);
-        setTitle("GoogleMap page");
+        Intent intent = new Intent(this,SearchActivity.class);
+        startActivity(intent);
+//        Fragment fragment = new GoogleMapFragment();
+//        switchFragment(fragment);
+//        setTitle("GoogleMap page");
     }
 
     private void showToast(String s) {
@@ -195,6 +195,16 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             map.setMyLocationEnabled(true);
         }
         map.getUiSettings().setZoomControlsEnabled(true);
+
+        //map shows iii info
+        LatLng position = new LatLng(24.9677420,121.1917000);
+        map.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(position));
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(position).zoom(15).build();
+        map.animateCamera(CameraUpdateFactory
+                .newCameraPosition(cameraPosition));
     }
 
     public void onLocationNameClick(View view) {
