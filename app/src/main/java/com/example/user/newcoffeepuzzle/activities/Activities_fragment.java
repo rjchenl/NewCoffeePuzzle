@@ -29,7 +29,6 @@ public class Activities_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: nononon");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activities_fragment,container,false);
         rvactivities =(RecyclerView) view.findViewById(R.id.ryActivieiess);
@@ -41,7 +40,7 @@ public class Activities_fragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Common.networkConnected(getActivity())) {
-            String url = Common.URL + "NewsServlet2";
+            String url = Common.URL + "ActivityServlet";
             List<ActivityVO> actList = null;
 
             ProgressDialog progressDialog = new ProgressDialog(getActivity());

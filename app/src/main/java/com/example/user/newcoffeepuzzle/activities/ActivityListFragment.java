@@ -64,7 +64,7 @@ public class ActivityListFragment extends Fragment {
 
     private void showAllActs() {
         if (Common.networkConnected(getActivity())) {
-            String url = Common.URL + "NewsServlet2";
+            String url = Common.URL + "ActivityServlet";
             List<ActivityVO> acts = null;
             try {
                 acts = new ActivityGetAllTask().execute(url).get();
@@ -104,7 +104,7 @@ public class ActivityListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             final ActivityVO act = acts.get(position);
-            String url = Common.URL + "NewsServlet2";
+            String url = Common.URL + "ActivityServlet";
             //取得table pk
             String activid = act.getActiv_id();
             int imageSize = 250;
