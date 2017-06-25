@@ -46,11 +46,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         map.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
         map.moveCamera(CameraUpdateFactory.newLatLng(position));
 
+
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(position).zoom(15).build();
         map.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-
 
     }
 
