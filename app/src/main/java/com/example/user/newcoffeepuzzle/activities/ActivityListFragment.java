@@ -34,7 +34,6 @@ public class ActivityListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: yesyes");
         View view = inflater.inflate(R.layout.activity_list_fragment, container, false);
         //以下滑下自動更新可以省略
 //        swipeRefreshLayout =  (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
@@ -51,6 +50,8 @@ public class ActivityListFragment extends Fragment {
 
         rvactivities = (RecyclerView) view.findViewById(R.id.rvactivities);
         rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        rvactivities.setLayoutManager(new RecyclerView.LayoutManager(getActivity()));為什麼不行
+
 
         return view;
     }
@@ -93,17 +94,18 @@ public class ActivityListFragment extends Fragment {
             return acts.size();
         }//
 
-
+        //取得viewhold佈局檔
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = layoutInflater.inflate(R.layout.activities_recycle_item, parent, false);
             return new MyViewHolder(itemView);
         }
-
+        //與資料做連結
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             final ActivityVO act = acts.get(position);
             String url = Common.URL + "NewsServlet2";
+            //取得table pk
             String activid = act.getActiv_id();
             int imageSize = 250;
             new ActivityGetImageTask(holder.itemImage).execute(url, activid, imageSize);
@@ -121,7 +123,7 @@ public class ActivityListFragment extends Fragment {
 
         }
 
-
+        //創立MyViewHolder類別 夾帶要帶的view
         class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView itemImage;
             TextView activity_name, activity_intro;

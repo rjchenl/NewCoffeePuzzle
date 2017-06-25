@@ -48,16 +48,18 @@ public class ActivityGetAllTask extends AsyncTask<Object,Integer,List<ActivityVO
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException {
-        StringBuilder jsonIn = new StringBuilder();
+        StringBuilder jsonIn = new StringBuilder();//取得回應用的
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setDoInput(true); // allow inputs
         connection.setDoOutput(true); // allow outputs
         connection.setUseCaches(false); // do not use a cached copy
         connection.setRequestMethod("POST");
         connection.setRequestProperty("charset", "UTF-8");
+
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut: " + jsonOut);
+        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
+        //{"action":"getAll"}
         bw.close();
 
         int responseCode = connection.getResponseCode();
@@ -72,7 +74,7 @@ public class ActivityGetAllTask extends AsyncTask<Object,Integer,List<ActivityVO
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn: " + jsonIn);
+        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
         return jsonIn.toString();
 
     }
