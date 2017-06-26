@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.search;
+package com.example.user.newcoffeepuzzle;
 
 import android.Manifest;
 import android.content.Intent;
@@ -27,8 +27,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.user.newcoffeepuzzle.R;
+
 import com.example.user.newcoffeepuzzle.activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.main.Common;
+import com.example.user.newcoffeepuzzle.store.StoreInfoFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -143,7 +145,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             break;
                         default:
                             initBody();
-                            Log.d(TAG, "onNavigationItemSelected: initBody has be executed");
+//                            Log.d(TAG, "onNavigationItemSelected: initBody has be executed");
                             break;
                     }
                     return true;
@@ -227,10 +229,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                //置換fragment 跑出動畫
-//                switchFragment();
-
-
+                //置換storeInfofragment
+                Fragment storeFragment = new StoreInfoFragment();
+                switchFragment(storeFragment);
+                etLocationName.setVisibility(View.INVISIBLE);
+                btSubmit.setVisibility(View.INVISIBLE);
                 return false;
             }
         });

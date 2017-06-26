@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle;
+package com.example.user.newcoffeepuzzle.elsee;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.elsee.MemFragment;
 import com.example.user.newcoffeepuzzle.elsee.Page;
 import com.example.user.newcoffeepuzzle.elsee.StoreFragment;

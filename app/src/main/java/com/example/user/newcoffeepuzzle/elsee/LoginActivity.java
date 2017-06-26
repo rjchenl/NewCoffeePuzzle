@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle;
+package com.example.user.newcoffeepuzzle.elsee;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.user.newcoffeepuzzle.search.SearchActivity;
+import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.SearchActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etID;
     private EditText etPsw;
-    private String test2;
 
 
     @Override

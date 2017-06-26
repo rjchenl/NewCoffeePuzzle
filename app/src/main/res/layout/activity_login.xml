@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-    tools:context="com.example.user.newcoffeepuzzle.LoginActivity">
+    tools:context="com.example.user.newcoffeepuzzle.elsee.LoginActivity">
 
 
 <ImageView

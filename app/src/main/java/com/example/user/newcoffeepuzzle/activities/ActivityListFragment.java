@@ -44,8 +44,6 @@ public class ActivityListFragment extends Fragment {
 //            }
 //        });
 
-
-
         rvactivities = (RecyclerView) view.findViewById(R.id.rvactivities);
         rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        rvactivities.setLayoutManager(new RecyclerView.LayoutManager(getActivity()));為什麼不行
