@@ -1,10 +1,15 @@
 package com.example.user.newcoffeepuzzle.search;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +29,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,6 +47,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +63,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private TextView etLocationName;
     private Button btSubmit;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +77,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         askPermissions();
         setUpActionBar();
         initDrawer();
-//        initBody();
 
     }
+
+
 
     private void findViews() {
         etLocationName = (TextView) findViewById(R.id.etLocationName);
@@ -88,7 +98,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private void askPermissions() {
         String[] permissions = {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.GET_ACCOUNTS,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+
         };
 
         Set<String> permissionsRequest = new HashSet<>();
@@ -99,12 +112,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         }
 
-        if (!permissionsRequest.isEmpty()) {
-            ActivityCompat.requestPermissions(this,
-                    permissionsRequest.toArray(new String[permissionsRequest.size()]),
-                    REQ_PERMISSIONS);
-        }
+
     }
+
+
 
     private void initDrawer() {
         //建立drawer與toolbar間的toggle
@@ -189,22 +200,37 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void setUpMap() {
+        //取得目前位置
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
+
         }
         map.getUiSettings().setZoomControlsEnabled(true);
 
-        //map shows iii info
+        //一開始在中央資策會顯示一個demo marker
         LatLng position = new LatLng(24.9677420,121.1917000);
-        map.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(position));
+        map.addMarker(new MarkerOptions()
+                .position(position)
+                .title("Marker in iii"));
 
+        //移動攝影機
+        map.moveCamera(CameraUpdateFactory.newLatLng(position));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(position).zoom(15).build();
         map.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
+
+        //新增店家資訊
+        LatLng store = new LatLng(24.9647814,121.1886704);
+        map.addMarker(new MarkerOptions()
+                .position(store)
+                .title("store1")
+        );
+
+
+
     }
 
     public void onLocationNameClick(View view) {
@@ -219,13 +245,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void locationNameToMarker(String locationName){
         map.clear();
-        //補充
-/*        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
 
-            }
-        });*/
         Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = null;
         int maxResults = 1;
@@ -233,8 +253,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             addressList = geocoder
                     .getFromLocationName(locationName, maxResults);
 
-            //補充
-//            addressList = geocoder.getFromLocation(24,121,maxResults);
         } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
@@ -243,9 +261,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             showToast("Location name not found");
         } else {
             Address address = addressList.get(0);
-
-            LatLng position = new LatLng(address.getLatitude(),
-                    address.getLongitude());
+            LatLng position = new LatLng(address.getLatitude(), address.getLongitude());
 
             String snippet = address.getAddressLine(0);
 
@@ -259,7 +275,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
 
     }
-
 
 
 }

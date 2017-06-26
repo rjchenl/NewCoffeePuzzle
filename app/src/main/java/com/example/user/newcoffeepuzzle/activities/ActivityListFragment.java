@@ -113,7 +113,7 @@ public class ActivityListFragment extends Fragment {
             holder.activity_intro.setText(act.getActiv_intro());
 
             //按下彈出其它隱藏資訊
-            holder.activity_name.setVisibility(actExpanded[position]? View.VISIBLE : View.GONE);
+            holder.activity_intro.setVisibility(actExpanded[position]? View.VISIBLE : View.GONE);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
