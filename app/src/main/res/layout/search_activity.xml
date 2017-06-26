@@ -50,6 +50,28 @@
             android:layout_height="match_parent" />
 
         </FrameLayout>
+        <LinearLayout
+            android:id="@+id/detailStore_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/logotest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"/>
+
+            <TextView
+                android:id="@+id/tvStoreName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="店家資訊欄位" />
+
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

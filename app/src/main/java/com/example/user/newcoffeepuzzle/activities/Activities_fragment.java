@@ -30,6 +30,7 @@ public class Activities_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "onCreateView: iiiiiiiii");
         View view = inflater.inflate(R.layout.activities_fragment,container,false);
         rvactivities =(RecyclerView) view.findViewById(R.id.ryActivieiess);
         rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -129,10 +130,6 @@ public class Activities_fragment extends Fragment {
         public int getItemCount() {
             return actList.size();
         }
-
-
-
-
 
 
     }

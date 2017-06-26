@@ -1,15 +1,10 @@
 package com.example.user.newcoffeepuzzle.search;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +24,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,15 +33,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,6 +54,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private ActionBar actionBar;
     private TextView etLocationName;
     private Button btSubmit;
+    private TextView tvStoreName;
 
 
     @Override
@@ -85,6 +78,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private void findViews() {
         etLocationName = (TextView) findViewById(R.id.etLocationName);
         btSubmit = (Button) findViewById(R.id.btSubmit);
+        tvStoreName = (TextView) findViewById(R.id.tvStoreName);
     }
 
 
@@ -221,17 +215,39 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 .target(position).zoom(15).build();
         map.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
+        final String store1 = "有一家店";
 
         //新增店家資訊
         LatLng store = new LatLng(24.9647814,121.1886704);
         map.addMarker(new MarkerOptions()
                 .position(store)
-                .title("store1")
+                .title(store1)
         );
+
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                //置換fragment 跑出動畫
+//                switchFragment();
+
+
+                return false;
+            }
+        });
 
 
 
     }
+
+//    private Animation getTranslateAnimation() {
+//     detailStore_container
+//        float distance = parentView.getHeight()-parentView.getPaddingStart()-parentView.getPaddingEnd()-tvStoreName.getHeight();
+//        //看一下多長
+//        showToast(String.valueOf(distance));
+//        TranslateAnimation translateAnimation = new TranslateAnimation(0,0,300,600);
+//        translateAnimation.setDuration(1000);
+//        return translateAnimation;
+//    }
 
     public void onLocationNameClick(View view) {
         EditText etLocationName = (EditText) findViewById(R.id.etLocationName);
