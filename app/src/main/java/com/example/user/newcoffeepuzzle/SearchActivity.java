@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.activities.ActivityListFragment;
 import com.example.user.newcoffeepuzzle.main.Common;
+import com.example.user.newcoffeepuzzle.search.GoogleMapFragment;
 import com.example.user.newcoffeepuzzle.store.StoreInfoFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,14 +50,12 @@ import java.util.Set;
 public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ActionBarDrawerToggle actionbardrawertoggle;
-    private static final int REQ_PERMISSIONS = 0;
     private FragmentManager fragmentManager;
     private static String TAG = "SearchActivity";
     private GoogleMap map;
     private ActionBar actionBar;
     private TextView etLocationName;
     private Button btSubmit;
-    private TextView tvStoreName;
 
 
     @Override
@@ -72,6 +71,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         askPermissions();
         setUpActionBar();
         initDrawer();
+        initBody();
 
     }
 
@@ -80,7 +80,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private void findViews() {
         etLocationName = (TextView) findViewById(R.id.etLocationName);
         btSubmit = (Button) findViewById(R.id.btSubmit);
-        tvStoreName = (TextView) findViewById(R.id.tvStoreName);
     }
 
 
@@ -139,13 +138,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             fragment = new ActivityListFragment();
                             switchFragment(fragment);
                             setTitle("活動");
-                            //讓搜尋列表和bt不見
-                            etLocationName.setVisibility(View.INVISIBLE);
-                            btSubmit.setVisibility(View.INVISIBLE);
                             break;
                         default:
                             initBody();
-//                            Log.d(TAG, "onNavigationItemSelected: initBody has be executed");
                             break;
                     }
                     return true;
@@ -155,11 +150,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void initBody() {
-        Intent intent = new Intent(this,SearchActivity.class);
-        startActivity(intent);
-//        Fragment fragment = new GoogleMapFragment();
-//        switchFragment(fragment);
-//        setTitle("GoogleMap page");
+//        Intent intent = new Intent(this,SearchActivity.class);
+//        startActivity(intent);
+        Fragment fragment = new GoogleMapFragment();
+        switchFragment(fragment);
+        setTitle("GoogleMap page");
     }
 
     private void showToast(String s) {
@@ -192,55 +187,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
-        setUpMap();
-    }
-
-    private void setUpMap() {
-        //取得目前位置
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            map.setMyLocationEnabled(true);
-
-        }
-        map.getUiSettings().setZoomControlsEnabled(true);
-
-        //一開始在中央資策會顯示一個demo marker
-        LatLng position = new LatLng(24.9677420,121.1917000);
-        map.addMarker(new MarkerOptions()
-                .position(position)
-                .title("Marker in iii"));
-
-        //移動攝影機
-        map.moveCamera(CameraUpdateFactory.newLatLng(position));
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(position).zoom(15).build();
-        map.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
-        final String store1 = "有一家店";
-
-        //新增店家資訊
-        LatLng store = new LatLng(24.9647814,121.1886704);
-        map.addMarker(new MarkerOptions()
-                .position(store)
-                .title(store1)
-        );
-
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //置換storeInfofragment
-                Fragment storeFragment = new StoreInfoFragment();
-                switchFragment(storeFragment);
-                etLocationName.setVisibility(View.INVISIBLE);
-                btSubmit.setVisibility(View.INVISIBLE);
-                return false;
-            }
-        });
-
-
 
     }
+
+
 
 //    private Animation getTranslateAnimation() {
 //     detailStore_container
@@ -252,15 +202,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 //        return translateAnimation;
 //    }
 
-    public void onLocationNameClick(View view) {
-        EditText etLocationName = (EditText) findViewById(R.id.etLocationName);
-        String locationName = etLocationName.getText().toString().trim();
-        if (locationName.length() > 0) {
-            locationNameToMarker(locationName);
-        } else {
-            showToast("Location Name is empty");
-        }
-    }
+
 
     private void locationNameToMarker(String locationName){
         map.clear();
