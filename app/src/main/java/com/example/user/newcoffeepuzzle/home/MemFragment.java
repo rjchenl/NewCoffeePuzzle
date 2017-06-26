@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.elsee;
+package com.example.user.newcoffeepuzzle.home;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,14 +12,14 @@ import com.example.user.newcoffeepuzzle.R;
  * Created by Java on 2017/6/21.
  */
 
-public class StoreFragment extends Fragment{
+public class MemFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
 
-        View view = inflater.inflate(R.layout.store,container,false);
-
+        View view = inflater.inflate(R.layout.mem,container,false);
 
         return view;
     }
+
 }

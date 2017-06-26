@@ -1,5 +1,6 @@
 package com.example.user.newcoffeepuzzle;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,10 +8,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
-import com.example.user.newcoffeepuzzle.elsee.MemFragment;
-import com.example.user.newcoffeepuzzle.elsee.Page;
-import com.example.user.newcoffeepuzzle.elsee.StoreFragment;
+import com.example.user.newcoffeepuzzle.home.MemFragment;
+import com.example.user.newcoffeepuzzle.home.Page;
+import com.example.user.newcoffeepuzzle.home.StoreFragment;
+import com.example.user.newcoffeepuzzle.search.StoreActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,13 @@ public class HomePageActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.Tab);
         tabLayout.setupWithViewPager(viewPager);
+
+
+    }
+
+    public void btonClick (View view){
+        Intent intent = new Intent(this, StoreActivity.class);
+        startActivity(intent);
 
 
     }
