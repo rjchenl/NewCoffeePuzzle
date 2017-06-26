@@ -1,14 +1,86 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#eabe6b"
     tools:context="com.example.user.newcoffeepuzzle.store.StoreInfoFragment">
+
+
 
     <TextView
         android:id="@+id/store_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="storeName" />
 
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:text="XXX咖啡店"/>
+    <TextView
+        android:id="@+id/store_add"
+        android:layout_margin="20dp"
+        android:layout_below="@id/store_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="台北市中山北路一段200號"/>
+
+    <CheckBox
+        android:id="@+id/isOpen"
+        android:layout_below="@id/store_add"
+        android:layout_marginStart="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="今日營業"/>
+    <CheckBox
+        android:id="@+id/is_wifi"
+        android:layout_below="@id/isOpen"
+        android:layout_marginStart="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="有無Wifi"/>
+    <CheckBox
+        android:id="@+id/is_plug"
+        android:layout_below="@id/is_wifi"
+        android:layout_marginStart="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="有無插座"/>
+    <CheckBox
+        android:id="@+id/is_time_limit"
+        android:layout_marginStart="50dp"
+        android:layout_toRightOf="@id/isOpen"
+        android:layout_below="@id/store_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="有無限時"/>
+    <CheckBox
+        android:id="@+id/is_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="有賣正餐"
+        android:textSize="18sp"
+        android:layout_below="@+id/is_time_limit"
+        android:layout_alignStart="@+id/is_time_limit" />
+    <CheckBox
+        android:id="@+id/is_dessert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="有賣甜點"
+        android:layout_below="@+id/is_meal"
+        android:textSize="18sp"
+        android:layout_alignStart="@+id/is_meal" />
+    <ImageView
+        android:id="@+id/takePhoto"
+        android:layout_below="@id/is_plug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

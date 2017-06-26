@@ -32,7 +32,7 @@ public class ActivityListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_activity_list, container, false);
         //以下滑下自動更新可以省略
 //        swipeRefreshLayout =  (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
 //        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
