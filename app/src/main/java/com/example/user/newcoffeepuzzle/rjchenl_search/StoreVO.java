@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.search;
+package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

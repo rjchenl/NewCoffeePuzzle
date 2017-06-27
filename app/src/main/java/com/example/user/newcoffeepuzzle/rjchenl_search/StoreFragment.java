@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.search;
+package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,6 @@ import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.main.Common;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
 

@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.activities;
+package com.example.user.newcoffeepuzzle.rjchenl_activities;
 
 import java.sql.Timestamp;
 

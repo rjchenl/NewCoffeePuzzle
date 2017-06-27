@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle;
+package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -24,8 +24,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.newcoffeepuzzle.activities.ActivityListFragment;
-import com.example.user.newcoffeepuzzle.search.GoogleMapFragment;
+import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_search.GoogleMapFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -156,7 +157,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUpActionBar() {
 
-        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
+        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用i
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

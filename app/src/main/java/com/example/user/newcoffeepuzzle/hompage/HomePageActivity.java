@@ -1,5 +1,6 @@
-package com.example.user.newcoffeepuzzle.elsee;
+package com.example.user.newcoffeepuzzle.hompage;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,9 +8,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.search.StoreFragment;
+import com.example.user.newcoffeepuzzle.ming_home.StoreLoginFragment;
+
+import com.example.user.newcoffeepuzzle.ming_home.MemFragment;
+import com.example.user.newcoffeepuzzle.ming_home.Page;
+
+import com.example.user.newcoffeepuzzle.ming_take_orders.StoreActivity;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +39,13 @@ public class HomePageActivity extends AppCompatActivity {
 
     }
 
+    public void btonClick (View view){
+        Intent intent = new Intent(this, StoreActivity.class);
+        startActivity(intent);
+
+
+    }
+
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
         List<Page> pageList;
@@ -38,7 +54,7 @@ public class HomePageActivity extends AppCompatActivity {
             super(fragmentManager);
             pageList = new ArrayList<>();
             pageList.add(new Page(new MemFragment(),"一般會員"));
-            pageList.add(new Page(new StoreFragment(),"店家會員"));
+            pageList.add(new Page(new StoreLoginFragment(),"店家會員"));
         }
 
         @Override

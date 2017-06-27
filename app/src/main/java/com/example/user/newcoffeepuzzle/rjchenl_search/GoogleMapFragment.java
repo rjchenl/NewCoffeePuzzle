@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.search;
+package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -25,14 +25,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import static android.content.ContentValues.TAG;
 
 
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
@@ -202,7 +198,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 //            @Override
 //            public boolean onMarkerClick(Marker marker) {
 //                //置換storeInfofragment
-//                Fragment storeFragment = new StoreFragment();
+//                Fragment storeFragment = new StoreLoginFragment();
 //                switchFragment(storeFragment);
 //                return false;
 //            }

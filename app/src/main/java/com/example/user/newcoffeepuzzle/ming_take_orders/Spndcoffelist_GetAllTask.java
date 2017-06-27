@@ -1,10 +1,13 @@
-package com.example.user.newcoffeepuzzle.activities;
+package com.example.user.newcoffeepuzzle.ming_take_orders;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,18 +18,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Created by user on 2017/6/21.
- */
 
-public class ActivityGetAllTask extends AsyncTask<Object,Integer,List<ActivityVO>> {
-    private final static String TAG = "ActivityGetAllTask";
+public class Spndcoffelist_GetAllTask extends AsyncTask<Object,Integer,List<SpndcoffelistVO>> {
+    private final static String TAG = "Spndcoffelist_GetAllTask";
     private final static String ACTION = "getAll";
 
-
-
     @Override
-    protected List<ActivityVO> doInBackground(Object[] params) {
+    protected List<SpndcoffelistVO> doInBackground(Object[] params) {
+        Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
@@ -35,30 +34,30 @@ public class ActivityGetAllTask extends AsyncTask<Object,Integer,List<ActivityVO
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
+            Log.d(TAG, "doInBackground: (step1_2)");
         } catch (IOException e) {
             Log.e(TAG, e.toString());
+            Log.d(TAG, "doInBackground: (step1_3)");
             return null;
         }
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<ActivityVO>>() {
-        }.getType();
+        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        Type listType = new TypeToken<List<SpndcoffelistVO>>() {}.getType();
+
         return gson.fromJson(jsonIn, listType);
     }
 
-    private String getRemoteData(String url, String jsonOut) throws IOException {
-        StringBuilder jsonIn = new StringBuilder();//取得回應用的
+    private String getRemoteData(String url, String jsonOut) throws IOException{
+        StringBuilder jsonIn = new StringBuilder();
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setDoInput(true); // allow inputs
         connection.setDoOutput(true); // allow outputs
         connection.setUseCaches(false); // do not use a cached copy
         connection.setRequestMethod("POST");
         connection.setRequestProperty("charset", "UTF-8");
-
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
-        //{"action":"getAll"}
+        Log.d(TAG, "jsonOut: " + jsonOut);
         bw.close();
 
         int responseCode = connection.getResponseCode();
@@ -73,10 +72,8 @@ public class ActivityGetAllTask extends AsyncTask<Object,Integer,List<ActivityVO
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
+        Log.d(TAG, "jsonIn: " + jsonIn);
         return jsonIn.toString();
 
     }
-
-
 }

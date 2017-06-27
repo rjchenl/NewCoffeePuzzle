@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.elsee;
+package com.example.user.newcoffeepuzzle.hompage;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.SearchActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
