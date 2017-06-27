@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.ming_take_orders.Spndcoffelist_Fragment;
 
 public class StoreActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionbardrawertoggle;
