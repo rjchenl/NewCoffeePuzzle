@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.take_orders.Take_Orders_Fragment;
+import com.example.user.newcoffeepuzzle.take_orders.Spndcoffelist_Fragment;
 
 public class StoreActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionbardrawertoggle;
@@ -53,10 +53,10 @@ public class StoreActivity extends AppCompatActivity {
                     store_drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch (menuItem.getItemId()) {
-                        case R.id.store_home:
-                            fragment = new Take_Orders_Fragment();
+                        case R.id.spndcoffeelist:
+                            fragment = new Spndcoffelist_Fragment();
                             switchFragment(fragment);
-                            setTitle("外送");
+                            setTitle("寄杯");
                             break;
                         default:
 //                            store_Frame();

@@ -4,26 +4,21 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/rey_memId"
+        android:id="@+id/list_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="會員編號"/>
+        android:text="寄杯編號"/>
 
     <TextView
-        android:id="@+id/rey_number"
+        android:id="@+id/spn_memId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="數量"/>
+        android:text="會員編號："/>
 
     <TextView
-        android:id="@+id/rey_monny"
+        android:id="@+id/spn_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="金額"/>
+        android:text="剩餘杯數："/>
 
-    <TextView
-        android:id="@+id/rey_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="時間"/>
 </LinearLayout>

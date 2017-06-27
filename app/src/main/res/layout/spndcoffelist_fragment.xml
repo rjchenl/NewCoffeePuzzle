@@ -6,7 +6,7 @@
     android:layout_margin="12dp">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/ry_take_orders"
+        android:id="@+id/ry_spndcoffelist"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
