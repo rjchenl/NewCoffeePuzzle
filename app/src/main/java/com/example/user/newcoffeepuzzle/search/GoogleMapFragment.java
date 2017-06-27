@@ -1,16 +1,13 @@
 package com.example.user.newcoffeepuzzle.search;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +18,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.store.StoreInfoFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -34,8 +29,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
-
-import static android.R.attr.fragment;
 
 
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
@@ -70,29 +63,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
         setUpMap();
-
-        //取得目前位置
-//        if (ActivityCompat.checkSelfPermission(getActivity(),
-//                Manifest.permission.ACCESS_COARSE_LOCATION) ==
-//                PackageManager.PERMISSION_GRANTED) {
-//            map.setMyLocationEnabled(true);
-//
-//        }
-//        map.getUiSettings().setZoomControlsEnabled(true);
-//
-//        LatLng position = new LatLng(24.9677420, 121.1917000);
-//        map.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
-//        map.moveCamera(CameraUpdateFactory.newLatLng(position));
-//
-//
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(position).zoom(15).build();
-//        map.animateCamera(CameraUpdateFactory
-//                .newCameraPosition(cameraPosition));
-
         setSubmitLisntener();
-
-
     }
 
     private void setSubmitLisntener() {
@@ -201,4 +172,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    public static class StoreInfoFragment extends Fragment {
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+            View view = inflater.inflate(R.layout.fragment_storeinfo,container,false);
+
+
+
+            return view;
+        }
+    }
 }

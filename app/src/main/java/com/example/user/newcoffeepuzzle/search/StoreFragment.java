@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.elsee;
+package com.example.user.newcoffeepuzzle.search;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

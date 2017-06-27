@@ -9,9 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.elsee.MemFragment;
-import com.example.user.newcoffeepuzzle.elsee.Page;
-import com.example.user.newcoffeepuzzle.elsee.StoreFragment;
+import com.example.user.newcoffeepuzzle.search.StoreFragment;
 
 import java.util.ArrayList;
 import java.util.List;

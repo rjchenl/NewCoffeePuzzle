@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="#eabe6b"
-    tools:context="com.example.user.newcoffeepuzzle.store.StoreInfoFragment">
+    tools:context="com.example.user.newcoffeepuzzle.search.GoogleMapFragment$StoreInfoFragment">
 
 
 
