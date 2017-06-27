@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.main.Common;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ public class StoreFragment extends Fragment{
     }
 
     private void showAllActs() {
-        if(Common.networkConnected(getActivity())){
-            String url = Common.URL+"StoreServlet";
+        if(Common_RJ.networkConnected(getActivity())){
+            String url = Common_RJ.URL+"StoreServlet";
             List<StoreVO> storeList = null;
             Log.d(TAG, "showAllActs: enter");
 
@@ -48,10 +48,10 @@ public class StoreFragment extends Fragment{
             }
 
             if(storeList == null || storeList.isEmpty()){
-                Common.showToast(getActivity(),"No storeList found");
+                Common_RJ.showToast(getActivity(),"No storeList found");
             }else{
 
-                Common.showToast(getActivity(),"get the data into view");
+                Common_RJ.showToast(getActivity(),"get the data into view");
             }
 
         }

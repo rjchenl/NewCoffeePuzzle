@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.main.Common;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 
 import java.util.List;
 
@@ -59,8 +59,8 @@ public class ActivityListFragment extends Fragment {
     }
 
     private void showAllActs() {
-        if (Common.networkConnected(getActivity())) {
-            String url = Common.URL + "ActivityServlet";
+        if (Common_RJ.networkConnected(getActivity())) {
+            String url = Common_RJ.URL + "ActivityServlet";
             List<ActivityVO> acts = null;
             try {
                 acts = new ActivityGetAllTask().execute(url).get();
@@ -68,7 +68,7 @@ public class ActivityListFragment extends Fragment {
                 Log.e(TAG, e.toString());
             }
             if (acts == null || acts.isEmpty()) {
-                Common.showToast(getActivity(), "No acts found");
+                Common_RJ.showToast(getActivity(), "No acts found");
             } else {
                 rvactivities.setAdapter(new ActivitiesRecyclerViewAdapter(getActivity(),acts));
             }
@@ -100,7 +100,7 @@ public class ActivityListFragment extends Fragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             final ActivityVO act = acts.get(position);
-            String url = Common.URL + "ActivityServlet";
+            String url = Common_RJ.URL + "ActivityServlet";
             //取得table pk
             String activid = act.getActiv_id();
             int imageSize = 250;
