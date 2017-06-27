@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.main.Common;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +30,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static android.content.ContentValues.TAG;
 
 
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
@@ -43,6 +47,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mapsview = inflater.inflate(R.layout.activity_maps, container, false);
         findViews();
+        showAllActs();
 
         return mapsview;
     }
@@ -63,6 +68,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
         setUpMap();
+
         setSubmitLisntener();
     }
 
@@ -137,32 +143,72 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 .position(position)
                 .title("Marker in iii"));
 
-        //移動攝影機
+//        移動攝影機到預設位置
         map.moveCamera(CameraUpdateFactory.newLatLng(position));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(position).zoom(15).build();
         map.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-        final String store1 = "有一家店";
 
-        //新增店家資訊
-        LatLng store = new LatLng(24.9647814, 121.1886704);
-        map.addMarker(new MarkerOptions()
-                .position(store)
-                .title(store1)
-        );
 
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //置換storeInfofragment
-                Fragment storeFragment = new StoreInfoFragment();
-                switchFragment(storeFragment);
-                return false;
-            }
-        });
+        addStores();
+
+
+
+
 
     }
+
+    private void addStores() {
+        if(Common.networkConnected(getActivity())){
+            String url = Common.URL+"StoreServlet";
+            List<StoreVO> storeList = null;
+
+            try {
+                storeList = new StoreGetAllTask().execute(url).get();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+            }
+            if(storeList == null || storeList.isEmpty()){
+                Common.showToast(getActivity(),"no storeList found");
+            }else{
+                //已有資料  開始連結view
+                for (StoreVO stvo : storeList){
+                    LatLng  store_position = new LatLng(stvo.getLatitude(),stvo.getLongitude());
+                    map.addMarker(new MarkerOptions()
+                            .title(stvo.getStore_name())
+                            .position(store_position)
+                    );
+                }
+
+            }
+        }
+
+
+
+
+
+
+//        final String store1 = "有一家店";
+//
+//        //新增店家資訊
+//        LatLng store = new LatLng(24.9647814, 121.1886704);
+//        map.addMarker(new MarkerOptions()
+//                .position(store)
+//                .title(store1)
+//        );
+//
+//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                //置換storeInfofragment
+//                Fragment storeFragment = new StoreFragment();
+//                switchFragment(storeFragment);
+//                return false;
+//            }
+//        });
+    }
+
     private void switchFragment(Fragment storeFragment) {
         FragmentTransaction fragmentTransaction =
                 getActivity().getSupportFragmentManager().beginTransaction();
@@ -171,18 +217,30 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         fragmentTransaction.commit();
     }
 
+    private void showAllActs() {
+        if (Common.networkConnected(getActivity())) {
+            String url = Common.URL + "StoreServlet";
+            List<StoreVO> storeList = null;
+            Log.d(TAG, "showAllActs: enter");
 
-    public static class StoreInfoFragment extends Fragment {
+            try {
+                storeList = new StoreGetAllTask().execute(url).get();
+                Log.d(TAG, "showAllActs: in try");
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
 
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            if (storeList == null || storeList.isEmpty()) {
+                Common.showToast(getActivity(), "No storeList found");
+            } else {
 
-            View view = inflater.inflate(R.layout.fragment_storeinfo,container,false);
+                Common.showToast(getActivity(), "get the data into view");
+            }
 
-
-
-            return view;
         }
     }
+
+
+
+
 }
