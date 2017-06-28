@@ -39,8 +39,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.android.gms.location.LocationServices;
@@ -260,6 +262,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    Map<Marker, StoreVO> markerMap = new HashMap<>();
+
     private void addStoresInfo() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
@@ -277,25 +281,24 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 //已有資料  開始連結view
                 for (StoreVO stvo : storeList){
                     LatLng  store_position = new LatLng(stvo.getLatitude(),stvo.getLongitude());
-                    map.addMarker(new MarkerOptions()
+                    Marker marker = map.addMarker(new MarkerOptions()
                             .title(stvo.getStore_name())
                             .position(store_position)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("StoreVO",stvo);
-
-
-
-
+                    markerMap.put(marker, stvo);
                 }
             }
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
+                    StoreVO storevo = markerMap.get(marker);
 
-                    switchFragment(new StoreFragment());
+                    Fragment storeFragment = new StoreFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("StoreVO", storevo);
+                    storeFragment.setArguments(bundle);
+                    switchFragment(storeFragment);
                     return false;
                 }
             });

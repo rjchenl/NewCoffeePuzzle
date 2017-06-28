@@ -1,11 +1,13 @@
 package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
@@ -25,11 +27,77 @@ import static android.content.ContentValues.TAG;
  */
 
 public class StoreFragment extends Fragment{
+
+    private StoreVO store = null;
+    private boolean isTodayOpen = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        store = (StoreVO) bundle.getSerializable("StoreVO");
+
+        //判斷今日是否營業
+
+        Calendar calendar = Calendar.getInstance();
+        int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+        //因為Calendar的day of week 是從禮拜日=1 開始算
+        int weekday =weekDay+1;
+
+
+        if(weekday== Calendar.WEDNESDAY){
+
+            int open = store.getWed_isopen();
+            if(open == 1){
+                long now = calendar.getTimeInMillis();
+                Timestamp opentime = store.getWed_open();
+                Timestamp closetime = store.getWed_close();
+                if(now > opentime.getTime() && now < closetime.getTime()){
+                    isTodayOpen = true;
+                }
+
+            }
+
+        }else if(weekday== Calendar.THURSDAY){
+            int open = store.getThu_isopen();
+            if(open == 1 ){
+                long now = calendar.getTimeInMillis();
+                Log.d(TAG, "onCreate: now :"+now);
+                Timestamp opentime = store.getThu_open();
+                Log.d(TAG, "onCreate: opentime : "+opentime.getTime());
+                Timestamp closetime = store.getThu_close();
+                Log.d(TAG, "onCreate: closetime : "+closetime.getTime());
+                
+                if(now > opentime.getTime() && now < closetime.getTime()){
+                    isTodayOpen=true;
+                }
+            }
+        }else{
+
+        }
+
+
+
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_storeinfo,container,false);
-        Log.d(TAG, "onCreateView: enter");
+
+
+        TextView store_name = (TextView) view.findViewById(R.id.store_name);
+        store_name.setText(store.getStore_name());
+
+        CheckBox isOpen = (CheckBox) view.findViewById(R.id.isOpen);
+
+        isOpen.setChecked(isTodayOpen);
+
+
+
+
         return view;
     }
 
@@ -57,22 +125,9 @@ public class StoreFragment extends Fragment{
                 Common_RJ.showToast(getActivity(),"已有VO上的data開始連結view");
 
 
-                //放入店名
-                List<StoreVO> store_List = new ArrayList<>();
-                for(StoreVO store : store_List){
-                    TextView store_name = (TextView) getActivity().findViewById(R.id.store_name);
-                    store_name.setText(store.getStore_name());
-                }
 
 
 
-                //判斷今日是否營業
-//                Date date = new Date(System.currentTimeMillis());
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-(E) HH:mm:ss");
-//                String time = dateFormat.format(date);
-//                String android_weekday,current_time;
-//                android_weekday=time.substring(12,14);
-                //取得資料庫中所選取的店營業日期
 
 
 
@@ -94,4 +149,6 @@ public class StoreFragment extends Fragment{
 
 
     }
+
+
 }
