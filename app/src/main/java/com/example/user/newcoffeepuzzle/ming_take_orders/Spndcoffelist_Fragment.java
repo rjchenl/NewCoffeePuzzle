@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.main.Common;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 
 import java.util.List;
