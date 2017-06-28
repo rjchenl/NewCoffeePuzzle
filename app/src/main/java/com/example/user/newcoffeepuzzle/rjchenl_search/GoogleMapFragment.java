@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -69,15 +69,19 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mapsview = inflater.inflate(R.layout.activity_maps, container, false);
         findViews();
-        showAllActs();
-
-        mLocationManager =
-                (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationListener = new MyLocationListener();
+        addStoresInMap();
+        //載入地理管理器和監聽器
+        inflateLocationManager();
         openGPS(getActivity());
 
 
         return mapsview;
+    }
+
+    private void inflateLocationManager() {
+        mLocationManager =
+                (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mLocationListener = new MyLocationListener();
     }
 
     private void findViews() {
@@ -114,23 +118,14 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onResume() {
-
-
         //實做地理監聽器
-        mLocationManager =
-                (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationListener = new MyLocationListener();
-
-
+        inflateLocationManager();
         if (mLocationManager == null) {
-            mLocationManager =
-                    (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            mLocationListener = new MyLocationListener();
+            inflateLocationManager();
         }
-        // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
 
+        //授權
         String[] permissions = {
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         };
         if (ActivityCompat.checkSelfPermission(getActivity(),
@@ -146,61 +141,15 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 hasPermission = false;
                 permissionsRequest.add(permission);
             }
+            // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
             mLocationManager
                     .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
             mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
                     mLocationListener);
-            getActivity().setTitle("onResume ...");
             super.onResume();
-
         }
-
-
-
-
-//        showMarkerMe();
-
-
-
-//        if (googleApiClient == null) {
-//            googleApiClient = new GoogleApiClient.Builder(getActivity())
-//                    .addApi(LocationServices.API)
-//                    .addConnectionCallbacks(connectionCallbacks)
-//                    .addOnConnectionFailedListener(onConnectionFailedListener)
-//                    .build();
-//        }
-//        googleApiClient.connect();
-
     }
 
-
-
-    private void getCurrentPosition(){
-
-    }
-
-    private GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener =
-            new GoogleApiClient.OnConnectionFailedListener() {
-                @Override
-                public void onConnectionFailed(@NonNull ConnectionResult result) {
-                    showToast("GoogleApiClient connection failed");
-                    if (!result.hasResolution()) {
-                        GoogleApiAvailability.getInstance().getErrorDialog(
-                                getActivity(),
-                                result.getErrorCode(),
-                                0
-                        ).show();
-                        return;
-                    }
-                    try {
-                        result.startResolutionForResult(
-                                getActivity(),
-                                REQUEST_CODE_RESOLUTION);
-                    } catch (IntentSender.SendIntentException e) {
-                        Log.e(TAG, "Exception while starting resolution activity");
-                    }
-                }
-            };
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -208,8 +157,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         setUpMap();
 
         setSubmitLisntener();
-
-
 
     }
 
@@ -306,6 +253,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             List<StoreVO> storeList = null;
 
             try {
+                //取得物件資料
                 storeList = new StoreGetAllTask().execute(url).get();
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
@@ -319,6 +267,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     map.addMarker(new MarkerOptions()
                             .title(stvo.getStore_name())
                             .position(store_position)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
                 }
 
@@ -328,45 +277,16 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-
-
-//        final String store1 = "有一家店";
-//
-//        //新增店家資訊
-//        LatLng store = new LatLng(24.9647814, 121.1886704);
-//        map.addMarker(new MarkerOptions()
-//                .position(store)
-//                .title(store1)
-//        );
-//
-//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                //置換storeInfofragment
-//                Fragment storeFragment = new StoreLoginFragment();
-//                switchFragment(storeFragment);
-//                return false;
-//            }
-//        });
     }
 
-    private void switchFragment(Fragment storeFragment) {
-        FragmentTransaction fragmentTransaction =
-                getActivity().getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.body, storeFragment);
-        fragmentTransaction.commit();
-    }
-
-    private void showAllActs() {
+    private void addStoresInMap() {
         if (Common_RJ.networkConnected(getActivity())) {
             String url = Common_RJ.URL + "StoreServlet";
             List<StoreVO> storeList = null;
-            Log.d(TAG, "showAllActs: enter");
 
             try {
                 storeList = new StoreGetAllTask().execute(url).get();
-                Log.d(TAG, "showAllActs: in try");
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -374,7 +294,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             if (storeList == null || storeList.isEmpty()) {
                 Common_RJ.showToast(getActivity(), "No storeList found");
             } else {
-
                 Common_RJ.showToast(getActivity(), "get the data into view");
             }
 
@@ -408,8 +327,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             };
 
 
-
-
         private class MyLocationListener implements LocationListener {
             @Override
             public void onLocationChanged(Location location) {
@@ -419,6 +336,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 double Lgt = lastLocation.getLongitude();
 
                 showToast("現在經度:"+Lat+"/n"+"現在緯度"+Lgt);
+                showMarkerMe(Lat,Lgt);
             }
 
             @Override
@@ -446,7 +364,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
         MarkerOptions markerOpt = new MarkerOptions();
         markerOpt.position(new LatLng(lat, lng));
-        markerOpt.title("我在這裡");
+        markerOpt.title("媽!!!我在這裡!!");
+        markerOpt.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blueperson));
         markerMe = map.addMarker(markerOpt);
         Toast.makeText(getActivity(), "lat:" + lat + ",lng:" + lng, Toast.LENGTH_SHORT).show();
     }
