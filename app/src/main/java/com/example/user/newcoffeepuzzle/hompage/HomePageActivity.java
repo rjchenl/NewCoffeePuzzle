@@ -33,6 +33,7 @@ import java.util.List;
 public class HomePageActivity extends AppCompatActivity {
     private final static String TAG = "HomePageActivity";
     EditText edStoreid,edStorepassword;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +55,19 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void btonClick (View view){
-        String UserStoreid = edStoreid.getText().toString();
+//        if(edStoreid == null){
+//            Log.d(TAG, "btonClick: edStoreid is null");
+//        }
+       
+        String userStoreid = edStoreid.getText().toString();
+      
+        
         String UserStorepassword = edStorepassword.getText().toString();
         if (Common_ming.networkConnected(this)){
             String url = Common_ming.URL + "Store_Servlet";
             List<SpndcoffelistVO> login_storeVO = null;
             try {
-                login_storeVO = new Login_Store_GetId().execute(url,UserStoreid,UserStorepassword).get();
+                login_storeVO = new Login_Store_GetId().execute(url,userStoreid,UserStorepassword).get();
             }catch (Exception e ){
                 Log.d(TAG, e.toString());
             }
