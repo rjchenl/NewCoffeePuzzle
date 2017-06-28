@@ -3,7 +3,6 @@ package com.example.user.newcoffeepuzzle.rjchenl_search;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,10 +10,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,8 +25,6 @@ import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -69,13 +66,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mapsview = inflater.inflate(R.layout.activity_maps, container, false);
         findViews();
-        addStoresInMap();
         //載入地理管理器和監聽器
         inflateLocationManager();
         openGPS(getActivity());
-
-
         return mapsview;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpLocationManager();
+
     }
 
     private void inflateLocationManager() {
@@ -116,8 +117,16 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-    @Override
-    public void onResume() {
+
+
+    private void switchFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction =
+                getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void setUpLocationManager() {
         //實做地理監聽器
         inflateLocationManager();
         if (mLocationManager == null) {
@@ -146,7 +155,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
             mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
                     mLocationListener);
-            super.onResume();
+
         }
     }
 
@@ -155,8 +164,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
         setUpMap();
-
         setSubmitLisntener();
+        addStoresInfo();
 
     }
 
@@ -239,7 +248,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 .newCameraPosition(cameraPosition));
 
 
-        addStores();
 
 
 
@@ -247,7 +255,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void addStores() {
+    private void addStoresInfo() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
             List<StoreVO> storeList = null;
@@ -270,35 +278,19 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
                 }
-
             }
-        }
-
-
-
-
-    }
-
-
-    private void addStoresInMap() {
-        if (Common_RJ.networkConnected(getActivity())) {
-            String url = Common_RJ.URL + "StoreServlet";
-            List<StoreVO> storeList = null;
-
-            try {
-                storeList = new StoreGetAllTask().execute(url).get();
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
-            }
-
-            if (storeList == null || storeList.isEmpty()) {
-                Common_RJ.showToast(getActivity(), "No storeList found");
-            } else {
-                Common_RJ.showToast(getActivity(), "get the data into view");
-            }
-
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    switchFragment(new StoreFragment());
+                    return false;
+                }
+            });
         }
     }
+
+
+
 
     private GoogleApiClient.ConnectionCallbacks connectionCallbacks =
             new GoogleApiClient.ConnectionCallbacks() {

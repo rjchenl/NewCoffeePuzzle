@@ -50,8 +50,7 @@ public class StoreFragment extends Fragment{
             if(storeList == null || storeList.isEmpty()){
                 Common_RJ.showToast(getActivity(),"No storeList found");
             }else{
-
-                Common_RJ.showToast(getActivity(),"get the data into view");
+                Common_RJ.showToast(getActivity(),"已有畫面開始連結view");
             }
 
         }
