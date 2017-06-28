@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
@@ -60,6 +61,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private Marker markerMe;
     public final String LM_GPS = LocationManager.GPS_PROVIDER;
     public final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;
+    private static List<StoreVO> storeList;
 
     @Nullable
     @Override
@@ -122,6 +124,9 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getActivity().getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+//        bundle.putSerializable("StoreVO",StoreVO);
+
         fragmentTransaction.replace(R.id.body, fragment);
         fragmentTransaction.commit();
     }
@@ -258,7 +263,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private void addStoresInfo() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
-            List<StoreVO> storeList = null;
+            storeList = null;
 
             try {
                 //取得物件資料
@@ -277,11 +282,19 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                             .position(store_position)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("StoreVO",stvo);
+
+
+
+
                 }
             }
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
+
                     switchFragment(new StoreFragment());
                     return false;
                 }
