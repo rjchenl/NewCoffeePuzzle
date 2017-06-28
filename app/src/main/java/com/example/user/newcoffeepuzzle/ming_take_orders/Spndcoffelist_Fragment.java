@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
+import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 
 import java.util.List;
 
@@ -41,9 +41,9 @@ public class Spndcoffelist_Fragment extends Fragment{
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: (step1)");
-        if (Common_RJ.networkConnected(getActivity())) {
+        if (Common_ming.networkConnected(getActivity())) {
             Log.d(TAG, "onStart: (step2)");
-            String url = Common_RJ.URL + "Spndcoffelist_Servlet";
+            String url = Common_ming.URL + "Spndcoffelist_Servlet";
             List<SpndcoffelistVO> spndcoffelistVOList = null;
 
             ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -57,7 +57,7 @@ public class Spndcoffelist_Fragment extends Fragment{
                 Log.e(TAG, e.toString());
             }
             if(spndcoffelistVOList == null || spndcoffelistVOList.isEmpty()){
-                Common_RJ.showToast(getActivity(), "no activity found");
+                Common_ming.showToast(getActivity(), "no activity found");
                 Log.d(TAG, "onStart: (step4)");
             }else{
                 ry_spndcoffelist.setAdapter(new Spndcoffelist_Fragment.Take_Orders_RecyclerViewAdapter(getActivity(), spndcoffelistVOList));
@@ -66,7 +66,7 @@ public class Spndcoffelist_Fragment extends Fragment{
             progressDialog.cancel();
 
         }else{
-            Common_RJ.showToast(getActivity(), "no network connection available");
+            Common_ming.showToast(getActivity(), "no network connection available");
         }
     }
 

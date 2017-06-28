@@ -22,16 +22,21 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <activity android:name=".hompage.HomePageActivity">
-
-        </activity>
-        <activity android:name=".hompage.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".hompage.LoginActivity">
+
 
         </activity>
+        <activity android:name=".ming_take_orders.StoreActivity">
+
+
+        </activity>
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
