@@ -35,51 +35,111 @@ public class StoreFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //得到傳過來的StoreVO物件
         Bundle bundle = getArguments();
         store = (StoreVO) bundle.getSerializable("StoreVO");
+
+        isTodayOpenCheck();
+
+
+
+
+    }
+
+    private void isTodayOpenCheck() {
+
 
         //判斷今日是否營業
 
         Calendar calendar = Calendar.getInstance();
         int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-        //因為Calendar的day of week 是從禮拜日=1 開始算
-        int weekday =weekDay+1;
 
-
-        if(weekday== Calendar.WEDNESDAY){
+        if(weekDay== Calendar.WEDNESDAY){
 
             int open = store.getWed_isopen();
             if(open == 1){
-                long now = calendar.getTimeInMillis();
                 Timestamp opentime = store.getWed_open();
                 Timestamp closetime = store.getWed_close();
-                if(now > opentime.getTime() && now < closetime.getTime()){
-                    isTodayOpen = true;
-                }
-
+                isTodayOpenCovertToTimestmp(opentime,closetime);
             }
 
-        }else if(weekday== Calendar.THURSDAY){
+        }else if(weekDay== Calendar.THURSDAY){
             int open = store.getThu_isopen();
             if(open == 1 ){
-                long now = calendar.getTimeInMillis();
-                Log.d(TAG, "onCreate: now :"+now);
                 Timestamp opentime = store.getThu_open();
-                Log.d(TAG, "onCreate: opentime : "+opentime.getTime());
                 Timestamp closetime = store.getThu_close();
-                Log.d(TAG, "onCreate: closetime : "+closetime.getTime());
-                
-                if(now > opentime.getTime() && now < closetime.getTime()){
-                    isTodayOpen=true;
-                }
-            }
-        }else{
+                isTodayOpenCovertToTimestmp(opentime,closetime);
 
+            }
+
+        }else if(weekDay == Calendar.FRIDAY){
+            int open = store.getFri_isopen();
+            if(open == 1 ){
+                Timestamp opentime = store.getFri_open();
+                Timestamp closetime = store.getFri_close();
+                isTodayOpenCovertToTimestmp(opentime,closetime);
+            }
+
+        }else if(weekDay == Calendar.SATURDAY){
+            int open = store.getSat_isopen();
+            if(open == 1){
+                Timestamp opentime = store.getSat_open();
+                Timestamp closetime = store.getSat_close();
+                isTodayOpenCovertToTimestmp(opentime,closetime);
+            }
+
+        }else if(weekDay == Calendar.SUNDAY){
+            int open = store.getSun_isopen();
+            if(open == 1){
+                Timestamp opentime = store.getSun_open();
+                Timestamp closetime = store.getSun_close();
+                isTodayOpenCovertToTimestmp(opentime,closetime);
+            }
+        }else if(weekDay == Calendar.MONDAY){
+            int open = store.getMon_isopen();
+            if(open ==1 ){
+                Timestamp opentime = store.getMon_open();
+                Timestamp closetime = store.getMon_close();
+                isTodayOpenCovertToTimestmp(opentime,closetime);
+            }
+        }else if(weekDay == Calendar.THURSDAY){
+            int open = store.getTue_isopen();
+            if(open == 1 ){
+                Timestamp opentime = store.getMon_open();
+                Timestamp closetime = store.getMon_close();
+                isTodayOpenCovertToTimestmp(opentime,closetime);
+            }
+        }
+    }
+
+    public boolean isTodayOpenCovertToTimestmp(Timestamp opentime,Timestamp closetime ){
+        Calendar calendar = Calendar.getInstance();
+        long now = calendar.getTimeInMillis();
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        //取得現在時間的日期STR
+        String nowmFormatStr  =  simpleDateFormat2.format(now);
+        String nowDateStr = nowmFormatStr.substring(0,11);
+
+        //取得營業時間後面時間STR
+        String openFormatStr  =  simpleDateFormat2.format(opentime);
+        String opensub = openFormatStr.substring(11);
+
+        String closeFormatStr  =  simpleDateFormat2.format(closetime);
+        String closesub = closeFormatStr.substring(11);
+
+        //組合成timestamp物件
+        String openformatset =nowDateStr+opensub;
+        Timestamp opentimestamp = Timestamp.valueOf(openformatset);
+
+        String closeformatset = nowDateStr+closesub;
+        Timestamp closetimestamp = Timestamp.valueOf(closeformatset);
+
+        if(now > opentimestamp.getTime() && now < closetimestamp.getTime()){
+            isTodayOpen=true;
         }
 
-
-
-
+            return isTodayOpen;
     }
 
     @Override
@@ -130,8 +190,6 @@ public class StoreFragment extends Fragment{
 
 
 
-
-//                Log.d(TAG, "showAllActsRRRRRRRRRRRRR: "+android_weekday);
 
 
 
