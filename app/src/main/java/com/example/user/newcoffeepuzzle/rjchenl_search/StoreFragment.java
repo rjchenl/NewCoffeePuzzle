@@ -44,6 +44,12 @@ public class StoreFragment extends Fragment{
 
 
 
+
+
+
+
+
+
     }
 
     private void isTodayOpenCheck() {
@@ -147,14 +153,25 @@ public class StoreFragment extends Fragment{
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_storeinfo,container,false);
 
-
+        //放上店家名稱
         TextView store_name = (TextView) view.findViewById(R.id.store_name);
         store_name.setText(store.getStore_name());
-
+        //放上今日是否營業
         CheckBox isOpen = (CheckBox) view.findViewById(R.id.isOpen);
-
         isOpen.setChecked(isTodayOpen);
+        //放上資料庫的地址
+        TextView store_add = (TextView) view.findViewById(R.id.store_add);
+        String storeAddress = store.getStore_add();
+        store_add.setText(storeAddress);
+        //放上是否有wifi
+        CheckBox is_wifi = (CheckBox) view.findViewById(R.id.is_wifi);
+        //to do
+//        store.getIs_wifi();
 
+
+
+        //註冊收藏店家功能
+        view.findViewById(R.id.like);
 
 
 
@@ -183,19 +200,6 @@ public class StoreFragment extends Fragment{
                 Common_RJ.showToast(getActivity(),"No storeList found");
             }else{
                 Common_RJ.showToast(getActivity(),"已有VO上的data開始連結view");
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
