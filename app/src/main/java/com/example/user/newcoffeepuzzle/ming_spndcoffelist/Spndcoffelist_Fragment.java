@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_take_orders;
+package com.example.user.newcoffeepuzzle.ming_spndcoffelist;
 
 import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
@@ -60,7 +60,7 @@ public class Spndcoffelist_Fragment extends Fragment{
                 Common_ming.showToast(getActivity(), "no activity found");
                 Log.d(TAG, "onStart: (step4)");
             }else{
-                ry_spndcoffelist.setAdapter(new Spndcoffelist_Fragment.Take_Orders_RecyclerViewAdapter(getActivity(), spndcoffelistVOList));
+                ry_spndcoffelist.setAdapter(new Spndcoffelist_Fragment.Spndcoffelist_RecyclerViewAdapter(getActivity(), spndcoffelistVOList));
                 Log.d(TAG, "onStart: (step5)");
             }
             progressDialog.cancel();
@@ -70,12 +70,12 @@ public class Spndcoffelist_Fragment extends Fragment{
         }
     }
 
-    private class Take_Orders_RecyclerViewAdapter extends RecyclerView.Adapter<Take_Orders_RecyclerViewAdapter.ViewHolder> {
+    private class Spndcoffelist_RecyclerViewAdapter extends RecyclerView.Adapter<Spndcoffelist_RecyclerViewAdapter.ViewHolder> {
         private LayoutInflater layoutInflater;
         private List<SpndcoffelistVO> spndcoffelistVOList;
         private boolean[] actExpanded;
 
-        public Take_Orders_RecyclerViewAdapter(Context context, List<SpndcoffelistVO> spndcoffelistVOList) {
+        public Spndcoffelist_RecyclerViewAdapter(Context context, List<SpndcoffelistVO> spndcoffelistVOList) {
             layoutInflater = LayoutInflater.from(context);
             this.spndcoffelistVOList = spndcoffelistVOList;
             actExpanded = new boolean[spndcoffelistVOList.size()];

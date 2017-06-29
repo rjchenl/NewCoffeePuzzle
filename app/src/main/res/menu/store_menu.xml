@@ -14,6 +14,9 @@
             android:id="@+id/spndcoffeelist"
             android:title="@string/spndcoffeelist" />
         <item
+            android:id="@+id/QRin"
+            android:title="@string/QRin" />
+        <item
             android:id="@+id/out"
             android:title="@string/out" />
 

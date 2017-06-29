@@ -32,7 +32,7 @@
 
 
         </activity>
-        <activity android:name=".ming_take_orders.StoreActivity">
+        <activity android:name=".ming_home.StoreActivity">
 
 
         </activity>

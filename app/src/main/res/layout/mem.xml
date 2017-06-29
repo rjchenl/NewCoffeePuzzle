@@ -37,7 +37,7 @@
                     android:text="帳號：" />
 
                 <EditText
-                    android:id="@+id/edMemid"
+                    android:id="@+id/etID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -53,7 +53,7 @@
                     android:text="密碼：" />
 
                 <EditText
-                    android:id="@+id/edMempassword"
+                    android:id="@+id/etPsw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -66,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:onClick="onbtLoginClick"
                 android:text="登入" />
 
         </LinearLayout>
