@@ -5,17 +5,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 
+import java.security.Timestamp;
 import java.util.List;
 
 /**
@@ -64,28 +65,65 @@ public class Ordelist_Fragment extends Fragment{
     }
 
     private class Orders_RecyclerViewAdapter extends RecyclerView.Adapter<Orders_RecyclerViewAdapter.ViewHolder>{
+        private LayoutInflater layoutInflater;
+        private List<OrderlistVO> orderlistVOList;
+        private boolean[] actExpanded;
+
         public Orders_RecyclerViewAdapter(Context context, List<OrderlistVO> orderlistVOList) {
+            layoutInflater = LayoutInflater.from(context);
+            this.orderlistVOList = orderlistVOList;
+            actExpanded = new boolean[orderlistVOList.size()];
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView ord_id,ord_total,ord_time;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                ord_id = (TextView) itemView.findViewById(R.id.ord_id);
+                ord_total = (TextView) itemView.findViewById(R.id.ord_total);
+                ord_time = (TextView) itemView.findViewById(R.id.ord_time);
+
+            }
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
+            View itemview = layoutInflater.inflate(R.layout.ordelist_item,parent,false);
+            return new ViewHolder(itemview);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            OrderlistVO orderlistVO = orderlistVOList.get(position);
+            String ord_id = orderlistVO.getOrd_id();
+            holder.ord_id.setText(ord_id);
+            Integer ord_total = orderlistVO.getOrd_total();
+            holder.ord_total.setText(ord_total);
+            Timestamp ord_time = orderlistVO.getOrd_time();
+            holder.ord_time.setText(ord_time.toString());
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    expand(holder.getAdapterPosition());
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return orderlistVOList.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View itemView) {
-                super(itemView);
-            }
+        private void expand(int position) {
+            // 被點擊的資料列才會彈出內容，其他資料列的內容會自動縮起來
+            // for (int i=0; i<newsExpanded.length; i++) {
+            // newsExpanded[i] = false;
+            // }
+            // newsExpanded[position] = true;
+
+            actExpanded[position] = !actExpanded[position];
+            notifyDataSetChanged();
         }
     }
 }

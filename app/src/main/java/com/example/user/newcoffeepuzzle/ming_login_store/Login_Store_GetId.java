@@ -25,7 +25,7 @@ import java.util.List;
 
 public class Login_Store_GetId extends AsyncTask<Object,Integer,List<SpndcoffelistVO>> {
     private final static String TAG = "Login_Store_GetId";
-    private final static String ACTION = "getByStore";
+    private final static String ACTION = "findByStore";
 
     @Override
     protected List<SpndcoffelistVO> doInBackground(Object... params) {

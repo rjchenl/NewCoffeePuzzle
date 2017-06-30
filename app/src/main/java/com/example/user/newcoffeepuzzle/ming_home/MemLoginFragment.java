@@ -12,7 +12,7 @@ import com.example.user.newcoffeepuzzle.R;
  * Created by Java on 2017/6/21.
  */
 
-public class MemFragment extends Fragment{
+public class MemLoginFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){

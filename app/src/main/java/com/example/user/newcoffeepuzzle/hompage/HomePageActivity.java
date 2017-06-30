@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_home.StoreLoginFragment;
 
-import com.example.user.newcoffeepuzzle.ming_home.MemFragment;
+import com.example.user.newcoffeepuzzle.ming_home.MemLoginFragment;
 import com.example.user.newcoffeepuzzle.ming_home.Page;
 
 import com.example.user.newcoffeepuzzle.ming_login_store.Login_Store_GetId;
@@ -27,7 +27,6 @@ import com.example.user.newcoffeepuzzle.ming_home.StoreActivity;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +35,7 @@ public class HomePageActivity extends AppCompatActivity {
     EditText edStoreid,edStorepassword;
     private EditText etID;
     private EditText etPsw;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +57,11 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     private void findView_Store() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        edStoreid = (EditText) viewPager.findViewById(R.id.edStoreid);
-        edStorepassword = (EditText) viewPager.findViewById(R.id.edStorepassword);
+
+        View store_layout = getLayoutInflater().inflate(R.layout.store, null);
+        edStoreid = (EditText) store_layout.findViewById(R.id.edStoreid);
+        edStorepassword = (EditText) store_layout.findViewById(R.id.edStorepassword);
+
 
     }
 
@@ -67,6 +69,10 @@ public class HomePageActivity extends AppCompatActivity {
         String userStoreid = edStoreid.getText().toString();
         String UserStorepassword = edStorepassword.getText().toString();
         Toast.makeText(this,userStoreid,Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "btonClick: userStoreid : "+userStoreid);
+        Log.d(TAG, "btonClick: UserStorepassword : "+UserStorepassword);
+        Log.d(TAG, "btonClick: edStoreid ： "+edStoreid);
+
         if (Common_ming.networkConnected(this)){
             String url = Common_ming.URL + "Store_Servlet";
             List<SpndcoffelistVO> login_storeVO = null;
@@ -79,9 +85,6 @@ public class HomePageActivity extends AppCompatActivity {
                 Common_ming.showToast(this,R.string.Login_null);
             }else {
                 Intent intent = new Intent(this, StoreActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("login_storeVO", (Serializable) login_storeVO);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
         }else {
@@ -102,7 +105,7 @@ public class HomePageActivity extends AppCompatActivity {
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             pageList = new ArrayList<>();
-            pageList.add(new Page(new MemFragment(),"一般會員"));
+            pageList.add(new Page(new MemLoginFragment(),"一般會員"));
             pageList.add(new Page(new StoreLoginFragment(),"店家會員"));
         }
 
