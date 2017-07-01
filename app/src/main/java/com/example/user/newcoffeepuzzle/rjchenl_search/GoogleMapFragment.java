@@ -2,6 +2,7 @@ package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,26 +14,38 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.google.android.gms.location.LocationServices;
 
 
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
@@ -44,27 +57,62 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private LocationManager mLocationManager;
     // 定位監聽器
     private LocationListener mLocationListener;
-
+    private Location lastLocation;
+    private GoogleApiClient googleApiClient;
+    private final static int REQUEST_CODE_RESOLUTION = 1;
+    private Marker markerMe;
+    public final String LM_GPS = LocationManager.GPS_PROVIDER;
+    public final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;
+    private static List<StoreVO> storeList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mapsview = inflater.inflate(R.layout.activity_maps, container, false);
         findViews();
-        showAllActs();
+        //載入地理管理器和監聽器
+        inflateLocationManager();
+        openGPS(getActivity());
+        return mapsview;
+    }
 
-        //實做地理監聽器
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpLocationManager();
+
+    }
+
+    private void inflateLocationManager() {
         mLocationManager =
                 (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         mLocationListener = new MyLocationListener();
-
-        return mapsview;
     }
 
     private void findViews() {
         etLocationName = (EditText) getActivity().findViewById(R.id.etLocationName);
         btSubmit = (Button) getActivity().findViewById(R.id.btSubmit);
     }
+
+    // 開啟 GPS
+    public void openGPS(Context context) {
+        boolean gps = mLocationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean network = mLocationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        Toast.makeText(context, "GPS : " + gps + ", Network : " + network,
+                Toast.LENGTH_SHORT).show();
+        if (gps || network) {
+            return;
+        } else {
+            // 開啟手動GPS設定畫面
+            Intent gpsOptionsIntent = new Intent(
+                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(gpsOptionsIntent);
+        }
+    }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -73,21 +121,57 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
 
+    private void switchFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction =
+                getActivity().getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+
+        fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.commit();
     }
+
+    private void setUpLocationManager() {
+        //實做地理監聽器
+        inflateLocationManager();
+        if (mLocationManager == null) {
+            inflateLocationManager();
+        }
+
+        //授權
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        };
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)==
+                PackageManager.PERMISSION_GRANTED) {
+            //如果有授權就做...
+        }
+        Set<String> permissionsRequest = new HashSet<>();
+        boolean hasPermission = true;
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(getActivity(), permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                hasPermission = false;
+                permissionsRequest.add(permission);
+            }
+            // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
+            mLocationManager
+                    .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
+            mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
+                    mLocationListener);
+
+        }
+    }
+
 
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
         setUpMap();
-
         setSubmitLisntener();
-
-
+        addStoresInfo();
 
     }
 
@@ -170,7 +254,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 .newCameraPosition(cameraPosition));
 
 
-        addStores();
 
 
 
@@ -178,12 +261,15 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void addStores() {
+    Map<Marker, StoreVO> markerMap = new HashMap<>();
+
+    private void addStoresInfo() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
-            List<StoreVO> storeList = null;
+            storeList = null;
 
             try {
+                //取得物件資料
                 storeList = new StoreGetAllTask().execute(url).get();
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
@@ -194,97 +280,111 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 //已有資料  開始連結view
                 for (StoreVO stvo : storeList){
                     LatLng  store_position = new LatLng(stvo.getLatitude(),stvo.getLongitude());
-                    map.addMarker(new MarkerOptions()
+                    Marker marker = map.addMarker(new MarkerOptions()
                             .title(stvo.getStore_name())
                             .position(store_position)
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
+                    //把當下這一組(marker,storeVO)相對應的關係存放在map中
+                    markerMap.put(marker, stvo);
+                }
+            }
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    //取出剛剛對應的map組合(marker,storeVO)
+                    StoreVO storevo = markerMap.get(marker);
+
+                    //利用bundle傳遞資訊
+                    Fragment storeFragment = new StoreFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("StoreVO", storevo);
+                    storeFragment.setArguments(bundle);
+                    switchFragment(storeFragment);
+                    return false;
+                }
+            });
+        }
+    }
+
+
+
+
+    private GoogleApiClient.ConnectionCallbacks connectionCallbacks =
+            new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(@Nullable Bundle bundle) {
+                    //需要使用者同意授權
+                    if (ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED){
+                        lastLocation = LocationServices.FusedLocationApi
+                                .getLastLocation(googleApiClient);  //取得手機中最後一筆定位位址
+                        LocationRequest locationRequest = LocationRequest.create()       //真正開始定位(現在位址)，需耗電
+                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                .setInterval(10000)
+                                .setSmallestDisplacement(10);
+                        LocationServices.FusedLocationApi.requestLocationUpdates(
+                                googleApiClient, locationRequest, (com.google.android.gms.location.LocationListener) mLocationListener);
+                    }
                 }
 
-            }
-        }
+                @Override
+                public void onConnectionSuspended(int i) {
+                    showToast("GoogleMap onConnectionSuspended");
+                }
+
+            };
 
 
+        private class MyLocationListener implements LocationListener {
+            @Override
+            public void onLocationChanged(Location location) {
+                //得到經緯度
+                lastLocation = location;
+                double Lat = lastLocation.getLatitude();
+                double Lgt = lastLocation.getLongitude();
 
-
-
-
-//        final String store1 = "有一家店";
-//
-//        //新增店家資訊
-//        LatLng store = new LatLng(24.9647814, 121.1886704);
-//        map.addMarker(new MarkerOptions()
-//                .position(store)
-//                .title(store1)
-//        );
-//
-//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                //置換storeInfofragment
-//                Fragment storeFragment = new StoreLoginFragment();
-//                switchFragment(storeFragment);
-//                return false;
-//            }
-//        });
-    }
-
-    private void switchFragment(Fragment storeFragment) {
-        FragmentTransaction fragmentTransaction =
-                getActivity().getSupportFragmentManager().beginTransaction();
-
-        fragmentTransaction.replace(R.id.body, storeFragment);
-        fragmentTransaction.commit();
-    }
-
-    private void showAllActs() {
-        if (Common_RJ.networkConnected(getActivity())) {
-            String url = Common_RJ.URL + "StoreServlet";
-            List<StoreVO> storeList = null;
-            Log.d(TAG, "showAllActs: enter");
-
-            try {
-                storeList = new StoreGetAllTask().execute(url).get();
-                Log.d(TAG, "showAllActs: in try");
-            } catch (Exception e) {
-                Log.e(TAG, e.toString());
+                showToast("現在經度:"+Lat+"/n"+"現在緯度"+Lgt);
+                showMarkerMe(Lat,Lgt);
             }
 
-            if (storeList == null || storeList.isEmpty()) {
-                Common_RJ.showToast(getActivity(), "No storeList found");
-            } else {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
 
-                Common_RJ.showToast(getActivity(), "get the data into view");
             }
 
+            @Override
+            public void onProviderEnabled(String provider) {
+                showToast("GPS已開啟");
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+
+
         }
+
+    private void showMarkerMe(double lat, double lng){
+        if (markerMe != null) {
+            markerMe.remove();
+        }
+        MarkerOptions markerOpt = new MarkerOptions();
+        markerOpt.position(new LatLng(lat, lng));
+        markerOpt.title("媽!!!我在這裡!!");
+        markerOpt.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blueperson));
+        markerMe = map.addMarker(markerOpt);
+        Toast.makeText(getActivity(), "lat:" + lat + ",lng:" + lng, Toast.LENGTH_SHORT).show();
     }
 
 
-    private class MyLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location location) {
-            //得到經緯度
-            double Lat = location.getLatitude();
-            double Lgt = location.getLongitude();
-            showToast("現在經度:"+Lat+"/n"+"現在緯度"+Lgt);
 
 
-        }
 
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        }
 
-        @Override
-        public void onProviderEnabled(String provider) {
-            showToast("GPS已開啟");
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    }
 }
+
