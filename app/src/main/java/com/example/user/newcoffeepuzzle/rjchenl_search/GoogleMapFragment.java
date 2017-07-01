@@ -127,7 +127,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         FragmentTransaction fragmentTransaction =
                 getActivity().getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
-//        bundle.putSerializable("StoreVO",StoreVO);
 
         fragmentTransaction.replace(R.id.body, fragment);
         fragmentTransaction.commit();
@@ -286,14 +285,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                             .position(store_position)
 //                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
+                    //把當下這一組(marker,storeVO)相對應的關係存放在map中
                     markerMap.put(marker, stvo);
                 }
             }
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
+                    //取出剛剛對應的map組合(marker,storeVO)
                     StoreVO storevo = markerMap.get(marker);
 
+                    //利用bundle傳遞資訊
                     Fragment storeFragment = new StoreFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("StoreVO", storevo);

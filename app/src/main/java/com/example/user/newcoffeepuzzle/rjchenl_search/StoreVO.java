@@ -48,6 +48,7 @@ public class StoreVO implements Serializable {
     private byte[] store_img;
     private Integer store_pass;
 
+
     public StoreVO(){}
 
     public StoreVO(String store_id, String store_acct, String store_pwd, String store_name, String store_tel, String store_add, String store_email, Double longitude, Double latitude, Integer store_points, String store_cpse, Integer min_order, Integer is_min_order, Integer is_wifi, Integer is_plug, Integer is_single_orgn, Integer is_dessert, Integer is_meal, Integer is_time_limit, Integer mon_isopen, Timestamp mon_open, Timestamp mon_close, Integer tue_isopen, Timestamp tue_open, Timestamp tue_close, Integer wed_isopen, Timestamp wed_open, Timestamp wed_close, Integer thu_isopen, Timestamp thu_open, Timestamp thu_close, Integer fri_isopen, Timestamp fri_open, Timestamp fri_close, Integer sat_isopen, Timestamp sat_open, Timestamp sat_close, Integer sun_isopen, Timestamp sun_open, Timestamp sun_close, byte[] store_img, Integer store_pass){
