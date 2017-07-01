@@ -1,8 +1,6 @@
 package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,15 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityGetImageTask;
 import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.FavoriateStoreInsertTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -163,7 +158,7 @@ public class StoreFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        final View view = inflater.inflate(R.layout.fragment_storeinfo,container,false);
+        final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
 
         //放上店家名稱
         TextView store_name = (TextView) view.findViewById(R.id.store_name);

@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
@@ -68,7 +67,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mapsview = inflater.inflate(R.layout.activity_maps, container, false);
+        View mapsview = inflater.inflate(R.layout.rj_activity_maps, container, false);
         findViews();
         //載入地理管理器和監聽器
         inflateLocationManager();
