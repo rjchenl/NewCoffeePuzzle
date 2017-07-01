@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_take_orders;
+package com.example.user.newcoffeepuzzle.ming_home;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -12,7 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_take_orders.Spndcoffelist_Fragment;
+import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_Fragment;
+import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 
 public class StoreActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionbardrawertoggle;
@@ -53,6 +54,11 @@ public class StoreActivity extends AppCompatActivity {
                     store_drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch (menuItem.getItemId()) {
+                        case R.id.take_orders:
+                            fragment = new Ordelist_Fragment();
+                            switchFragment(fragment);
+                            setTitle("外帶");
+                            break;
                         case R.id.spndcoffeelist:
                             fragment = new Spndcoffelist_Fragment();
                             switchFragment(fragment);

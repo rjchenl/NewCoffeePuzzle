@@ -15,5 +15,6 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Login_null">Login_null</string>
+    <string name="QRin">掃描器</string>
 
 </resources>

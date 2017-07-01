@@ -1,9 +1,8 @@
-package com.example.user.newcoffeepuzzle.ming_login_store;
+package com.example.user.newcoffeepuzzle.ming_spndcoffelist;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.SpndcoffelistVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -19,25 +18,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Created by Java on 2017/6/28.
- */
 
-public class Login_Store_GetId extends AsyncTask<Object,Integer,List<SpndcoffelistVO>> {
-    private final static String TAG = "Login_Store_GetId";
-    private final static String ACTION = "findByStore";
+public class Spndcoffelist_GetAllTask extends AsyncTask<Object,Integer,List<SpndcoffelistVO>> {
+    private final static String TAG = "Spndcoffelist_GetAllTask";
+    private final static String ACTION = "getAll";
 
     @Override
-    protected List<SpndcoffelistVO> doInBackground(Object... params) {
+    protected List<SpndcoffelistVO> doInBackground(Object[] params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
-        String store_acct = params[1].toString();
-        String store_pwd = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_acct",store_acct);
-        jsonObject.addProperty("store_pwd",store_pwd);
+
+
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
             Log.d(TAG, "doInBackground: (step1_2)");
@@ -53,7 +47,7 @@ public class Login_Store_GetId extends AsyncTask<Object,Integer,List<Spndcoffeli
         return gson.fromJson(jsonIn, listType);
     }
 
-    private String getRemoteData(String url, String jsonOut) throws IOException {
+    private String getRemoteData(String url, String jsonOut) throws IOException{
         StringBuilder jsonIn = new StringBuilder();
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setDoInput(true); // allow inputs

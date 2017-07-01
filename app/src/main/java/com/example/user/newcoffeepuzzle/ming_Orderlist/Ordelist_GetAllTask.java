@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_take_orders;
+package com.example.user.newcoffeepuzzle.ming_Orderlist;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -19,12 +19,12 @@ import java.net.URL;
 import java.util.List;
 
 
-public class Spndcoffelist_GetAllTask extends AsyncTask<Object,Integer,List<SpndcoffelistVO>> {
+public class Ordelist_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
     private final static String TAG = "Spndcoffelist_GetAllTask";
     private final static String ACTION = "getAll";
 
     @Override
-    protected List<SpndcoffelistVO> doInBackground(Object[] params) {
+    protected List<OrderlistVO> doInBackground(Object... params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String jsonIn;
@@ -42,7 +42,7 @@ public class Spndcoffelist_GetAllTask extends AsyncTask<Object,Integer,List<Spnd
         }
 
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<SpndcoffelistVO>>() {}.getType();
+        Type listType = new TypeToken<List<OrderlistVO>>() {}.getType();
 
         return gson.fromJson(jsonIn, listType);
     }

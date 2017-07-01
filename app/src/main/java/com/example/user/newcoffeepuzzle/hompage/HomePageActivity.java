@@ -11,28 +11,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_home.StoreLoginFragment;
 
-import com.example.user.newcoffeepuzzle.ming_home.MemFragment;
+import com.example.user.newcoffeepuzzle.ming_home.MemLoginFragment;
 import com.example.user.newcoffeepuzzle.ming_home.Page;
 
-import com.example.user.newcoffeepuzzle.ming_login_store.Login_StoreVO;
 import com.example.user.newcoffeepuzzle.ming_login_store.Login_Store_GetId;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
-import com.example.user.newcoffeepuzzle.ming_take_orders.SpndcoffelistVO;
-import com.example.user.newcoffeepuzzle.ming_take_orders.StoreActivity;
+import com.example.user.newcoffeepuzzle.ming_spndcoffelist.SpndcoffelistVO;
+import com.example.user.newcoffeepuzzle.ming_home.StoreActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity {
     private final static String TAG = "HomePageActivity";
     EditText edStoreid,edStorepassword;
+    private EditText etID;
+    private EditText etPsw;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +48,36 @@ public class HomePageActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.Tab);
         tabLayout.setupWithViewPager(viewPager);
 
-        findView();
+        findView_Store();
+        findViews();
+    }
+    private void findViews() {
+        etID = (EditText) findViewById(R.id.etID);
+        etPsw = (EditText) findViewById(R.id.etPsw);
     }
 
-    private void findView() {
-        edStoreid = (EditText) findViewById(R.id.edStoreid);
-        edStorepassword = (EditText) findViewById(R.id.edStorepassword);
+    private void findView_Store() {
+
+        View store_layout = getLayoutInflater().inflate(R.layout.store, null);
+        edStoreid = (EditText) store_layout.findViewById(R.id.edStoreid);
+        edStorepassword = (EditText) store_layout.findViewById(R.id.edStorepassword);
+
+
     }
 
     public void btonClick (View view){
-        String UserStoreid = edStoreid.getText().toString();
+        String userStoreid = edStoreid.getText().toString();
         String UserStorepassword = edStorepassword.getText().toString();
+        Toast.makeText(this,userStoreid,Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "btonClick: userStoreid : "+userStoreid);
+        Log.d(TAG, "btonClick: UserStorepassword : "+UserStorepassword);
+        Log.d(TAG, "btonClick: edStoreid ： "+edStoreid);
+
         if (Common_ming.networkConnected(this)){
             String url = Common_ming.URL + "Store_Servlet";
             List<SpndcoffelistVO> login_storeVO = null;
             try {
-                login_storeVO = new Login_Store_GetId().execute(url,UserStoreid,UserStorepassword).get();
+                login_storeVO = new Login_Store_GetId().execute(url,userStoreid,UserStorepassword).get();
             }catch (Exception e ){
                 Log.d(TAG, e.toString());
             }
@@ -68,14 +85,17 @@ public class HomePageActivity extends AppCompatActivity {
                 Common_ming.showToast(this,R.string.Login_null);
             }else {
                 Intent intent = new Intent(this, StoreActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("login_storeVO", (Serializable) login_storeVO);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
         }else {
             Common_ming.showToast(this,R.string.Login_null);
         }
+    }
+
+    public void onbtLoginClick(View view) {
+        Intent intent = new Intent(this,SearchActivity.class);
+        startActivity(intent);
+
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
@@ -85,7 +105,7 @@ public class HomePageActivity extends AppCompatActivity {
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             pageList = new ArrayList<>();
-            pageList.add(new Page(new MemFragment(),"一般會員"));
+            pageList.add(new Page(new MemLoginFragment(),"一般會員"));
             pageList.add(new Page(new StoreLoginFragment(),"店家會員"));
         }
 
