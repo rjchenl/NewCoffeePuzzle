@@ -50,16 +50,11 @@ public class HomePageActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         findView_Store();
-        findViews_Member();
+
     }
 
 
 
-    private void findViews_Member() {
-
-        etID_member_minglogin = (EditText) findViewById(R.id.etID_member_minglogin);
-        tvPSW_member_mimgLogin = (EditText) findViewById(R.id.tvPSW_member_mimgLogin);
-    }
 
     private void findView_Store() {
 
@@ -97,28 +92,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void onMember_btLoginClick(View view) {
-        Intent intent = new Intent(this,SearchActivity.class);
-//        Bundle bundle = new Bundle();
-        String mem_id = etID_member_minglogin.getText().toString();
-//      Log.d("TAG", "onMember_btLoginClick: mem_id : "+mem_id);
-//        bundle.putString("mem_id",mem_id);
-//        StoreFragment storeFragment = new StoreFragment();
-//        storeFragment.setArguments(bundle);
-//        intent.putExtras(bundle);
 
-
-        //以下封裝成prifile.set方法
-        //        SharedPreferences preferences = getSharedPreferences("profile", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString("mem_id", mem_id);
-//        editor.apply();
-
-        Profile profile = new Profile(this);
-        profile.setMemId(mem_id);
-        startActivity(intent);
-
-    }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 

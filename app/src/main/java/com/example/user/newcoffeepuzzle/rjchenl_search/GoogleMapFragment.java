@@ -132,6 +132,12 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mLocationManager.removeUpdates(mLocationListener);
+    }
+
     private void setUpLocationManager() {
         //實做地理監聽器
         inflateLocationManager();
@@ -162,6 +168,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
                     mLocationListener);
 
+
         }
     }
 
@@ -191,7 +198,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
 
     private void locationNameToMarker(String locationName) {
         map.clear();
@@ -227,6 +233,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void showToast(String s) {
+        Log.i(TAG, "showToast: " + (getActivity() == null));
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
@@ -240,11 +247,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
         map.getUiSettings().setZoomControlsEnabled(true);
 
-        //一開始在中央資策會顯示一個demo marker
+        //預設位置
         LatLng position = new LatLng(24.9677420, 121.1917000);
-        map.addMarker(new MarkerOptions()
-                .position(position)
-                .title("Marker in iii"));
 
 //        移動攝影機到預設位置
         map.moveCamera(CameraUpdateFactory.newLatLng(position));
@@ -252,12 +256,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 .target(position).zoom(15).build();
         map.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
-
-
-
-
-
-
 
     }
 
@@ -283,7 +281,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     Marker marker = map.addMarker(new MarkerOptions()
                             .title(stvo.getStore_name())
                             .position(store_position)
-//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
                     //把當下這一組(marker,storeVO)相對應的關係存放在map中
                     markerMap.put(marker, stvo);
@@ -306,9 +304,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             });
         }
     }
-
-
-
 
     private GoogleApiClient.ConnectionCallbacks connectionCallbacks =
             new GoogleApiClient.ConnectionCallbacks() {
@@ -357,15 +352,10 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onProviderEnabled(String provider) {
                 showToast("GPS已開啟");
-
             }
-
             @Override
             public void onProviderDisabled(String provider) {
-
             }
-
-
         }
 
     private void showMarkerMe(double lat, double lng){
@@ -379,12 +369,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         markerMe = map.addMarker(markerOpt);
         Toast.makeText(getActivity(), "lat:" + lat + ",lng:" + lng, Toast.LENGTH_SHORT).show();
     }
-
-
-
-
-
-
 
 }
 

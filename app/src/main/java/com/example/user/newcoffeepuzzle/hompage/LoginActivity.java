@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void findViews() {
         etID_RJlogin = (EditText) findViewById(R.id.etID_RJlogin);
-        etPsw_RJlogin = (EditText) findViewById(R.id.etPsw);
+        etPsw_RJlogin = (EditText) findViewById(R.id.etPsw_RJlogin);
     }
 
 
