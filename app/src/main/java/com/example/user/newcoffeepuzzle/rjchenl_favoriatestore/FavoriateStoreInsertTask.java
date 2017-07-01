@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,List<Fav_storeVO>> {
-    private final static String TAG = "ActivityGetAllTask";
+    private final static String TAG = "FavoriateStoreInsertTask";
     private final static String ACTION = "fav_sotreInsert";
 
 

@@ -24,6 +24,7 @@ import com.example.user.newcoffeepuzzle.ming_login_store.Login_Store_GetId;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_spndcoffelist.SpndcoffelistVO;
 import com.example.user.newcoffeepuzzle.ming_home.StoreActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 
@@ -33,8 +34,8 @@ import java.util.List;
 public class HomePageActivity extends AppCompatActivity {
     private final static String TAG = "HomePageActivity";
     EditText edStoreid,edStorepassword;
-    private EditText etID;
-    private EditText etPsw;
+    private EditText etID_member_minglogin;
+    private EditText tvPSW_member_mimgLogin;
 
 
     @Override
@@ -49,11 +50,11 @@ public class HomePageActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         findView_Store();
-        findViews();
+        findViews_Member();
     }
-    private void findViews() {
-        etID = (EditText) findViewById(R.id.etID);
-        etPsw = (EditText) findViewById(R.id.etPsw);
+    private void findViews_Member() {
+        etID_member_minglogin = (EditText) findViewById(R.id.etID_member_minglogin);
+        tvPSW_member_mimgLogin = (EditText) findViewById(R.id.tvPSW_member_mimgLogin);
     }
 
     private void findView_Store() {
@@ -92,8 +93,25 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void onbtLoginClick(View view) {
+    public void onMember_btLoginClick(View view) {
         Intent intent = new Intent(this,SearchActivity.class);
+//        Bundle bundle = new Bundle();
+        String mem_id = etID_member_minglogin.getText().toString();
+//      Log.d("TAG", "onMember_btLoginClick: mem_id : "+mem_id);
+//        bundle.putString("mem_id",mem_id);
+//        StoreFragment storeFragment = new StoreFragment();
+//        storeFragment.setArguments(bundle);
+//        intent.putExtras(bundle);
+
+
+        //以下封裝成prifile.set方法
+        //        SharedPreferences preferences = getSharedPreferences("profile", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putString("mem_id", mem_id);
+//        editor.apply();
+
+        Profile profile = new Profile(this);
+        profile.setMemId(mem_id);
         startActivity(intent);
 
     }

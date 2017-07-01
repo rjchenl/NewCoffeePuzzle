@@ -1,64 +1,9 @@
 
-//package com.example.user.newcoffeepuzzle.hompage;
-//
-//import android.content.Intent;
-//import android.support.v7.app.AppCompatActivity;
-//import android.os.Bundle;
-//import android.view.View;
-//import android.widget.EditText;
-//import android.widget.Toast;
-//
-//import com.example.user.newcoffeepuzzle.R;
-//import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
-//
-//public class LoginActivity extends AppCompatActivity {
-//
-//    private EditText etID;
-//    private EditText etPsw;
-//
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_login);
-//
-//        findViews();
-//
-//    }
-//
-//    private void findViews() {
-//        etID = (EditText) findViewById(R.id.etID);
-//        etPsw = (EditText) findViewById(R.id.etPsw);
-//    }
-//
-//
-//    public void onbtLoginClick(View view) {
-//        Intent intent = new Intent(this,SearchActivity.class);
-//        startActivity(intent);
-//
-//    }
-//
-//    public void onResendClick(View view) {
-//        etID.setText("");
-//        etPsw.setText("");
-//        etID.requestFocus();
-//    }
-//
-//    public void onForgetPswBtClick(View view) {
-//        String yourfuckingID =etID.getText().toString();
-//        String yourfuckingPsw = etPsw.getText().toString();
-//
-//        Toast.makeText(this,yourfuckingID+"\n"+yourfuckingPsw,Toast.LENGTH_SHORT).show();
-//    }
-//}
-
 package com.example.user.newcoffeepuzzle.hompage;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -66,12 +11,11 @@ import android.widget.Toast;
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
-import com.example.user.newcoffeepuzzle.rjchenl_search.StoreFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etID;
-    private EditText etPsw;
+    private EditText etID_RJlogin;
+    private EditText etPsw_RJlogin;
 
 
     @Override
@@ -84,16 +28,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        etID = (EditText) findViewById(R.id.etID);
-        etPsw = (EditText) findViewById(R.id.etPsw);
+        etID_RJlogin = (EditText) findViewById(R.id.etID_RJlogin);
+        etPsw_RJlogin = (EditText) findViewById(R.id.etPsw);
     }
 
 
-    public void onbtLoginClick(View view) {
+    public void onbtLoginClick_RJ(View view) {
         Intent intent = new Intent(this,SearchActivity.class);
 //        Bundle bundle = new Bundle();
-        String mem_id = etID.getText().toString();
-//      Log.d("TAG", "onbtLoginClick: mem_id : "+mem_id);
+        String mem_id = etID_RJlogin.getText().toString();
+//      Log.d("TAG", "onMember_btLoginClick: mem_id : "+mem_id);
 //        bundle.putString("mem_id",mem_id);
 //        StoreFragment storeFragment = new StoreFragment();
 //        storeFragment.setArguments(bundle);
@@ -113,14 +57,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onResendClick(View view) {
-        etID.setText("");
-        etPsw.setText("");
-        etID.requestFocus();
+        etID_RJlogin.setText("");
+        etPsw_RJlogin.setText("");
+        etID_RJlogin.requestFocus();
     }
 
     public void onForgetPswBtClick(View view) {
-        String yourfuckingID =etID.getText().toString();
-        String yourfuckingPsw = etPsw.getText().toString();
+        String yourfuckingID =etID_RJlogin.getText().toString();
+        String yourfuckingPsw = etPsw_RJlogin.getText().toString();
 
         Toast.makeText(this,yourfuckingID+"\n"+yourfuckingPsw,Toast.LENGTH_SHORT).show();
     }
