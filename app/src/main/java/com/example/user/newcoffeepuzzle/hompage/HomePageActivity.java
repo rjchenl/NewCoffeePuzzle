@@ -52,7 +52,11 @@ public class HomePageActivity extends AppCompatActivity {
         findView_Store();
         findViews_Member();
     }
+
+
+
     private void findViews_Member() {
+
         etID_member_minglogin = (EditText) findViewById(R.id.etID_member_minglogin);
         tvPSW_member_mimgLogin = (EditText) findViewById(R.id.tvPSW_member_mimgLogin);
     }
