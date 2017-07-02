@@ -22,17 +22,19 @@ import java.util.List;
  * Created by user on 2017/7/1.
  */
 
-public class SpndcoffeelistGetAllTask extends AsyncTask<Object,Integer,List<SpndcoffeelistVO>> {
-    private final static String TAG = "SpndcoffeelistGetAllTask";
-    private final static String ACTION = "getAll";
+public class SpndcoffeelistGetMyspndlistTask extends AsyncTask<Object,Integer,List<SpndcoffeelistVO>> {
+    private final static String TAG = "SpndcoffeelistGetMyspndlistTask";
+    private final static String ACTION = "getMySpndCoffeeList";
 
 
     @Override
     protected List<SpndcoffeelistVO> doInBackground(Object[] params) {
         String url = params[0].toString();
+        String mem_id = params[1].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
+        jsonObject.addProperty("mem_id",mem_id);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());

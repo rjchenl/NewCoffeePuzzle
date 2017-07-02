@@ -17,9 +17,15 @@ public class SpndcoffeelistVO implements Serializable {
     private Integer list_left;
     private Timestamp list_date;
 
+    private String store_name;
+    private String store_add;
+
     public SpndcoffeelistVO(){}
 
-    public SpndcoffeelistVO(String list_id, String spnd_id, String mem_id, String spnd_prod, String store_id, Integer list_amt, Integer list_left, Timestamp list_date){
+
+    public SpndcoffeelistVO(String list_id, String spnd_id, String mem_id, String spnd_prod, String store_id,
+                            Integer list_amt, Integer list_left, Timestamp list_date, String store_name, String store_add) {
+        super();
         this.list_id = list_id;
         this.spnd_id = spnd_id;
         this.mem_id = mem_id;
@@ -28,7 +34,43 @@ public class SpndcoffeelistVO implements Serializable {
         this.list_amt = list_amt;
         this.list_left = list_left;
         this.list_date = list_date;
+        this.store_name = store_name;
+        this.store_add = store_add;
     }
+
+
+//	public SpndcoffeelistVO(String list_id, String spnd_id, String mem_id, String spnd_prod, String store_id, Integer list_amt, Integer list_left, Timestamp list_date){
+//		this.list_id = list_id;
+//		this.spnd_id = spnd_id;
+//		this.mem_id = mem_id;
+//		this.spnd_prod = spnd_prod;
+//		this.store_id = store_id;
+//		this.list_amt = list_amt;
+//		this.list_left = list_left;
+//		this.list_date = list_date;
+//
+//
+//	}
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
+
+    public String getStore_add() {
+        return store_add;
+    }
+
+
+    public void setStore_add(String store_add) {
+        this.store_add = store_add;
+    }
+
 
     public String getList_id() {
         return list_id;

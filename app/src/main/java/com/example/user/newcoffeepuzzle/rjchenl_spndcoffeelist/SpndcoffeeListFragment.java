@@ -13,12 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityGetAllTask;
-import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
-import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityVO;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +26,7 @@ public class SpndcoffeeListFragment extends Fragment {
     private static final String TAG = "SpndcoffeeListFragment";
     private ListView spndList_view;
     private List<SpndcoffeelistVO> spndcoffeelist_value;
+    private String mem_id;
 
 
     @Nullable
@@ -38,6 +36,9 @@ public class SpndcoffeeListFragment extends Fragment {
 
         spndList_view = (ListView) view.findViewById(R.id.lvSpndcoffeelist);
 
+        //會用到mem_id 先取得
+        Profile profile = new Profile(getContext());
+        mem_id = profile.getMemId();
 
         return view;
     }
@@ -57,7 +58,9 @@ public class SpndcoffeeListFragment extends Fragment {
             String url = Common_RJ.URL + "SpndcoffeelistServlet";
             spndcoffeelist_value = null;
             try {
-                spndcoffeelist_value = new SpndcoffeelistGetAllTask().execute(url).get();
+
+                //連結資料庫取得物件資料
+                spndcoffeelist_value = new SpndcoffeelistGetMyspndlistTask().execute(url,mem_id).get();
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -111,8 +114,11 @@ public class SpndcoffeeListFragment extends Fragment {
             TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
 
             //此二項待修正 (因為不知道傳過來的其它table物件用什麼裝)
-            sotre_name.setText(spndcoffeelistVO.getStore_id());
-            store_add.setText(spndcoffeelistVO.getList_id());
+            Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
+            Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
+
+            sotre_name.setText(spndcoffeelistVO.getStore_name());
+            store_add.setText(spndcoffeelistVO.getStore_add());
 
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
 
