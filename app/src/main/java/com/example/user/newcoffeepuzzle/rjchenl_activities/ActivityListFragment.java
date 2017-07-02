@@ -43,7 +43,7 @@ public class ActivityListFragment extends Fragment {
 //                swipeRefreshLayout.setRefreshing(false);
 //            }
 //        });
-
+        //recyclerview 才需要
         rvactivities = (RecyclerView) view.findViewById(R.id.rvactivities);
         rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        rvactivities.setLayoutManager(new RecyclerView.LayoutManager(getActivity()));為什麼不行

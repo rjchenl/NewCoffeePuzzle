@@ -25,7 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -130,7 +132,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                         case R.id.browerActivities:
                             fragment = new ActivityListFragment();
                             switchFragment(fragment);
-                            setTitle("活動");
+                            setTitle("瀏覽活動");
+                            break;
+                        case R.id.mysusCofee:
+                            fragment = new SpndcoffeeListFragment();
+                            switchFragment(fragment);
+                            setTitle("瀏覽我的寄杯");
                             break;
                         default:
                             initBody();
