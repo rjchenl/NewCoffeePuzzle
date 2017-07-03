@@ -3,10 +3,6 @@ package com.example.user.newcoffeepuzzle.rjchenl_search;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by user on 2017/6/27.
- */
-
 public class StoreVO implements Serializable {
 
     private String store_id;
@@ -49,10 +45,13 @@ public class StoreVO implements Serializable {
     private Integer sun_isopen;
     private Timestamp sun_open;
     private Timestamp sun_close;
+    private byte[] store_img;
+    private Integer store_pass;
+
 
     public StoreVO(){}
 
-    public StoreVO(String store_id, String store_acct, String store_pwd, String store_name, String store_tel, String store_add, String store_email, Double longitude, Double latitude, Integer store_points, String store_cpse, Integer min_order, Integer is_min_order, Integer is_wifi, Integer is_plug, Integer is_single_orgn, Integer is_dessert, Integer is_meal, Integer is_time_limit, Integer mon_isopen, Timestamp mon_open, Timestamp mon_close, Integer tue_isopen, Timestamp tue_open, Timestamp tue_close, Integer wed_isopen, Timestamp wed_open, Timestamp wed_close, Integer thu_isopen, Timestamp thu_open, Timestamp thu_close, Integer fri_isopen, Timestamp fri_open, Timestamp fri_close, Integer sat_isopen, Timestamp sat_open, Timestamp sat_close, Integer sun_isopen, Timestamp sun_open, Timestamp sun_close){
+    public StoreVO(String store_id, String store_acct, String store_pwd, String store_name, String store_tel, String store_add, String store_email, Double longitude, Double latitude, Integer store_points, String store_cpse, Integer min_order, Integer is_min_order, Integer is_wifi, Integer is_plug, Integer is_single_orgn, Integer is_dessert, Integer is_meal, Integer is_time_limit, Integer mon_isopen, Timestamp mon_open, Timestamp mon_close, Integer tue_isopen, Timestamp tue_open, Timestamp tue_close, Integer wed_isopen, Timestamp wed_open, Timestamp wed_close, Integer thu_isopen, Timestamp thu_open, Timestamp thu_close, Integer fri_isopen, Timestamp fri_open, Timestamp fri_close, Integer sat_isopen, Timestamp sat_open, Timestamp sat_close, Integer sun_isopen, Timestamp sun_open, Timestamp sun_close, byte[] store_img, Integer store_pass){
         this.store_id = store_id;
         this.store_acct = store_acct;
         this.store_pwd = store_pwd;
@@ -93,6 +92,8 @@ public class StoreVO implements Serializable {
         this.sun_isopen = sun_isopen;
         this.sun_open = sun_open;
         this.sun_close = sun_close;
+        this.store_img = store_img;
+        this.store_pass = store_pass;
     }
 
     public String getStore_id() {
@@ -413,6 +414,22 @@ public class StoreVO implements Serializable {
 
     public void setSun_close(Timestamp sun_close) {
         this.sun_close = sun_close;
+    }
+
+    public byte[] getStore_img() {
+        return store_img;
+    }
+
+    public void setStore_img(byte[] store_img) {
+        this.store_img = store_img;
+    }
+
+    public Integer getStore_pass() {
+        return store_pass;
+    }
+
+    public void setStore_pass(Integer store_pass) {
+        this.store_pass = store_pass;
     }
 
 }

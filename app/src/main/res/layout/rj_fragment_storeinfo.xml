@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#eabe6b"
-    tools:context="com.example.user.newcoffeepuzzle.rjchenl_search.GoogleMapFragment$StoreInfoFragment">
+    android:background="#eabe6b">
 
 
 
@@ -87,7 +86,7 @@
         android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/like"
+        android:src="@drawable/unlike"
         android:layout_alignTop="@+id/takePhoto"
         android:layout_toEndOf="@+id/is_wifi" />
 
@@ -98,6 +97,15 @@
         android:src="@drawable/message"
         android:layout_alignTop="@+id/like"
         android:layout_alignEnd="@+id/is_dessert" />
+
+    <ImageView
+        android:id="@+id/store_img"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:src="@drawable/default_image"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/is_plug"
+        android:layout_marginBottom="23dp" />
 
 
 

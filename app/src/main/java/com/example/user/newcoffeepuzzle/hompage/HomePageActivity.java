@@ -24,6 +24,7 @@ import com.example.user.newcoffeepuzzle.ming_login_store.Login_Store_GetId;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_spndcoffelist.SpndcoffelistVO;
 import com.example.user.newcoffeepuzzle.ming_home.StoreActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 
@@ -33,8 +34,8 @@ import java.util.List;
 public class HomePageActivity extends AppCompatActivity {
     private final static String TAG = "HomePageActivity";
     EditText edStoreid,edStorepassword;
-    private EditText etID;
-    private EditText etPsw;
+    private EditText etID_member_minglogin;
+    private EditText tvPSW_member_mimgLogin;
 
 
     @Override
@@ -49,12 +50,11 @@ public class HomePageActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         findView_Store();
-        findViews();
+
     }
-    private void findViews() {
-        etID = (EditText) findViewById(R.id.etID);
-        etPsw = (EditText) findViewById(R.id.etPsw);
-    }
+
+
+
 
     private void findView_Store() {
 
@@ -92,11 +92,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void onbtLoginClick(View view) {
-        Intent intent = new Intent(this,SearchActivity.class);
-        startActivity(intent);
 
-    }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 

@@ -32,7 +32,7 @@ public class ActivityListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_activity_list, container, false);
+        View view = inflater.inflate(R.layout.rj_fragment_activity_list, container, false);
         //以下滑下自動更新可以省略
 //        swipeRefreshLayout =  (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
 //        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -43,7 +43,7 @@ public class ActivityListFragment extends Fragment {
 //                swipeRefreshLayout.setRefreshing(false);
 //            }
 //        });
-
+        //recyclerview 才需要
         rvactivities = (RecyclerView) view.findViewById(R.id.rvactivities);
         rvactivities.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        rvactivities.setLayoutManager(new RecyclerView.LayoutManager(getActivity()));為什麼不行
@@ -93,7 +93,7 @@ public class ActivityListFragment extends Fragment {
         //取得viewhold佈局檔
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = layoutInflater.inflate(R.layout.activities_recycle_item, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.rj_activities_recycle_item, parent, false);
             return new MyViewHolder(itemView);
         }
         //與資料做連結
