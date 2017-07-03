@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +30,15 @@ import android.widget.Toast;
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import org.json.JSONObject;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -98,6 +103,7 @@ public class SpndcoffeeListFragment extends Fragment {
         Context context;
         List<SpndcoffeelistVO> spndList_data;
         Map<ImageView,String> map= new HashMap<>();
+        private AlertDialogFragment alertDialogFragment;
 
         public SpndCoffeeListAdapter(Context context, List<SpndcoffeelistVO> spndList_data) {
             this.context = context;
@@ -129,27 +135,11 @@ public class SpndcoffeeListFragment extends Fragment {
                 convertView =layoutInflater.inflate(R.layout.rj_spndcoffeelist_item_fragment,parent,false);
             }
 
-            //點擊顯示QR_code
-            Button showQRcode = (Button) convertView.findViewById(R.id.showQRcode);
-            showQRcode.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //show QRcode
-//                    Toast.makeText(getActivity(),"顯示QRcode",Toast.LENGTH_SHORT);
-                    AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    alertDialogFragment.show(fragmentManager,"alert");
 
 
 
-
-
-                }
-            });
-
-
-            //取到當下那個view物件
-            SpndcoffeelistVO spndcoffeelistVO = spndList_data.get(position);
+            //取到當下那個VO物件
+            final SpndcoffeelistVO spndcoffeelistVO = spndList_data.get(position);
 
 
             //將抓到的view 設上其值
@@ -157,14 +147,41 @@ public class SpndcoffeeListFragment extends Fragment {
             TextView store_add = (TextView) convertView.findViewById(R.id.store_add);
             TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
 
-            //此二項待修正 (因為不知道傳過來的其它table物件用什麼裝)
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
-
             sotre_name.setText(spndcoffeelistVO.getStore_name());
             store_add.setText(spndcoffeelistVO.getStore_add());
-
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
+
+
+            Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
+            Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
+            Log.d(TAG, "getView: spndcoffeelistVO.getList_id() : "+spndcoffeelistVO.getList_id());
+
+
+            //夾帶資訊到qrcode
+            final Bundle bundle = new Bundle();
+            bundle.putSerializable("spndcoffeelistVO",spndcoffeelistVO);
+
+
+            //點擊顯示QR_code
+            Button showQRcode = (Button) convertView.findViewById(R.id.showQRcode);
+            showQRcode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //show QRcode
+                    AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+                    alertDialogFragment.setArguments(bundle);
+
+
+
+
+                    FragmentManager fragmentManager = getFragmentManager();
+
+                    alertDialogFragment.show(fragmentManager,"alert");
+
+
+                }
+            });
+
 
 
             return convertView;
@@ -173,12 +190,18 @@ public class SpndcoffeeListFragment extends Fragment {
 
     public static class AlertDialogFragment extends DialogFragment {
 
+
+
+
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Dialog dialog = super.onCreateDialog(savedInstanceState);
             //不顯示標題
             dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+
+
             return dialog;
         }
 
@@ -194,6 +217,19 @@ public class SpndcoffeeListFragment extends Fragment {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
+
+            Bundle bundle = getArguments();
+            SpndcoffeelistVO spndcoffeelistVO = (SpndcoffeelistVO) bundle.getSerializable("spndcoffeelistVO");
+            String List_id  =spndcoffeelistVO.getList_id();
+            String List_left = spndcoffeelistVO.getList_left().toString();
+
+            Gson gson = new Gson();
+            String json = gson.toJson(spndcoffeelistVO);
+
+
+            Log.d(TAG, "onCreateDialog: List_id : "+List_id);
+            Log.d(TAG, "onCreateDialog: List_left : "+List_left);
+
             //註冊離開button事件聆聽
             Button btleave = (Button) view.findViewById(R.id.btleave);
             btleave.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +244,7 @@ public class SpndcoffeeListFragment extends Fragment {
 
             //startpaste
             // QR code 的內容
-            String QRCodeContent = "fuck you men";
+            String QRCodeContent = json;
             // QR code 寬度
             int QRCodeWidth = 800;
             // QR code 高度

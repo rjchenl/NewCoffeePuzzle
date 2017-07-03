@@ -20,8 +20,8 @@ import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 public class MemLoginFragment extends Fragment{
 
-    private TextView etID_member_minglogin;
-    private TextView tvPSW_member_mimgLogin;
+    private EditText etID_member_minglogin;
+    private EditText tvPSW_member_mimgLogin;
     private Button memLogin;
 
     @Override
