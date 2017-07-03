@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_login_store;
+package com.example.user.newcoffeepuzzle.ming_login_mem;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,40 +17,39 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 
-public class Login_Store_GetId extends AsyncTask<Object,Integer,List<Login_StoreVO>> {
+public class Login_Mem_GetId extends AsyncTask<Object,Integer,List<Login_MemVO>> {
     private final static String TAG = "Login_Store_GetId";
-    private final static String ACTION = "findByStore";
+    private final static String ACTION = "findByMem";
 
     @Override
-    protected List<Login_StoreVO> doInBackground(Object... params) {
-        Log.d(TAG, "doInBackground: (step1_1)");
+    protected List<Login_MemVO> doInBackground(Object... params) {
         String url = params[0].toString();
-        String store_acct = params[1].toString();
-        String store_pwd = params[2].toString();
+        String mem_acct = params[1].toString();
+        String mem_pwd = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_acct",store_acct);
-        jsonObject.addProperty("store_pwd",store_pwd);
+        jsonObject.addProperty("mem_acct", mem_acct);
+        jsonObject.addProperty("mem_pwd", mem_pwd);
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
 
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-        
+
             return null;
         }
 
-        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<Login_StoreVO>>() {}.getType();
-        Log.d(TAG, "doInBackground: jsonIn"+jsonIn);
-        Log.d(TAG, "doInBackground: listType"+listType);
-        return gson.fromJson(jsonIn, listType);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Login_MemVO>>(){}.getType();
+
+        return gson.fromJson(jsonIn,listType);
     }
 
-    private String getRemoteData(String url, String jsonOut) throws IOException {
+    private String getRemoteData(String url, String jsonOut) throws IOException{
         StringBuilder jsonIn = new StringBuilder();
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setDoInput(true); // allow inputs

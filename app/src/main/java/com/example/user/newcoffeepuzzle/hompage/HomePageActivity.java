@@ -32,11 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity {
-    private final static String TAG = "HomePageActivity";
-    EditText edStoreid,edStorepassword;
-    private EditText etID_member_minglogin;
-    private EditText tvPSW_member_mimgLogin;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,50 +44,7 @@ public class HomePageActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.Tab);
         tabLayout.setupWithViewPager(viewPager);
 
-        findView_Store();
-
     }
-
-
-
-
-    private void findView_Store() {
-
-        View store_layout = getLayoutInflater().inflate(R.layout.store, null);
-        edStoreid = (EditText) store_layout.findViewById(R.id.edStoreid);
-        edStorepassword = (EditText) store_layout.findViewById(R.id.edStorepassword);
-
-
-    }
-
-    public void btonClick (View view){
-        String userStoreid = edStoreid.getText().toString();
-        String UserStorepassword = edStorepassword.getText().toString();
-        Toast.makeText(this,userStoreid,Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "btonClick: userStoreid : "+userStoreid);
-        Log.d(TAG, "btonClick: UserStorepassword : "+UserStorepassword);
-        Log.d(TAG, "btonClick: edStoreid ： "+edStoreid);
-
-        if (Common_ming.networkConnected(this)){
-            String url = Common_ming.URL + "Store_Servlet";
-            List<SpndcoffelistVO> login_storeVO = null;
-            try {
-                login_storeVO = new Login_Store_GetId().execute(url,userStoreid,UserStorepassword).get();
-            }catch (Exception e ){
-                Log.d(TAG, e.toString());
-            }
-            if (login_storeVO == null){
-                Common_ming.showToast(this,R.string.Login_null);
-            }else {
-                Intent intent = new Intent(this, StoreActivity.class);
-                startActivity(intent);
-            }
-        }else {
-            Common_ming.showToast(this,R.string.Login_null);
-        }
-    }
-
-
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
