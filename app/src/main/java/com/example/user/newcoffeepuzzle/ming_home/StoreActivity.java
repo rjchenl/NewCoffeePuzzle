@@ -21,7 +21,7 @@ public class StoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.store_activity);
+        setContentView(R.layout.ming_store_activity);
 //        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
 //        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

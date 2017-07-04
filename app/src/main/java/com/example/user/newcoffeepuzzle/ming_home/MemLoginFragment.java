@@ -20,9 +20,7 @@ import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 import java.util.List;
 
-/**
- * Created by Java on 2017/6/21.
- */
+
 
 public class MemLoginFragment extends Fragment{
     private static final String TAG = "MemLoginFragment";
@@ -43,11 +41,11 @@ public class MemLoginFragment extends Fragment{
             public void onClick(View v) {
                 String userMemID = etID_member_minglogin.getText().toString();
                 String userMemPSW = tvPSW_member_mimgLogin.getText().toString();
-                Toast.makeText(getContext(),userMemID,Toast.LENGTH_LONG);
+//                Toast.makeText(getContext(),userMemID,Toast.LENGTH_LONG);
 
                 if (Common_ming.networkConnected(getActivity())){
-                    String url = Common_ming.URL + "Store_Servlet";
-                    List<Login_MemVO> login_memVOList = null;
+                    String url = Common_ming.URL + "ming_Member_Servlet";
+                    Login_MemVO login_memVOList = null;
                     try{
                         login_memVOList = new Login_Mem_GetId().execute(url,userMemID,userMemPSW).get();
                     }catch (Exception e ){

@@ -19,12 +19,12 @@ import java.net.URL;
 import java.util.List;
 
 
-public class Login_Store_GetId extends AsyncTask<Object,Integer,List<Login_StoreVO>> {
+public class Login_Store_GetId extends AsyncTask<Object,Integer,Login_StoreVO> {
     private final static String TAG = "Login_Store_GetId";
     private final static String ACTION = "findByStore";
 
     @Override
-    protected List<Login_StoreVO> doInBackground(Object... params) {
+    protected Login_StoreVO doInBackground(Object[] params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String store_acct = params[1].toString();
@@ -44,10 +44,10 @@ public class Login_Store_GetId extends AsyncTask<Object,Integer,List<Login_Store
         }
 
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<Login_StoreVO>>() {}.getType();
+//        Type listType = new TypeToken<List<Login_StoreVO>>() {}.getType();
         Log.d(TAG, "doInBackground: jsonIn"+jsonIn);
-        Log.d(TAG, "doInBackground: listType"+listType);
-        return gson.fromJson(jsonIn, listType);
+//        Log.d(TAG, "doInBackground: listType"+listType);
+        return gson.fromJson(jsonIn, Login_StoreVO.class);
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException {

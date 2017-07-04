@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class Spndcoffelist_Fragment extends Fragment{
-    private final static String TAG = "spndcoffelist_fragment";
+    private final static String TAG = "ming_spndcoffelist_fragment";
     private RecyclerView ry_spndcoffelist;
 
     @Nullable
@@ -31,7 +31,7 @@ public class Spndcoffelist_Fragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.spndcoffelist_fragment,container,false);
+        View view = inflater.inflate(R.layout.ming_spndcoffelist_fragment,container,false);
         ry_spndcoffelist =(RecyclerView) view.findViewById(R.id.ry_spndcoffelist);
         ry_spndcoffelist.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
@@ -43,7 +43,7 @@ public class Spndcoffelist_Fragment extends Fragment{
         Log.d(TAG, "onStart: (step1)");
         if (Common_ming.networkConnected(getActivity())) {
             Log.d(TAG, "onStart: (step2)");
-            String url = Common_ming.URL + "Spndcoffelist_Servlet";
+            String url = Common_ming.URL + "ming_Spndcoffelist_Servlet";
             List<SpndcoffelistVO> spndcoffelistVOList = null;
 
             ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -93,7 +93,7 @@ public class Spndcoffelist_Fragment extends Fragment{
         }
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = layoutInflater.inflate(R.layout.spndcoffelist_item,parent,false);
+            View itemView = layoutInflater.inflate(R.layout.ming_spndcoffelist_item,parent,false);
             return new ViewHolder(itemView);
         }
 

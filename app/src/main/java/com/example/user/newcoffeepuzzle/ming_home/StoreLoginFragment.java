@@ -18,9 +18,7 @@ import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 
 import java.util.List;
 
-/**
- * Created by Java on 2017/6/21.
- */
+
 
 public class StoreLoginFragment extends Fragment{
     private static final String TAG = "StoreLoginFragment";
@@ -40,11 +38,11 @@ public class StoreLoginFragment extends Fragment{
             public void onClick(View v) {
                 String userStoreid = edStoreid.getText().toString();
                 String UserStorepassword = edStorepassword.getText().toString();
-                Toast.makeText(getContext(),userStoreid,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(),userStoreid,Toast.LENGTH_SHORT).show();
 
                 if (Common_ming.networkConnected(getActivity())){
-                    String url = Common_ming.URL + "Mem_Servlet";
-                    List<Login_StoreVO> login_storeVO = null;
+                    String url = Common_ming.URL + "ming_Store_Servlet";
+                    Login_StoreVO login_storeVO = null;
                     try {
                         login_storeVO = new Login_Store_GetId().execute(url,userStoreid,UserStorepassword).get();
                     }catch (Exception e ){

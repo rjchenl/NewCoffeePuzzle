@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class Login_Mem_GetId extends AsyncTask<Object,Integer,List<Login_MemVO>> {
+public class Login_Mem_GetId extends AsyncTask<Object,Integer,Login_MemVO> {
     private final static String TAG = "Login_Store_GetId";
     private final static String ACTION = "findByMem";
 
     @Override
-    protected List<Login_MemVO> doInBackground(Object... params) {
+    protected Login_MemVO doInBackground(Object[] params) {
         String url = params[0].toString();
         String mem_acct = params[1].toString();
         String mem_pwd = params[2].toString();
@@ -43,10 +43,12 @@ public class Login_Mem_GetId extends AsyncTask<Object,Integer,List<Login_MemVO>>
             return null;
         }
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Login_MemVO>>(){}.getType();
+        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+//        Type listType = new TypeToken<List<Login_MemVO>>(){}.getType();
+        Log.d(TAG, "doInBackground: jsonIn"+jsonIn);
+//        Log.d(TAG, "doInBackground: listType"+listType);
 
-        return gson.fromJson(jsonIn,listType);
+        return gson.fromJson(jsonIn,Login_MemVO.class);
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException{
