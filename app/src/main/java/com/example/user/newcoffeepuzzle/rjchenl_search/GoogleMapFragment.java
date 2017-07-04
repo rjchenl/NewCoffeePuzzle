@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
@@ -176,27 +177,66 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
         setUpMap();
-        setSubmitLisntener();
         addStoresInfo();
+        setSubmitLisntener();
 
     }
 
     private void setSubmitLisntener() {
+
+        Boolean showSearchMark=true;
+
+
+
         //search btsubmit listener
         Button submitButton = (Button) getActivity().findViewById(R.id.btSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
+                //先清空 再增加原本的
+                map.clear();
+                addStoresInfo();
+
                 EditText etLocationName = (EditText) getActivity().findViewById(R.id.etLocationName);
                 String locationName = etLocationName.getText().toString().trim();
-                if (locationName.length() > 0) {
-                    locationNameToMarker(locationName);
-                } else {
-                    showToast("Location Name is empty");
+
+                for (StoreVO storevo : storeList){
+                    String store_name = storevo.getStore_name();
+                    String store_add = storevo.getStore_add();
+                    String store_name_add = store_name+store_add;
+                    Log.d(TAG, "onClick: locationName.contains(store_name) "+locationName.contains(store_name));
+
+                    if (locationName.length() > 0 && store_name_add.contains(locationName)) {
+                        //就去找符合字串的店家會員的店
+                        //移動到的該店家
+                        LatLng position = new LatLng(storevo.getLatitude(),storevo.getLongitude());
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(position).zoom(15).build();
+                        map.animateCamera(CameraUpdateFactory
+                                .newCameraPosition(cameraPosition));
+                        //mark要變色 顯示該店家//hlposition
+
+                        Marker this_marker =map_forsearch.get(storevo);
+                        this_marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.searchcoffeemarker));
+
+
+
+
+                    }else if(locationName.length() > 0){
+//                    locationNameToMarker(locationName);
+                    }else{
+                        showToast("Location Name is empty");
+                    }
                 }
+
+
             }
         });
     }
+
+
 
     private void locationNameToMarker(String locationName) {
         map.clear();
@@ -220,8 +260,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
             String snippet = address.getAddressLine(0);
 
-            map.addMarker(new MarkerOptions().position(position)
-                    .title(locationName).snippet(snippet));
+            map.addMarker(new MarkerOptions()
+                    .position(position)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
+                    .title(locationName)
+                    .snippet(snippet));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(position).zoom(15).build();
@@ -246,6 +289,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
         map.getUiSettings().setZoomControlsEnabled(true);
 
+        //設定自訂UIsetting
+        map.setInfoWindowAdapter(new MyInfoWindowAdapter());
+
+
+
         //預設位置
         LatLng position = new LatLng(24.9677420, 121.1917000);
 
@@ -259,6 +307,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     Map<Marker, StoreVO> markerMap = new HashMap<>();
+    Map<StoreVO,Marker> map_forsearch = new HashMap<>();
 
     private void addStoresInfo() {
         if(Common_RJ.networkConnected(getActivity())){
@@ -284,6 +333,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     );
                     //把當下這一組(marker,storeVO)相對應的關係存放在map中
                     markerMap.put(marker, stvo);
+                    //for search
+                    map_forsearch.put(stvo,marker);
                 }
             }
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -303,6 +354,41 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             });
         }
     }
+
+    private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
+        private final View infoWindow;
+
+        MyInfoWindowAdapter() {
+            infoWindow = View.inflate(
+                    getContext(),
+                    R.layout.rj_custom_info_window,
+                    null);
+        }
+
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+
+            //設定自訂title
+            TextView markTitle = (TextView) infoWindow.findViewById(R.id.tvmarkTitle);
+            String title = marker.getTitle();
+            markTitle.setText(title);
+
+            //設定自訂視窗
+            TextView tv_snippet = (TextView) infoWindow.findViewById(R.id.tvmarkSnippet);
+            String snippet = marker.getSnippet();
+            tv_snippet.setText(snippet);
+
+
+            return infoWindow;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+    }
+
 
     private GoogleApiClient.ConnectionCallbacks connectionCallbacks =
             new GoogleApiClient.ConnectionCallbacks() {
