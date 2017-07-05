@@ -37,7 +37,7 @@
                     android:text="帳號：" />
 
                 <EditText
-                    android:id="@+id/etID_member_minglogin"
+                    android:id="@+id/edmember_acct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -54,7 +54,7 @@
                     android:text="密碼：" />
 
                 <EditText
-                    android:id="@+id/tvPSW_member_mimgLogin"
+                    android:id="@+id/edmember_psw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
