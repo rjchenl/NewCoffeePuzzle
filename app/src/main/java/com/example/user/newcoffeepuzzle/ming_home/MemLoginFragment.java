@@ -68,6 +68,7 @@ public class MemLoginFragment extends Fragment{
                             String url_1 = Common_RJ.URL + "MemberServlet";
                             List<MemberVO> memberList = null;
                             try {
+                                //執行拿資料
                                 memberList = new MemberGetAllTask().execute(url_1).get();
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
@@ -75,7 +76,7 @@ public class MemLoginFragment extends Fragment{
                             if (memberList == null || memberList.isEmpty()) {
                                 Common_RJ.showToast(getActivity(), "No memberList found");
                             } else {
-                                //執行拿資料
+                                //將拿到的資料一個一個取出來
                                 for (MemberVO membervo : memberList){
                                     if(membervo.getMem_acct().equals(userMemID)){
                                         Log.d(TAG, "onClick: membervo.getMem_acct() : "+membervo.getMem_acct());

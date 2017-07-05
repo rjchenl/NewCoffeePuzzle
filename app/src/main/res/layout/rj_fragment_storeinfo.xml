@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="今日營業"/>
+        android:text="現在營業"/>
     <CheckBox
         android:id="@+id/is_wifi"
         android:layout_below="@id/isOpen"
@@ -73,30 +73,17 @@
         android:layout_below="@+id/is_meal"
         android:textSize="18sp"
         android:layout_alignStart="@+id/is_meal" />
-    <ImageView
-        android:id="@+id/takePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/photo_camera"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/is_plug"
-        android:layout_alignStart="@+id/store_add"
-        android:layout_marginStart="13dp" />
+
     <ImageView
         android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/unlike"
-        android:layout_alignTop="@+id/takePhoto"
-        android:layout_toEndOf="@+id/is_wifi" />
+        android:layout_below="@+id/is_dessert"
+        android:layout_alignStart="@+id/is_dessert"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="16dp" />
 
-    <ImageView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/message"
-        android:layout_alignTop="@+id/like"
-        android:layout_alignEnd="@+id/is_dessert" />
 
     <ImageView
         android:id="@+id/store_img"
@@ -104,10 +91,38 @@
         android:layout_height="200dp"
         android:src="@drawable/default_image"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/is_plug"
-        android:layout_marginBottom="23dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/store_img"
+        android:id="@+id/canBeTakeOut"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="提供外帶外送商品"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <ScrollView
+        android:layout_below="@id/canBeTakeOut"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
 
 
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </RelativeLayout>

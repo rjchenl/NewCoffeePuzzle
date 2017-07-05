@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -129,6 +128,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch(item.getItemId()){
+                        case R.id.searchBar:
+                            initBody();
+                            break;
                         case R.id.browerActivities:
                             fragment = new ActivityListFragment();
                             switchFragment(fragment);
@@ -147,6 +149,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 }
             });
         }
+    }
+
+    private void detachFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.detach(fragment);
+        fragmentTransaction.commit();
     }
 
     private void initBody() {
@@ -178,7 +186,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.replace(R.id.body, fragment,"fragment");
         fragmentTransaction.commit();
 
     }
@@ -201,6 +209,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 //        translateAnimation.setDuration(1000);
 //        return translateAnimation;
 //    }
+
+    private void addFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(fragment,"addFragment");
+        fragmentTransaction.commit();
+    }
 
 
 
