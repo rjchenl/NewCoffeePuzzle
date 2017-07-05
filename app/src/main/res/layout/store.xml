@@ -62,12 +62,11 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/memLogin"
+                android:id="@+id/StoreLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="登入"
-                android:onClick="btonClick"/>
+                android:text="登入" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
