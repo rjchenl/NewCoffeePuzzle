@@ -126,9 +126,14 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getActivity().getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
 
         fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void addFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(fragment,"addFragment");
         fragmentTransaction.commit();
     }
 
@@ -219,7 +224,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                         //mark要變色 顯示該店家//hlposition
 
                         Marker this_marker =map_forsearch.get(storevo);
-                        this_marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.searchcoffeemarker));
+                        this_marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.mapflag));
 
 
 
@@ -295,7 +300,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
         //預設位置
-        LatLng position = new LatLng(24.9677420, 121.1917000);
+        LatLng position = new LatLng(25.039071, 121.548879);
 
 //        移動攝影機到預設位置
         map.moveCamera(CameraUpdateFactory.newLatLng(position));
@@ -324,13 +329,18 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 Common_RJ.showToast(getActivity(),"no storeList found");
             }else{
                 //已有資料  開始連結view
+                Log.d(TAG, "addStoresInfo: step1");
                 for (StoreVO stvo : storeList){
+                    Log.d(TAG, "addStoresInfo: stvo.getLatitude() : "+stvo.getLatitude());
+                    Log.d(TAG, "addStoresInfo: stvo.getLongitude() : "+stvo.getLongitude());
+
                     LatLng  store_position = new LatLng(stvo.getLatitude(),stvo.getLongitude());
                     Marker marker = map.addMarker(new MarkerOptions()
                             .title(stvo.getStore_name())
                             .position(store_position)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
                     );
+                    Log.d(TAG, "addStoresInfo: step2");
                     //把當下這一組(marker,storeVO)相對應的關係存放在map中
                     markerMap.put(marker, stvo);
                     //for search
@@ -348,6 +358,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("StoreVO", storevo);
                     storeFragment.setArguments(bundle);
+                    //改成add fragment
+//                    addFragment(storeFragment);
                     switchFragment(storeFragment);
                     return false;
                 }
