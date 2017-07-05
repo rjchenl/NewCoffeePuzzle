@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:text="XXX咖啡店"/>
+        android:text="XXX咖啡店"
+        android:layout_alignBottom="@+id/like"
+        android:layout_toStartOf="@+id/is_meal" />
     <TextView
         android:id="@+id/store_add"
         android:layout_margin="20dp"
@@ -78,11 +80,9 @@
         android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/unlike"
-        android:layout_below="@+id/is_dessert"
-        android:layout_alignStart="@+id/is_dessert"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="16dp" />
+        android:src="@drawable/like"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/store_add" />
 
 
     <ImageView
@@ -90,9 +90,10 @@
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:src="@drawable/default_image"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp" />
+        android:layout_below="@+id/is_plug"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="13dp"
+        android:layout_marginTop="17dp" />
 
     <TextView
         android:layout_marginTop="20dp"
