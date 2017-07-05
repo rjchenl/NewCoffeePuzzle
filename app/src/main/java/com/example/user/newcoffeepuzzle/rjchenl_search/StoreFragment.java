@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +38,8 @@ public class StoreFragment extends Fragment{
     private StoreVO store = null;
     private boolean isTodayOpen = false;
     private String mem_id;
+    private Spinner spinner_item;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,6 +138,7 @@ public class StoreFragment extends Fragment{
         //取得現在時間的日期STR
         String nowmFormatStr  =  simpleDateFormat2.format(now);
         String nowDateStr = nowmFormatStr.substring(0,11);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: now : "+nowmFormatStr);
 
         //取得營業時間後面時間STR
         String openFormatStr  =  simpleDateFormat2.format(opentime);
@@ -159,6 +165,8 @@ public class StoreFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
+        spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
+
 
         //放上店家名稱
         TextView store_name = (TextView) view.findViewById(R.id.store_name);
@@ -233,6 +241,8 @@ public class StoreFragment extends Fragment{
             }
         });
 
+        getProductFromDB();
+
 
         return view;
     }
@@ -263,17 +273,51 @@ public class StoreFragment extends Fragment{
                 Common_RJ.showToast(getActivity(),"No storeList found");
             }else{
                 Common_RJ.showToast(getActivity(),"已有VO上的data開始連結view");
+            }
+        }
+    }
 
+    private void getProductFromDB(){
+        String store_name = store.getStore_name();
+        if(Common_RJ.networkConnected(getActivity())){
+            String url = Common_RJ.URL+"ProductServlet";
+            List<ProductVO> productVOList = null;
 
+            try {
 
+                //得到DB資料
+                productVOList = new StoreGetProductTask().execute(url,store_name).get();
+            } catch (Exception e) {
+                Log.e(TAG,e.toString());
             }
 
+            if(productVOList == null || productVOList.isEmpty()){
+                Common_RJ.showToast(getActivity(),"No productVOList found");
+            }else{
+                //前置作業
+                String[] items = new String[productVOList.size()];
+                //to do here
+
+
+//                items[1] = "ee";
+                //將資料一個一個取出來放在View上
+                for(ProductVO productVO :productVOList){
+                    String product_name = productVO.getProd_name();
+
+
+
+
+
+                }
+            }
         }
 
-
-
-
     }
+
+
+
+
+
 
 
 }

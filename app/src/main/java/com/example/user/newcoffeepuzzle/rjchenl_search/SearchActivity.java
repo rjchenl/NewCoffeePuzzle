@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -216,7 +217,24 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         fragmentTransaction.commit();
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(TAG, "onKeyDown: enter onkeydown");
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            Log.d(TAG, "onKeyDown: step2");
+            FragmentManager manager = getSupportFragmentManager();
+            Log.d(TAG, "onKeyDown: manager.getBackStackEntryCount() : "+manager.getBackStackEntryCount());
+            if (manager.getBackStackEntryCount() > 0) {
+                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+                Log.e(TAG, "clearBackStack: " + first.getName());
+                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Log.d(TAG, "onKeyDown: iii");
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     private void locationNameToMarker(String locationName){
         map.clear();

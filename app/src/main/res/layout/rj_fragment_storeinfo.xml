@@ -15,8 +15,8 @@
         android:textSize="26sp"
         android:textStyle="bold"
         android:text="XXX咖啡店"
-        android:layout_alignBottom="@+id/like"
-        android:layout_toStartOf="@+id/is_meal" />
+        android:layout_alignTop="@+id/like"
+        android:layout_toEndOf="@+id/like" />
     <TextView
         android:id="@+id/store_add"
         android:layout_margin="20dp"
@@ -81,6 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/like"
+        android:layout_marginTop="28dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/store_add" />
 
@@ -112,16 +113,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spinner_item"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
-
-
-        </LinearLayout>
+        </Spinner>
 
 
     </ScrollView>

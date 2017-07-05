@@ -133,7 +133,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void addFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(fragment,"addFragment");
+        fragmentTransaction.add(R.id.body,fragment);
         fragmentTransaction.commit();
     }
 
