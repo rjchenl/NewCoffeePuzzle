@@ -4,15 +4,25 @@ package com.example.user.newcoffeepuzzle.hompage;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityGetAllTask;
+import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityVO;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MemberGetAllTask;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MemberVO;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
 
     private EditText etID_RJlogin;
     private EditText etPsw_RJlogin;
@@ -35,23 +45,44 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onbtLoginClick_RJ(View view) {
         Intent intent = new Intent(this,SearchActivity.class);
-//        Bundle bundle = new Bundle();
-        String mem_id = etID_RJlogin.getText().toString();
-//      Log.d("TAG", "onMember_btLoginClick: mem_id : "+mem_id);
-//        bundle.putString("mem_id",mem_id);
-//        StoreFragment storeFragment = new StoreFragment();
-//        storeFragment.setArguments(bundle);
-//        intent.putExtras(bundle);
-
-
-        //以下封裝成prifile.set方法
-        //        SharedPreferences preferences = getSharedPreferences("profile", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString("mem_id", mem_id);
-//        editor.apply();
+        String mem_acct = etID_RJlogin.getText().toString();
 
         Profile profile = new Profile(this);
+        profile.setMem_acct(mem_acct);
+        String mem_id=null;
+
+        //順便得到mem_id參數
+        if (Common_RJ.networkConnected(this)) {
+            String url = Common_RJ.URL + "MemberServlet";
+            List<MemberVO> memberList = null;
+            try {
+                memberList = new MemberGetAllTask().execute(url).get();
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+            if (memberList == null || memberList.isEmpty()) {
+                Common_RJ.showToast(this, "No memberList found");
+            } else {
+              //執行拿資料
+                for (MemberVO membervo : memberList){
+                    if(membervo.getMem_acct().equals(mem_acct)){
+                        mem_id = membervo.getMem_id();
+                    }
+
+                }
+
+            }
+        }
+
+        //將mem_id寫入profile
         profile.setMemId(mem_id);
+        Log.d(TAG, "onbtLoginClick_RJ: mem_id : "+mem_id);
+
+
+
+
+
+
         startActivity(intent);
 
     }

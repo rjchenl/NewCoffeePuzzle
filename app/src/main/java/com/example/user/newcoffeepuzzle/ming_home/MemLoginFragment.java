@@ -15,7 +15,10 @@ import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_login_mem.Login_MemVO;
 import com.example.user.newcoffeepuzzle.ming_login_mem.Login_Mem_GetId;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MemberGetAllTask;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MemberVO;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 import java.util.List;
@@ -43,6 +46,7 @@ public class MemLoginFragment extends Fragment{
             public void onClick(View v) {
                 String userMemID = etID_member_minglogin.getText().toString();
                 String userMemPSW = tvPSW_member_mimgLogin.getText().toString();
+                String mem_id = null;
 //                Toast.makeText(getContext(),userMemID,Toast.LENGTH_LONG);
 
                 if (Common_ming.networkConnected(getActivity())){
@@ -58,7 +62,34 @@ public class MemLoginFragment extends Fragment{
                     }else {
                         Intent intent = new Intent(getContext(),SearchActivity.class);
                         Profile profile = new Profile(getContext());
-                        profile.setMemId(userMemID);
+
+                        //順便得到mem_id參數
+                        if (Common_RJ.networkConnected(getActivity())) {
+                            String url_1 = Common_RJ.URL + "MemberServlet";
+                            List<MemberVO> memberList = null;
+                            try {
+                                memberList = new MemberGetAllTask().execute(url_1).get();
+                            } catch (Exception e) {
+                                Log.e(TAG, e.toString());
+                            }
+                            if (memberList == null || memberList.isEmpty()) {
+                                Common_RJ.showToast(getActivity(), "No memberList found");
+                            } else {
+                                //執行拿資料
+                                for (MemberVO membervo : memberList){
+                                    if(membervo.getMem_acct().equals(userMemID)){
+                                        Log.d(TAG, "onClick: membervo.getMem_acct() : "+membervo.getMem_acct());
+                                        Log.d(TAG, "onClick: userMemID : "+userMemID);
+                                        mem_id = membervo.getMem_id();
+                                    }
+                                }
+                                //將mem_id寫入profile
+                                profile.setMemId(mem_id);
+                                Log.d(TAG, "onbtLoginClick_RJ: mem_id : "+mem_id);
+                            }
+                        }
+
+
                         startActivity(intent);
                     }
                 }else {

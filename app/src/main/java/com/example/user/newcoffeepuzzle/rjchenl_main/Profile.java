@@ -24,4 +24,17 @@ public class Profile {
     public String getMemId(){
         return  sharedPreferences.getString("mem_id","");
     }
+
+    public void setMem_acct(String mem_acct){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("mem_acct",mem_acct);
+        editor.apply();
+    }
+    public String getMem_acct(){
+        return sharedPreferences.getString("mem_acct","");
+    }
+
+
+
+
 }

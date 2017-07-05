@@ -68,6 +68,7 @@ public class SpndcoffeeListFragment extends Fragment {
         //會用到mem_id 先取得
         Profile profile = new Profile(getContext());
         mem_id = profile.getMemId();
+        Log.d(TAG, "onCreateView: mem_id : "+mem_id);
 
         return view;
     }
