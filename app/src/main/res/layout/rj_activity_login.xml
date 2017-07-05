@@ -25,6 +25,7 @@ android:orientation="vertical"
         android:text="請輸入帳號"
         android:layout_marginLeft="100dp"/>
     <EditText
+        android:id="@+id/etID_RJlogin"
         android:layout_marginLeft="20dp"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -41,6 +42,7 @@ android:orientation="vertical"
         android:text="請輸入密碼"
         android:layout_marginLeft="100dp"/>
     <EditText
+        android:id="@+id/etPsw_RJlogin"
         android:layout_marginLeft="20dp"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -51,6 +53,7 @@ android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <Button
+        android:onClick="onbtLoginClick_RJ"
         android:layout_marginStart="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

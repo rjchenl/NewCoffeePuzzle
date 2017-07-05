@@ -1,10 +1,10 @@
-package com.example.user.newcoffeepuzzle.ming_login_store;
+package com.example.user.newcoffeepuzzle.rjchenl_member;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityVO;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -18,49 +18,51 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Created by user on 2017/7/5.
+ */
 
-public class Login_Store_GetId extends AsyncTask<Object,Integer,Login_StoreVO> {
-    private final static String TAG = "Login_Store_GetId";
-    private final static String ACTION = "findByStore";
+public class MemberGetAllTask extends AsyncTask<Object,Integer,List<MemberVO>> {
+    private final static String TAG = "MemberGetAllTask";
+    private final static String ACTION = "getAll";
+
 
     @Override
-    protected Login_StoreVO doInBackground(Object[] params) {
-        Log.d(TAG, "doInBackground: (step1_1)");
+    protected List<MemberVO> doInBackground(Object... params) {
         String url = params[0].toString();
-        String store_acct = params[1].toString();
-        String store_pwd = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_acct",store_acct);
-        jsonObject.addProperty("store_pwd",store_pwd);
+
+
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
-
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-        
             return null;
         }
 
-        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-//        Type listType = new TypeToken<List<Login_StoreVO>>() {}.getType();
-        Log.d(TAG, "doInBackground: jsonIn"+jsonIn);
-//        Log.d(TAG, "doInBackground: listType"+listType);
-        return gson.fromJson(jsonIn, Login_StoreVO.class);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<MemberVO>>() {
+        }.getType();
+        return gson.fromJson(jsonIn, listType);
     }
 
+
+
     private String getRemoteData(String url, String jsonOut) throws IOException {
-        StringBuilder jsonIn = new StringBuilder();
+        StringBuilder jsonIn = new StringBuilder();//取得回應用的
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setDoInput(true); // allow inputs
         connection.setDoOutput(true); // allow outputs
         connection.setUseCaches(false); // do not use a cached copy
         connection.setRequestMethod("POST");
         connection.setRequestProperty("charset", "UTF-8");
+
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut: " + jsonOut);
+        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
+        //{"action":"getAll"}
         bw.close();
 
         int responseCode = connection.getResponseCode();
@@ -75,7 +77,7 @@ public class Login_Store_GetId extends AsyncTask<Object,Integer,Login_StoreVO> {
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn: " + jsonIn);
+        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
         return jsonIn.toString();
 
     }

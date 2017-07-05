@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_margin="20dp"
+    android:background="#eec7a0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textColor="#2a42b8"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/sotre_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="等幾個人咖啡店"/>
+    <TextView
+        android:id="@+id/store_add"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="台北市承德路三段120號"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剩下杯數 : "/>
+    <TextView
+        android:id="@+id/list_left"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#30b224"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="41"/>
+        <TextView
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="杯"/>
+        <Button
+            android:layout_marginStart="90dp"
+            android:id="@+id/showQRcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="領取寄杯"/>
+
+    </LinearLayout>
+</LinearLayout>

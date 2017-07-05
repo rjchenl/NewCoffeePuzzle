@@ -24,14 +24,14 @@ import java.util.List;
  */
 
 public class Ordelist_Fragment extends Fragment{
-    private final static String TAG = "ordelist_fragment";
+    private final static String TAG = "ming_ordelist_fragment";
     private RecyclerView ry_ordelist;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.ordelist_fragment, container, false);
+        View view = inflater.inflate(R.layout.ming_ordelist_fragment, container, false);
         ry_ordelist = (RecyclerView) view.findViewById(R.id.ry_ordelist);
         ry_ordelist.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
@@ -41,7 +41,7 @@ public class Ordelist_Fragment extends Fragment{
     public void onStart(){
         super.onStart();
         if (Common_ming.networkConnected(getActivity())){
-            String url = Common_ming.URL + "Orderlist_Servlet";
+            String url = Common_ming.URL + "ming_Orderlist_Servlet";
             List<OrderlistVO> orderlistVOList = null;
 
             ProgressDialog progressDialog = new ProgressDialog(getActivity());
@@ -88,7 +88,7 @@ public class Ordelist_Fragment extends Fragment{
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemview = layoutInflater.inflate(R.layout.ordelist_item,parent,false);
+            View itemview = layoutInflater.inflate(R.layout.ming_ordelist_item,parent,false);
             return new ViewHolder(itemview);
         }
 
