@@ -22,8 +22,10 @@ import java.util.List;
 
 
 
+
 public class MemLoginFragment extends Fragment{
     private static final String TAG = "MemLoginFragment";
+
     private EditText etID_member_minglogin;
     private EditText tvPSW_member_mimgLogin;
     private Button memLogin;
