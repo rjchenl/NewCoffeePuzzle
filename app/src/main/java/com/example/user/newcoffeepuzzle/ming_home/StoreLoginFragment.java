@@ -9,9 +9,7 @@ import android.widget.EditText;
 
 import com.example.user.newcoffeepuzzle.R;
 
-/**
- * Created by Java on 2017/6/21.
- */
+
 
 public class StoreLoginFragment extends Fragment{
     @Override
