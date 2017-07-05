@@ -9,20 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_login_store.Login_StoreVO;
 import com.example.user.newcoffeepuzzle.ming_login_store.Login_Store_GetId;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
-
-import java.util.List;
+import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
 
 
 public class StoreLoginFragment extends Fragment{
     private static final String TAG = "StoreLoginFragment";
-    private EditText edStoreid,edStorepassword;
+    private EditText edStore_acct,edStore_psw;
     Button StoreLogin ;
 
     @Override
@@ -36,21 +34,28 @@ public class StoreLoginFragment extends Fragment{
         StoreLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userStoreid = edStoreid.getText().toString();
-                String UserStorepassword = edStorepassword.getText().toString();
+                String userStore_acct = edStore_acct.getText().toString();
+                String userStore_psw = edStore_psw.getText().toString();
 //                Toast.makeText(getContext(),userStoreid,Toast.LENGTH_SHORT).show();
 
                 if (Common_ming.networkConnected(getActivity())){
                     String url = Common_ming.URL + "ming_Store_Servlet";
                     Login_StoreVO login_storeVO = null;
                     try {
-                        login_storeVO = new Login_Store_GetId().execute(url,userStoreid,UserStorepassword).get();
+                        login_storeVO = new Login_Store_GetId().execute(url,userStore_acct,userStore_psw).get();
                     }catch (Exception e ){
                         Log.d(TAG, e.toString());
                     }
                     if (login_storeVO == null){
                         Common_ming.showToast(getContext(),R.string.Login_null);
                     }else {
+                        String store_id = null;
+                            if(login_storeVO.getStore_acct().equals(edStore_acct)){
+                                store_id = login_storeVO.getStore_id();
+                        }
+                        //將store_id寫入profile
+                        Profile_ming profile_ming = new Profile_ming(getContext());
+                        profile_ming.setStoreId(store_id);
                         Intent intent = new Intent(getContext(), StoreActivity.class);
                         startActivity(intent);
                     }
@@ -65,8 +70,8 @@ public class StoreLoginFragment extends Fragment{
 
     private void findView_Store(View view) {
 
-        edStoreid = (EditText) view.findViewById(R.id.edStoreid);
-        edStorepassword = (EditText) view.findViewById(R.id.edStorepassword);
+        edStore_acct = (EditText) view.findViewById(R.id.edStore_acct);
+        edStore_psw = (EditText) view.findViewById(R.id.edStore_psw);
         StoreLogin = (Button) view.findViewById(R.id.StoreLogin);
     }
 }

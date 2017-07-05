@@ -37,7 +37,7 @@
                     android:text="帳號：" />
 
                 <EditText
-                    android:id="@+id/edStoreid"
+                    android:id="@+id/edStore_acct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -53,7 +53,7 @@
                     android:text="密碼：" />
 
                 <EditText
-                    android:id="@+id/edStorepassword"
+                    android:id="@+id/edStore_psw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
