@@ -88,17 +88,16 @@
 
     <ImageView
         android:id="@+id/store_img"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/default_image"
-        android:layout_below="@+id/is_plug"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="13dp"
-        android:layout_marginTop="17dp" />
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/is_dessert"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_marginTop="20dp"
-        android:layout_centerInParent="true"
         android:layout_below="@id/store_img"
         android:id="@+id/canBeTakeOut"
         android:textStyle="bold"
@@ -107,7 +106,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+
+    <Button
+        android:text="送出"
+        android:id="@+id/btSubmit_buytakeout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/canBeTakeOut"
+        android:layout_alignBottom="@+id/canBeTakeOut"
+        android:layout_alignStart="@+id/is_dessert" />
+
     <Spinner
+        android:layout_marginTop="20dp"
         android:layout_below="@id/canBeTakeOut"
         android:id="@+id/spinner_item"
         android:layout_width="match_parent"
@@ -131,5 +141,18 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <TextView
+        android:id="@+id/tvtotalWorld"
+        android:layout_below="@id/scrollView"
+        android:text="目前總計"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvtotal"
+        android:layout_below="@id/tvtotalWorld"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -284,10 +284,10 @@ public class SpndcoffeeListFragment extends Fragment {
             }
             catch (WriterException e)
             {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
-            //endpaste
+
 
         }
 

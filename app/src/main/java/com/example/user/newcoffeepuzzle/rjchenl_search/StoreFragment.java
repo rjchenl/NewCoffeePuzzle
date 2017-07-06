@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +44,8 @@ public class StoreFragment extends Fragment{
     private Spinner spinner_item;
     private LinearLayout itemSelected;
     final List<String> selectedItemList = new ArrayList<>();
+    private Button btSubmit_buytakeout;
+    private List<ProductVO> productVOList = null;
 
 
     @Override
@@ -171,10 +173,19 @@ public class StoreFragment extends Fragment{
                              Bundle savedInstanceState){
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
         spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
-
         itemSelected = (LinearLayout) view.findViewById(R.id.itemSelected);
+        btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
+
+        putCheckItems(view);
+        putStorePhoto(view);
+        myFavoriateFunction(view);
 
 
+
+        return view;
+    }
+
+    private void putCheckItems(View view) {
         //放上店家名稱
         TextView store_name = (TextView) view.findViewById(R.id.store_name);
         store_name.setText(store.getStore_name());
@@ -210,18 +221,21 @@ public class StoreFragment extends Fragment{
         if(store.getIs_dessert() == 1 ){
             is_dessert.setChecked(true);
         }
+    }
 
+    private void putStorePhoto(View view) {
         //放上店家照片from DB
         ImageView store_img = (ImageView) view.findViewById(R.id.store_img);
         String url = Common_RJ.URL + "StoreServlet";
         String store_id = store.getStore_id();
         int imageSize = 250;
-            //執行拿照片
+        //執行拿照片
         Log.d(TAG, "onCreateView: before doing StoreGetImageTask");
         new StoreGetImageTask(store_img).execute(url,store_id,imageSize);
         Log.d(TAG, "onCreateView: after doing StoreGetImageTask");
+    }
 
-
+    private void myFavoriateFunction(View view) {
         //註冊收藏店家功能
         ImageView heart = (ImageView) view.findViewById(R.id.like);
         heart.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +246,7 @@ public class StoreFragment extends Fragment{
                 try {
 
                     String store_id = store.getStore_id();
-                    
+
                     new FavoriateStoreInsertTask().execute(url,mem_id,store_id).get();
 
                     //置換愛心圖片
@@ -247,11 +261,6 @@ public class StoreFragment extends Fragment{
                 showToast("我按了愛心");
             }
         });
-
-        getProductFromDB();
-
-
-        return view;
     }
 
     private void showToast(String s ) {
@@ -262,10 +271,25 @@ public class StoreFragment extends Fragment{
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: enter");
-        showAllActs();
+        getStoreVOList();
+        getProductVOList();
+
+        //計算總金額顯示在TextView total上
+        for(ProductVO productvo : productVOList){
+            //得到商品名稱
+            String product_name = productvo.getProd_name();
+            Integer prodct_price = productvo.getProd_price();
+        }
+
+
+
+
+
+
+
     }
 
-    private void showAllActs() {
+    private void getStoreVOList() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
             List<StoreVO> storeList = null;
@@ -284,13 +308,11 @@ public class StoreFragment extends Fragment{
         }
     }
 
-    private void getProductFromDB(){
+    private void getProductVOList(){
         String store_name = store.getStore_name();
-
 
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"ProductServlet";
-            List<ProductVO> productVOList = null;
 
             try {
 

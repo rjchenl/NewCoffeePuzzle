@@ -68,6 +68,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View mapsview = inflater.inflate(R.layout.rj_activity_maps, container, false);
         findViews();
         //載入地理管理器和監聽器
@@ -126,8 +127,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getActivity().getSupportFragmentManager().beginTransaction();
-
         fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -358,8 +359,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("StoreVO", storevo);
                     storeFragment.setArguments(bundle);
-                    //改成add fragment
-//                    addFragment(storeFragment);
+
                     switchFragment(storeFragment);
                     return false;
                 }
