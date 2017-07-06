@@ -60,7 +60,7 @@ public class MemLoginFragment extends Fragment{
                     if (login_memVO == null){
                         Common_ming.showToast(getContext(),R.string.Login_null);
                     }else {
-                        if(login_memVO.getMem_acct().equals(edmember_acct)){
+                        if(login_memVO.getMem_acct().equals(userMemACCT)){
                             mem_id = login_memVO.getMem_id();
                         }
                         Intent intent = new Intent(getContext(),SearchActivity.class);

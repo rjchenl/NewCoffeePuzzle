@@ -14,6 +14,21 @@ public class SpndcoffelistVO {
     private Integer list_left;
     private String list_date;
 
+    private String mem_name;
+
+    public String getMem_name() {
+        return mem_name;
+    }
+
+    public void setMem_name(String mem_name) {
+        this.mem_name = mem_name;
+    }
+
+    public SpndcoffelistVO(String mem_name) {
+
+        this.mem_name = mem_name;
+    }
+
     public SpndcoffelistVO(){}
 
     public SpndcoffelistVO(String list_id, String spnd_id, String mem_id, String spnd_prod, String store_id, Integer list_amt, Integer list_left, String list_date){

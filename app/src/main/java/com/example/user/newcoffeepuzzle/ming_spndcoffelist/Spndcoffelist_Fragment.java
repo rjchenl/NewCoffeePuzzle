@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
+import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
 public class Spndcoffelist_Fragment extends Fragment{
     private final static String TAG = "ming_spndcoffelist_fragment";
     private RecyclerView ry_spndcoffelist;
+    private String store_id;
 
     @Nullable
     @Override
@@ -34,6 +36,8 @@ public class Spndcoffelist_Fragment extends Fragment{
         View view = inflater.inflate(R.layout.ming_spndcoffelist_fragment,container,false);
         ry_spndcoffelist =(RecyclerView) view.findViewById(R.id.ry_spndcoffelist);
         ry_spndcoffelist.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Profile_ming profile_ming = new Profile_ming(getContext());
+        store_id = profile_ming.getStoreId();
         return view;
     }
 
@@ -50,7 +54,7 @@ public class Spndcoffelist_Fragment extends Fragment{
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             try {
-                spndcoffelistVOList = new Spndcoffelist_GetAllTask().execute(url).get();
+                spndcoffelistVOList = new Spndcoffelist_GetAllTask().execute(url,store_id).get();
                 Log.d(TAG, "onStart: (step3)");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -81,13 +85,15 @@ public class Spndcoffelist_Fragment extends Fragment{
             actExpanded = new boolean[spndcoffelistVOList.size()];
         }
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView list_id,spn_memId,spn_number;
+            TextView list_id,spn_memId,spn_number,spn_mem_name,spnd_prod;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 list_id = (TextView) itemView.findViewById(R.id.list_id);
                 spn_memId = (TextView) itemView.findViewById(R.id.spn_memId);
                 spn_number = (TextView) itemView.findViewById(R.id.spn_number);
+                spn_mem_name = (TextView) itemView.findViewById(R.id.spn_mem_name);
+                spnd_prod = (TextView) itemView.findViewById(R.id.spnd_prod);
 
             }
         }
@@ -104,8 +110,13 @@ public class Spndcoffelist_Fragment extends Fragment{
             holder.list_id.setText(list_id);
             String memId = spndcoffelistVO.getMem_id();
             holder.spn_memId.setText(memId);
+            String spn_mem_name = spndcoffelistVO.getMem_name();
+            holder.spn_mem_name.setText(spn_mem_name);
+            String spnd_prod = spndcoffelistVO.getSpnd_prod();
+            holder.spnd_prod.setText(spnd_prod);
             Integer spn_number = spndcoffelistVO.getList_left();
             holder.spn_number.setText(spn_number.toString());
+
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
