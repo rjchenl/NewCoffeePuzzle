@@ -172,9 +172,6 @@ public class SpndcoffeeListFragment extends Fragment {
                     AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
                     alertDialogFragment.setArguments(bundle);
 
-
-
-
                     FragmentManager fragmentManager = getFragmentManager();
 
                     alertDialogFragment.show(fragmentManager,"alert");

@@ -183,7 +183,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    private void switchFragment(Fragment fragment) {
+    void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 

@@ -24,8 +24,23 @@ import java.util.List;
 public class StoreGetAllTask extends AsyncTask<Object,Integer,List<StoreVO>>{
     private final static String TAG = "StoreGetAllTask";
     private final static String ACTION = "getAll";
+    private YYY listener;
 
+    public void setListener(YYY listener) {
+        this.listener = listener;
+    }
 
+    interface YYY {
+
+        void onGetStoresDone(List<StoreVO> storeVOs);
+    }
+
+    @Override
+    protected void onPostExecute(List<StoreVO> storeVOs) {
+        super.onPostExecute(storeVOs);
+        //我要做的事情，是什麼就去做
+        listener.onGetStoresDone(storeVOs);
+    }
 
     @Override
     protected List<StoreVO> doInBackground(Object[] params) {
@@ -46,6 +61,8 @@ public class StoreGetAllTask extends AsyncTask<Object,Integer,List<StoreVO>>{
 
         return gson.fromJson(jsonIn,listType);
     }
+
+
 
     private String getRemoteData(String url, String jsonOut) throws IOException {
         StringBuilder jsonIn = new StringBuilder();
@@ -76,4 +93,6 @@ public class StoreGetAllTask extends AsyncTask<Object,Integer,List<StoreVO>>{
         return jsonIn.toString();
 
     }
+
+
 }
