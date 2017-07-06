@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +25,7 @@ import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -39,6 +42,8 @@ public class StoreFragment extends Fragment{
     private boolean isTodayOpen = false;
     private String mem_id;
     private Spinner spinner_item;
+    private LinearLayout itemSelected;
+    final List<String> selectedItemList = new ArrayList<>();
 
 
     @Override
@@ -167,6 +172,8 @@ public class StoreFragment extends Fragment{
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
         spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
 
+        itemSelected = (LinearLayout) view.findViewById(R.id.itemSelected);
+
 
         //放上店家名稱
         TextView store_name = (TextView) view.findViewById(R.id.store_name);
@@ -279,6 +286,8 @@ public class StoreFragment extends Fragment{
 
     private void getProductFromDB(){
         String store_name = store.getStore_name();
+
+
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"ProductServlet";
             List<ProductVO> productVOList = null;
@@ -294,25 +303,51 @@ public class StoreFragment extends Fragment{
             if(productVOList == null || productVOList.isEmpty()){
                 Common_RJ.showToast(getActivity(),"No productVOList found");
             }else{
-                //前置作業
+                //前置作業 將array裡放入值
                 String[] items = new String[productVOList.size()];
-                //to do here
-
-
-//                items[1] = "ee";
-                //將資料一個一個取出來放在View上
-                for(ProductVO productVO :productVOList){
+                int i =0;
+                for(ProductVO productVO : productVOList){
                     String product_name = productVO.getProd_name();
+                    items[i] = product_name;
+                    i = i+1;
+                }
+                //放入剛剛的值
+                ArrayAdapter<String> adapterPlace = new ArrayAdapter<>(getActivity(),
+                        android.R.layout.simple_spinner_item,items);
+                //設定Layout
+                adapterPlace
+                        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                spinner_item.setAdapter(adapterPlace);
+                spinner_item.setSelection(0, true);
 
 
+                Spinner.OnItemSelectedListener listener = new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        TextView textView = new TextView(getActivity());
+                        textView.setText(parent.getItemAtPosition(position).toString());
+                        //把要買的東西放在list存起來
+                        selectedItemList.add(textView.getText().toString());
+                        itemSelected.addView(textView);
+                    }
 
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        TextView textView = new TextView(getActivity());
+                        textView.setText("Nothing selected !!");
+                        itemSelected.removeAllViews();
+                    }
+                };
+
+                spinner_item.setOnItemSelectedListener(listener);
 
 
                 }
             }
         }
 
-    }
+
 
 
 

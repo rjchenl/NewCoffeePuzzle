@@ -106,19 +106,29 @@
         android:text="提供外帶外送商品"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Spinner
+        android:layout_below="@id/canBeTakeOut"
+        android:id="@+id/spinner_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </Spinner>
     
     <ScrollView
-        android:layout_below="@id/canBeTakeOut"
+        android:layout_marginTop="20dp"
+        android:background="#ffaa"
+        android:layout_below="@id/spinner_item"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Spinner
-            android:id="@+id/spinner_item"
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/itemSelected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        </Spinner>
 
+        </LinearLayout>
 
     </ScrollView>
 
