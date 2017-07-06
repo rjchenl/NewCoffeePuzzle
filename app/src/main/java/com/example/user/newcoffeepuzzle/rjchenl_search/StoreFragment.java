@@ -46,6 +46,7 @@ public class StoreFragment extends Fragment{
     final List<String> selectedItemList = new ArrayList<>();
     private Button btSubmit_buytakeout;
     private List<ProductVO> productVOList = null;
+    private List<StoreVO> storeList = null;
 
 
     @Override
@@ -292,13 +293,18 @@ public class StoreFragment extends Fragment{
     private void getStoreVOList() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
-            List<StoreVO> storeList = null;
 
-            try {
-                storeList = new StoreGetAllTask().execute(url).get();
-            } catch (Exception e) {
-                Log.e(TAG,e.toString());
-            }
+            StoreGetAllTask task = new StoreGetAllTask();
+            task.setListener(new StoreGetAllTask.Listener() {
+                @Override
+                public void onGetStoresDone(List<StoreVO> storeVOs) {
+                    storeList = storeVOs;
+
+                }
+            });
+            task.execute(url);
+//                storeList = new StoreGetAllTask().execute(url).get();
+
 
             if(storeList == null || storeList.isEmpty()){
                 Common_RJ.showToast(getActivity(),"No storeList found");

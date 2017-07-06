@@ -326,23 +326,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
                 StoreGetAllTask task = new StoreGetAllTask();
-
-
-                task.setListener(new StoreGetAllTask.YYY() {
+                task.setListener(new StoreGetAllTask.Listener() {
                     @Override
                     public void onGetStoresDone(List<StoreVO> storeVOs) {
                         storeList = storeVOs;
                         doSomething();
                     }
                 });
-
-
-            task.setListener(new StoreGetAllTask.YYY() {
-                @Override
-                public void onGetStoresDone(List<StoreVO> storeVOs) {
-                    //
-                }
-            });
                 task.execute(url);
                 //storeList = new StoreGetAllTask().execute(url).get();
 
