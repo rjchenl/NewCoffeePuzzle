@@ -48,6 +48,16 @@ public class StoreFragment extends Fragment{
     private List<ProductVO> productVOList = null;
     private List<StoreVO> storeList = null;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //得到從登入傳過來的使用者資訊
+//        SharedPreferences preferences = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
+//        mem_id = preferences.getString("mem_id", "");
+        Profile profile = new Profile(getActivity());
+        mem_id = profile.getMemId();
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,11 +66,43 @@ public class StoreFragment extends Fragment{
         //得到傳過來的StoreVO物件
         Bundle bundle = getArguments();
         store = (StoreVO) bundle.getSerializable("StoreVO");
-
         isTodayOpenCheck();
 
 
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
+        final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
+        spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
+        itemSelected = (LinearLayout) view.findViewById(R.id.itemSelected);
+        btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
+
+        putCheckItems(view);
+        putStorePhoto(view);
+        myFavoriateFunction(view);
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: enter");
+        getStoreVOList();
+        getProductVOList();
+
+        //計算總金額顯示在TextView total上
+        for(ProductVO productvo : productVOList){
+            //得到商品名稱
+            String product_name = productvo.getProd_name();
+            Integer prodct_price = productvo.getProd_price();
+        }
+    }
+
 
     private void isTodayOpenCheck() {
 
@@ -128,15 +170,7 @@ public class StoreFragment extends Fragment{
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        //得到從登入傳過來的使用者資訊
-//        SharedPreferences preferences = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
-//        mem_id = preferences.getString("mem_id", "");
-        Profile profile = new Profile(getActivity());
-        mem_id = profile.getMemId();
-    }
+
 
     public boolean isTodayOpenCovertToTimestmp(Timestamp opentime, Timestamp closetime ){
         Calendar calendar = Calendar.getInstance();
@@ -169,22 +203,7 @@ public class StoreFragment extends Fragment{
             return isTodayOpen;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
-        spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
-        itemSelected = (LinearLayout) view.findViewById(R.id.itemSelected);
-        btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
 
-        putCheckItems(view);
-        putStorePhoto(view);
-        myFavoriateFunction(view);
-
-
-
-        return view;
-    }
 
     private void putCheckItems(View view) {
         //放上店家名稱
@@ -268,27 +287,6 @@ public class StoreFragment extends Fragment{
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: enter");
-        getStoreVOList();
-        getProductVOList();
-
-        //計算總金額顯示在TextView total上
-        for(ProductVO productvo : productVOList){
-            //得到商品名稱
-            String product_name = productvo.getProd_name();
-            Integer prodct_price = productvo.getProd_price();
-        }
-
-
-
-
-
-
-
-    }
 
     private void getStoreVOList() {
         if(Common_RJ.networkConnected(getActivity())){

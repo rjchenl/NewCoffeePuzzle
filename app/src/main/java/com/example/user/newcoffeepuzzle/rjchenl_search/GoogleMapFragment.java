@@ -44,6 +44,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.location.LocationServices;
 
@@ -196,8 +197,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
         Boolean showSearchMark=true;
 
-
-
         //search btsubmit listener
         Button submitButton = (Button) getActivity().findViewById(R.id.btSubmit);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +210,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
                 EditText etLocationName = (EditText) getActivity().findViewById(R.id.etLocationName);
                 String locationName = etLocationName.getText().toString().trim();
-
+                Log.d(TAG, "onClick:storeList :  "+storeList);
                 for (StoreVO storevo : storeList){
                     String store_name = storevo.getStore_name();
                     String store_add = storevo.getStore_add();
@@ -230,8 +229,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
                         Marker this_marker =map_forsearch.get(storevo);
                         this_marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.mapflag));
-
-
 
 
                     }else if(locationName.length() > 0){
@@ -323,18 +320,24 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
             storeList = null;
+//                StoreGetAllTask task = new StoreGetAllTask();
+//                task.setListener(new StoreGetAllTask.Listener() {
+//                    @Override
+//                    public void onGetStoresDone(List<StoreVO> storeVOs) {
+//                        storeList = storeVOs;
+//                        doSomething();
+//                    }
+//                });
+//                task.execute(url);
 
-
-                StoreGetAllTask task = new StoreGetAllTask();
-                task.setListener(new StoreGetAllTask.Listener() {
-                    @Override
-                    public void onGetStoresDone(List<StoreVO> storeVOs) {
-                        storeList = storeVOs;
-                        doSomething();
-                    }
-                });
-                task.execute(url);
-                //storeList = new StoreGetAllTask().execute(url).get();
+            try {
+                storeList = new StoreGetAllTask().execute(url).get();
+                doSomething();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
 
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

@@ -54,13 +54,13 @@ public class StoreGetAllTask extends AsyncTask<Object,Integer,List<StoreVO>>{
     }
 
 
-    @Override
-    protected void onPostExecute(List<StoreVO> storeVOs) {
-        super.onPostExecute(storeVOs);
-        Log.d(TAG, "onPostExecute: storeVOs : "+storeVOs);
-        Log.d(TAG, "onPostExecute: listener : "+listener);
-        listener.onGetStoresDone(storeVOs);
-    }
+//    @Override
+//    protected void onPostExecute(List<StoreVO> storeVOs) {
+//        super.onPostExecute(storeVOs);
+//        Log.d(TAG, "onPostExecute: storeVOs : "+storeVOs);
+//        Log.d(TAG, "onPostExecute: listener : "+listener);
+//        listener.onGetStoresDone(storeVOs);
+//    }
 
     private String getRemoteData(String url, String jsonOut) throws IOException {
         StringBuilder jsonIn = new StringBuilder();
