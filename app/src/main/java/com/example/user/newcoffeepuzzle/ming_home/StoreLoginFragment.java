@@ -50,7 +50,7 @@ public class StoreLoginFragment extends Fragment{
                         Common_ming.showToast(getContext(),R.string.Login_null);
                     }else {
                         String store_id = null;
-                            if(login_storeVO.getStore_acct().equals(edStore_acct)){
+                            if(login_storeVO.getStore_acct().equals(userStore_acct)){
                                 store_id = login_storeVO.getStore_id();
                         }
                         //將store_id寫入profile

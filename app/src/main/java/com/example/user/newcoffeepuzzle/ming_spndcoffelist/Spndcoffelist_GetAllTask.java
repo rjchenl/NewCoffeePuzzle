@@ -21,15 +21,17 @@ import java.util.List;
 
 public class Spndcoffelist_GetAllTask extends AsyncTask<Object,Integer,List<SpndcoffelistVO>> {
     private final static String TAG = "Spndcoffelist_GetAllTask";
-    private final static String ACTION = "getAll";
+    private final static String ACTION = "getStore";
 
     @Override
     protected List<SpndcoffelistVO> doInBackground(Object[] params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
+        String store_id = params[1].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
+        jsonObject.addProperty("store_id", store_id);
 
 
         try {

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_Fragment;
+import com.example.user.newcoffeepuzzle.ming_QRin.QRin_Fragment;
 import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 
 public class StoreActivity extends AppCompatActivity {
@@ -64,6 +65,10 @@ public class StoreActivity extends AppCompatActivity {
                             switchFragment(fragment);
                             setTitle("寄杯");
                             break;
+                        case R.id.QRin:
+                            fragment = new QRin_Fragment();
+                            switchFragment(fragment);
+                            setTitle("掃描器");
                         default:
 //                            store_Frame();
                             break;

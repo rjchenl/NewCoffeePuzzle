@@ -1,24 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#cceec7a0">
+
+    <TextView
+        android:id="@+id/LIST_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯編號："
+        android:textSize="16dp" />
 
     <TextView
         android:id="@+id/list_id"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="寄杯編號"/>
+        android:text="寄杯編號："
+        android:textSize="16dp"
+        android:layout_toRightOf="@+id/LIST_ID"/>
+
+    <TextView
+        android:id="@+id/SPN_MEMID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員編號："
+        android:textSize="16dp"
+        android:layout_below="@+id/LIST_ID"/>
 
     <TextView
         android:id="@+id/spn_memId"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="會員編號："/>
+        android:text="會員編號："
+        android:textSize="16dp"
+        android:layout_below="@+id/list_id"
+        android:layout_toRightOf="@+id/SPN_MEMID"/>
+
+    <TextView
+        android:id="@+id/SPN_MEM_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱："
+        android:textSize="16dp"
+        android:layout_below="@+id/SPN_MEMID"/>
+
+    <TextView
+        android:id="@+id/spn_mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱："
+        android:textSize="16dp"
+        android:layout_below="@+id/spn_memId"
+        android:layout_toRightOf="@+id/SPN_MEM_NAME"/>
+
+    <TextView
+        android:id="@+id/SPND_PROD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯商品："
+        android:textSize="16dp"
+        android:layout_below="@+id/SPN_MEM_NAME"/>
+
+    <TextView
+        android:id="@+id/spnd_prod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯商品："
+        android:textSize="16dp"
+        android:layout_below="@+id/spn_mem_name"
+        android:layout_toRightOf="@+id/SPND_PROD"/>
+
+    <TextView
+        android:id="@+id/SPN_NUMBER"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剩餘杯數："
+        android:textSize="16dp"
+        android:layout_below="@+id/SPND_PROD"/>
 
     <TextView
         android:id="@+id/spn_number"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="剩餘杯數："/>
+        android:text="剩餘杯數："
+        android:textSize="16dp"
+        android:layout_below="@+id/spnd_prod"
+        android:layout_toRightOf="@+id/SPN_NUMBER"/>
 
-</LinearLayout>
+</RelativeLayout>
