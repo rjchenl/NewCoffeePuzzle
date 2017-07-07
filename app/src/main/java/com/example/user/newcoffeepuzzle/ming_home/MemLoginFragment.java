@@ -1,8 +1,12 @@
 package com.example.user.newcoffeepuzzle.ming_home;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +25,14 @@ import com.example.user.newcoffeepuzzle.rjchenl_member.MemberGetAllTask;
 import com.example.user.newcoffeepuzzle.rjchenl_member.MemberVO;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
+import java.util.HashSet;
 import java.util.List;
-
-
+import java.util.Set;
 
 
 public class MemLoginFragment extends Fragment{
     private static final String TAG = "MemLoginFragment";
+    private static final int REQ_PERMISSIONS = 0;
 
     private EditText edmember_acct;
     private EditText edmember_psw;
@@ -44,6 +49,8 @@ public class MemLoginFragment extends Fragment{
         memLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                askPermission();
                 String userMemACCT = edmember_acct.getText().toString();
                 String userMemPSW = edmember_psw.getText().toString();
                 String mem_id = null;
@@ -77,6 +84,27 @@ public class MemLoginFragment extends Fragment{
         });
 
         return view;
+    }
+
+    private void askPermission() {
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        Set<String> permissionsRequest = new HashSet<>();
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(getActivity(), permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                permissionsRequest.add(permission);
+            }
+        }
+
+        if (!permissionsRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    permissionsRequest.toArray(new String[permissionsRequest.size()]),
+                    REQ_PERMISSIONS);
+        }
     }
 
     private void findViews_Member(View view) {
