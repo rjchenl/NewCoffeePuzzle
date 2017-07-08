@@ -10,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
@@ -42,11 +45,17 @@ public class StoreFragment extends Fragment{
     private boolean isTodayOpen = false;
     private String mem_id;
     private Spinner spinner_item;
-    private LinearLayout itemSelected;
     final List<String> selectedItemList = new ArrayList<>();
     private Button btSubmit_buytakeout;
     private List<ProductVO> productVOList = null;
     private List<StoreVO> storeList = null;
+    private ListView lvStoreitem;
+    private String item_selected;
+    private String item_selected_price;
+    private List<ProductVO> shoopingVOList;
+    private int temp_inttotal;
+    private TextView tvtotal;
+
 
     @Override
     public void onAttach(Context context) {
@@ -76,8 +85,13 @@ public class StoreFragment extends Fragment{
                              Bundle savedInstanceState){
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo,container,false);
         spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
-        itemSelected = (LinearLayout) view.findViewById(R.id.itemSelected);
         btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
+        lvStoreitem = (ListView) view.findViewById(R.id.lvStoreitem);
+        tvtotal = (TextView) view.findViewById(R.id.tvtotal);
+
+
+
+
 
         putCheckItems(view);
         putStorePhoto(view);
@@ -88,6 +102,8 @@ public class StoreFragment extends Fragment{
         return view;
     }
 
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -95,12 +111,7 @@ public class StoreFragment extends Fragment{
         getStoreVOList();
         getProductVOList();
 
-        //計算總金額顯示在TextView total上
-        for(ProductVO productvo : productVOList){
-            //得到商品名稱
-            String product_name = productvo.getProd_name();
-            Integer prodct_price = productvo.getProd_price();
-        }
+
     }
 
 
@@ -312,6 +323,8 @@ public class StoreFragment extends Fragment{
         }
     }
 
+    Map<String,String> item_price_map= new HashMap<>();
+
     private void getProductVOList(){
         String store_name = store.getStore_name();
 
@@ -329,49 +342,176 @@ public class StoreFragment extends Fragment{
             if(productVOList == null || productVOList.isEmpty()){
                 Common_RJ.showToast(getActivity(),"No productVOList found");
             }else{
-                //前置作業 將array裡放入值
+                //前置作業 將可外帶外送的商品放入SpinnerView
                 String[] items = new String[productVOList.size()];
                 int i =0;
                 for(ProductVO productVO : productVOList){
                     String product_name = productVO.getProd_name();
+                    String product_price = String.valueOf(productVO.getProd_price());
+
+                    //順便把Mapping 關係存放起來
+                    item_price_map.put(product_name,product_price);
                     items[i] = product_name;
                     i = i+1;
+
                 }
-                //放入剛剛的值
+                //把商品名稱放入spinner
                 ArrayAdapter<String> adapterPlace = new ArrayAdapter<>(getActivity(),
-                        android.R.layout.simple_spinner_item,items);
-                //設定Layout
+                        android.R.layout.simple_spinner_item, items);
                 adapterPlace
                         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
                 spinner_item.setAdapter(adapterPlace);
                 spinner_item.setSelection(0, true);
 
 
+                shoopingVOList = new ArrayList<>();
+
+                //按下選單後要發生的事
                 Spinner.OnItemSelectedListener listener = new Spinner.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        TextView textView = new TextView(getActivity());
-                        textView.setText(parent.getItemAtPosition(position).toString());
-                        //把要買的東西放在list存起來
-                        selectedItemList.add(textView.getText().toString());
-                        itemSelected.addView(textView);
+                        //在listView 上新增選到的東西
+                        item_selected = parent.getItemAtPosition(position).toString();
+                        item_selected_price = item_price_map.get(item_selected);
+                        
+
+                        shoopingVOList.add(new ProductVO(item_selected,Integer.valueOf(item_selected_price)));
+
+                        //顯示在listView上
+                        lvStoreitem.setAdapter(new TakeOutItemAdapter(getActivity(), shoopingVOList));
+
+                        //設定總價 = 取得現有所有單價並加總
+                        temp_inttotal = temp_inttotal+Integer.parseInt(item_selected_price);
+                        tvtotal.setText(String.valueOf(temp_inttotal));
+
+
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
-                        TextView textView = new TextView(getActivity());
-                        textView.setText("Nothing selected !!");
-                        itemSelected.removeAllViews();
+
                     }
                 };
-
+                //設定Listener在商品選單上
                 spinner_item.setOnItemSelectedListener(listener);
+
+
+
+
+
+
+
 
 
                 }
             }
         }
+
+
+    private class TakeOutItemAdapter extends BaseAdapter{
+        Context context;
+        List<ProductVO> shoopingVOList;
+        
+
+        public TakeOutItemAdapter(Context context, List<ProductVO> shoopingVOList) {
+            this.context = context;
+            this.shoopingVOList = shoopingVOList;
+        }
+
+        @Override
+        public int getCount() {
+
+            return shoopingVOList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return shoopingVOList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            int number;
+
+
+            if(convertView == null){
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+                convertView = layoutInflater.inflate(R.layout.rj_store_takeout_itemview,parent,false);
+            }
+
+            final ProductVO shopingVO = shoopingVOList.get(position);
+
+            TextView tv_takeout_item_name = (TextView) convertView.findViewById(R.id.tv_takeout_item_name);
+            tv_takeout_item_name.setText(shopingVO.getProd_name());
+
+            final TextView tv_cup = (TextView) convertView.findViewById(R.id.tv_cup);
+            tv_cup.setText(String.valueOf(shopingVO.getProd_price()));
+
+
+
+
+            ImageView add_item_count = (ImageView) convertView.findViewById(R.id.add_item_count);
+            ImageView minus_item_count = (ImageView) convertView.findViewById(R.id.minus_item_count);
+            final TextView countOfCup = (TextView) convertView.findViewById(R.id.countOfCup);
+            final TextView tvsubtotal = (TextView) convertView.findViewById(R.id.subtotal);
+
+            //temp_inttotal
+            //tvtotal
+
+            //Spinner選出來後預設一個item的價格為單價
+            tvsubtotal.setText(String.valueOf(shopingVO.getProd_price()));
+
+
+
+            //加減符號的設定
+            add_item_count.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    int countofcups = Integer.parseInt((countOfCup.getText().toString()));
+                    countofcups = countofcups +1;
+                    countOfCup.setText(String.valueOf(countofcups));
+
+                    //單項商品小計  單價 x 杯數
+                    int price = shopingVO.getProd_price();
+                    int subtotal = price*countofcups;
+                    tvsubtotal.setText(String.valueOf(subtotal));
+
+                    temp_inttotal = temp_inttotal+price;
+                    tvtotal.setText(String.valueOf(temp_inttotal));
+                }
+            });
+
+            minus_item_count.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int countofcups = Integer.parseInt((countOfCup.getText().toString()));
+                    countofcups = countofcups-1;
+                    countOfCup.setText(String.valueOf(countofcups));
+
+                    //單項商品小計  單價 x 杯數
+                    int price = shopingVO.getProd_price();
+                    int subtotal = price*countofcups;
+                    tvsubtotal.setText(String.valueOf(subtotal));
+
+                    temp_inttotal = temp_inttotal-price;
+                    tvtotal.setText(String.valueOf(temp_inttotal));
+                }
+            });
+
+
+
+
+
+
+            return convertView;
+        }
+    }
 
 
 

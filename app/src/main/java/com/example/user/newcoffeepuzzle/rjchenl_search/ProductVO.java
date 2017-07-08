@@ -26,10 +26,13 @@ public class ProductVO implements Serializable {
 
 	public ProductVO(){}
 
+    public ProductVO(String prod_name, Integer prod_price) {
+        this.prod_name = prod_name;
+        this.prod_price = prod_price;
+    }
 
-
-	public ProductVO(String prod_id, String store_id, String prod_name, String cate_id, Integer prod_price,
-					 Integer prod_category, byte[] prod_img, Integer prod_amt, Integer prod_launch, String store_name) {
+    public ProductVO(String prod_id, String store_id, String prod_name, String cate_id, Integer prod_price,
+                     Integer prod_category, byte[] prod_img, Integer prod_amt, Integer prod_launch, String store_name) {
 		super();
 		this.prod_id = prod_id;
 		this.store_id = store_id;
