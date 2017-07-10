@@ -54,11 +54,14 @@ public class StoreFragment extends Fragment{
     private ListView lvStoreitem;
     private String item_selected;
     private String item_selected_price;
-    private List<ProductVO> shoopingVOList;
     private int temp_inttotal;
     private TextView tvtotal;
     private Button btSubmit_buytakeout1;
     private String item_selected_id;
+    private ProductVO shopingVO;
+    private List<OrderdetailVO> orderdetailvolist;
+
+
 
 
     @Override
@@ -80,6 +83,7 @@ public class StoreFragment extends Fragment{
         Bundle bundle = getArguments();
         store = (StoreVO) bundle.getSerializable("StoreVO");
         isTodayOpenCheck();
+        orderdetailvolist = new ArrayList<>();
 
 
     }
@@ -95,6 +99,19 @@ public class StoreFragment extends Fragment{
 
         //按下送出選單後
         btSubmit_buytakeout1 = (Button) view.findViewById(R.id.btSubmit_buytakeout);
+        onClickSubmitButton();
+
+
+        putCheckItems(view);
+        putStorePhoto(view);
+        myFavoriateFunction(view);
+
+
+
+        return view;
+    }
+
+    private void onClickSubmitButton() {
         btSubmit_buytakeout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,15 +131,20 @@ public class StoreFragment extends Fragment{
                 int score_seller = 1;
 
                 //新增訂單詳情列表
-                List<OrderdetailVO> orderdetailvolist= new ArrayList<>();
-                //取得購買數量
-                orderdetailvolist.add(new OrderdetailVO(item_selected_id,item_selected,Integer.valueOf(item_selected_price),Integer.valueOf(item_selected_price)));
-
+                for(OrderdetailVO vo : orderdetailvolist){
+                    Log.d(TAG, "onClick: vo.getProd_name() : "+vo.getProd_name());
+                    Log.d(TAG, "onClick: vo.getProd_price() : "+vo.getProd_price());
+                    Log.d(TAG, "onClick: vo.setDetail_amt() : "+vo.getDetail_amt());
+                }
 
 
 
                 try {
+
+                    //送出訂單
                     new OrderListInsertTask().execute(url,mem_id,store_id,ord_total,ord_pick,ord_add,ord_shipping,ord_time,score_seller).get();
+                    //送出訂單名細
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -132,18 +154,7 @@ public class StoreFragment extends Fragment{
 
             }
         });
-
-
-
-        putCheckItems(view);
-        putStorePhoto(view);
-        myFavoriateFunction(view);
-
-
-
-        return view;
     }
-
 
 
     @Override
@@ -366,7 +377,7 @@ public class StoreFragment extends Fragment{
 
     Map<String,String> item_price_map= new HashMap<>();
     Map<String,String> item_prodID_map = new HashMap<>();
-    Map<String,Integer> item_count_map = new HashMap<>();
+
 
     private void getProductVOList(){
         String store_name = store.getStore_name();
@@ -401,6 +412,8 @@ public class StoreFragment extends Fragment{
                     //再把product_name:product_ID的Mapping關係存起來
                     item_prodID_map.put(product_name,product_ID);
 
+
+
                     //將商品名稱指定給矩陣好放入spinnerView的adapter
                     items[i] = product_name;
                     i = i+1;
@@ -415,7 +428,6 @@ public class StoreFragment extends Fragment{
                 spinner_item.setSelection(0, true);
 
 
-                shoopingVOList = new ArrayList<>();
 
                 //按下選單後要發生的事
                 Spinner.OnItemSelectedListener listener = new Spinner.OnItemSelectedListener() {
@@ -426,13 +438,20 @@ public class StoreFragment extends Fragment{
                         item_selected_price = item_price_map.get(item_selected);
                         item_selected_id = item_prodID_map.get(item_selected);
 
-                        shoopingVOList.add(new ProductVO(item_selected,Integer.valueOf(item_selected_price),item_selected_id));
+                        //ordertail
+                        OrderdetailVO orderdetailvo = new OrderdetailVO();
+                        orderdetailvo.setOrd_id(item_selected_id);
+                        orderdetailvo.setProd_name(item_selected);
+                        orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
 
+                        //放入orderdetailvolist
 
-
+                        orderdetailvolist.add(orderdetailvo);
 
                         //顯示在listView上
-                        lvStoreitem.setAdapter(new TakeOutItemAdapter(getActivity(), shoopingVOList));
+                        lvStoreitem.setAdapter(new TakeOutItemAdapter(getActivity(), orderdetailvolist));
+
+
 
                         //設定總價 = 取得現有所有單價並加總
                         temp_inttotal = temp_inttotal+Integer.parseInt(item_selected_price);
@@ -457,23 +476,24 @@ public class StoreFragment extends Fragment{
 
     private class TakeOutItemAdapter extends BaseAdapter{
         Context context;
-        List<ProductVO> shoopingVOList;
-        
+        List<OrderdetailVO> orderdetailvolist;
 
-        public TakeOutItemAdapter(Context context, List<ProductVO> shoopingVOList) {
+
+
+        public TakeOutItemAdapter(Context context, List<OrderdetailVO> orderdetailvolist) {
             this.context = context;
-            this.shoopingVOList = shoopingVOList;
+            this.orderdetailvolist = orderdetailvolist;
         }
 
         @Override
         public int getCount() {
 
-            return shoopingVOList.size();
+            return orderdetailvolist.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return shoopingVOList.get(position);
+            return orderdetailvolist.get(position);
         }
 
         @Override
@@ -483,7 +503,7 @@ public class StoreFragment extends Fragment{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            int number;
+
 
 
             if(convertView == null){
@@ -491,13 +511,14 @@ public class StoreFragment extends Fragment{
                 convertView = layoutInflater.inflate(R.layout.rj_store_takeout_itemview,parent,false);
             }
 
-            final ProductVO shopingVO = shoopingVOList.get(position);
+            final OrderdetailVO orderdetailvo = orderdetailvolist.get(position);
+
 
             TextView tv_takeout_item_name = (TextView) convertView.findViewById(R.id.tv_takeout_item_name);
-            tv_takeout_item_name.setText(shopingVO.getProd_name());
+            tv_takeout_item_name.setText(orderdetailvo.getProd_name());
 
             final TextView tv_cup = (TextView) convertView.findViewById(R.id.tv_cup);
-            tv_cup.setText(String.valueOf(shopingVO.getProd_price()));
+            tv_cup.setText(String.valueOf(orderdetailvo.getProd_price()));
 
 
 
@@ -508,10 +529,12 @@ public class StoreFragment extends Fragment{
 
 
             //Spinner選出來後預設一個item的價格為單價
-            tvsubtotal.setText(String.valueOf(shopingVO.getProd_price()));
+            tvsubtotal.setText(String.valueOf(orderdetailvo.getProd_price()));
 
 
-            final int price = shopingVO.getProd_price();
+            final int price = orderdetailvo.getProd_price();
+
+
             //加減符號的設定
             add_item_count.setOnClickListener(new View.OnClickListener() {
 
@@ -519,15 +542,17 @@ public class StoreFragment extends Fragment{
                 public void onClick(View v) {
                     int countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
                     countofcups = countofcups +1;
+                    orderdetailvo.setDetail_amt(countofcups);
                     tvcountOfCup.setText(String.valueOf(countofcups));
 
-                    //單項商品小計  單價 x 杯數
 
+                    //單項商品小計  單價 x 杯數
                     int subtotal = price*countofcups;
                     tvsubtotal.setText(String.valueOf(subtotal));
 
                     temp_inttotal = temp_inttotal+price;
                     tvtotal.setText(String.valueOf(temp_inttotal));
+
                 }
             });
 
@@ -536,10 +561,11 @@ public class StoreFragment extends Fragment{
                 public void onClick(View v) {
                     Integer countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
                     countofcups = countofcups-1;
+                    orderdetailvo.setDetail_amt(countofcups);
                     tvcountOfCup.setText(String.valueOf(countofcups));
 
+
                     //單項商品小計  單價 x 杯數
-                    int price = shopingVO.getProd_price();
                     int subtotal = price*countofcups;
                     tvsubtotal.setText(String.valueOf(subtotal));
 
@@ -547,6 +573,7 @@ public class StoreFragment extends Fragment{
                     tvtotal.setText(String.valueOf(temp_inttotal));
                 }
             });
+
 
             return convertView;
         }
