@@ -22,31 +22,24 @@ import java.util.List;
  * Created by user on 2017/7/8.
  */
 
-public class OrderListInsertTask extends AsyncTask<Object,Integer,List<OrderListVO>> {
+public class OrderListInsertTask extends AsyncTask<Object,Integer,Void> {
     private final static String TAG = "OrderListInsertTask";
     private final static String ACTION = "orderListInsert";
 
 
 
     @Override
-    protected List<OrderListVO> doInBackground(Object... params) {
+    protected  Void doInBackground(Object... params) {
         String url = params[0].toString();
-        String mem_id= params[1].toString();
-        String store_id = params[2].toString();
-        Integer ord_total = (Integer) params[3];
-        Integer ord_pick = (Integer) params[4];
-        String ord_add = params[5].toString();
-        Integer ord_shipping = (Integer) params[6];
-        Timestamp ord_time = (Timestamp) params[7];
-        Integer score_seller = (Integer) params[8];
+        OrderListVO orderlistvo = (OrderListVO) params[1];
+        List<OrderdetailVO> orderdetailvoList = (List<OrderdetailVO>) params[2];
 
 
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-
-        OrderListVO orderlistvo = new OrderListVO(mem_id,store_id,ord_total,ord_pick,ord_add,ord_shipping,ord_time,score_seller);
         jsonObject.addProperty("OrderListVO",new Gson().toJson(orderlistvo));
+        jsonObject.addProperty("OrderdtailVOList",new Gson().toJson(orderdetailvoList));
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -56,11 +49,7 @@ public class OrderListInsertTask extends AsyncTask<Object,Integer,List<OrderList
             return null;
         }
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<OrderListVO>>() {
-        }.getType();
-
-        return gson.fromJson(jsonIn, listType);
+      return null;
     }
 
 

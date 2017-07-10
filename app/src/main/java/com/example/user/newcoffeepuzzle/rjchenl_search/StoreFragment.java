@@ -24,6 +24,7 @@ import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.FavoriateStoreIns
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListInsertTask;
+import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListVO;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderdetailVO;
 
 import java.sql.Timestamp;
@@ -130,20 +131,21 @@ public class StoreFragment extends Fragment{
                 String ord_add="";
                 int score_seller = 1;
 
+                OrderListVO orderlistvo = new OrderListVO(mem_id,store_id,ord_total,ord_pick,ord_add,ord_shipping,ord_time,score_seller);
+
                 //新增訂單詳情列表
                 for(OrderdetailVO vo : orderdetailvolist){
                     Log.d(TAG, "onClick: vo.getProd_name() : "+vo.getProd_name());
                     Log.d(TAG, "onClick: vo.getProd_price() : "+vo.getProd_price());
                     Log.d(TAG, "onClick: vo.setDetail_amt() : "+vo.getDetail_amt());
+                    Log.d(TAG, "onClick: vo.getProd_id() : "+vo.getProd_id());
+
                 }
-
-
 
                 try {
 
-                    //送出訂單
-                    new OrderListInsertTask().execute(url,mem_id,store_id,ord_total,ord_pick,ord_add,ord_shipping,ord_time,score_seller).get();
-                    //送出訂單名細
+                    //送出訂單 同時送出 訂單名細
+                    new OrderListInsertTask().execute(url,orderlistvo,orderdetailvolist).get();
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
