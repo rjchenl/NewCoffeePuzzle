@@ -109,7 +109,7 @@
 
 
     <Button
-        android:text="送出"
+        android:text="送出訂單"
         android:id="@+id/btSubmit_buytakeout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

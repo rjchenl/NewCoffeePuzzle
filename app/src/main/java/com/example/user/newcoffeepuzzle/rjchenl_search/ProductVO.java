@@ -26,9 +26,10 @@ public class ProductVO implements Serializable {
 
 	public ProductVO(){}
 
-    public ProductVO(String prod_name, Integer prod_price) {
+    public ProductVO(String prod_name, Integer prod_price,String prod_id) {
         this.prod_name = prod_name;
         this.prod_price = prod_price;
+		this.prod_id = prod_id;
     }
 
     public ProductVO(String prod_id, String store_id, String prod_name, String cate_id, Integer prod_price,
