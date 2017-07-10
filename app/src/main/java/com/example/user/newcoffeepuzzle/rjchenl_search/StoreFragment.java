@@ -2,7 +2,6 @@ package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,7 +24,6 @@ import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.FavoriateStoreIns
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListInsertTask;
-import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListVO;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderdetailVO;
 
 import java.sql.Timestamp;
@@ -505,7 +503,7 @@ public class StoreFragment extends Fragment{
 
             ImageView add_item_count = (ImageView) convertView.findViewById(R.id.add_item_count);
             ImageView minus_item_count = (ImageView) convertView.findViewById(R.id.minus_item_count);
-            final TextView countOfCup = (TextView) convertView.findViewById(R.id.countOfCup);
+            final TextView tvcountOfCup = (TextView) convertView.findViewById(R.id.countOfCup);
             final TextView tvsubtotal = (TextView) convertView.findViewById(R.id.subtotal);
 
 
@@ -513,18 +511,18 @@ public class StoreFragment extends Fragment{
             tvsubtotal.setText(String.valueOf(shopingVO.getProd_price()));
 
 
-
+            final int price = shopingVO.getProd_price();
             //加減符號的設定
             add_item_count.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    Integer countofcups = Integer.parseInt((countOfCup.getText().toString()));
+                    int countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
                     countofcups = countofcups +1;
-                    countOfCup.setText(String.valueOf(countofcups));
+                    tvcountOfCup.setText(String.valueOf(countofcups));
 
                     //單項商品小計  單價 x 杯數
-                    int price = shopingVO.getProd_price();
+
                     int subtotal = price*countofcups;
                     tvsubtotal.setText(String.valueOf(subtotal));
 
@@ -536,9 +534,9 @@ public class StoreFragment extends Fragment{
             minus_item_count.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer countofcups = Integer.parseInt((countOfCup.getText().toString()));
+                    Integer countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
                     countofcups = countofcups-1;
-                    countOfCup.setText(String.valueOf(countofcups));
+                    tvcountOfCup.setText(String.valueOf(countofcups));
 
                     //單項商品小計  單價 x 杯數
                     int price = shopingVO.getProd_price();
