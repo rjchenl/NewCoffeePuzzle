@@ -39,7 +39,7 @@ public class StoreGetProductTask extends AsyncTask<Object,Integer,List<ProductVO
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
-            Log.d(TAG, "doInBackground: jsonIn : "+jsonIn);
+            Log.d(TAG, "doInBackground: jsonIn07111 : "+jsonIn);
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             return  null;

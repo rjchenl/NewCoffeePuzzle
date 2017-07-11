@@ -405,6 +405,7 @@ public class StoreFragment extends Fragment{
                     String product_name = productVO.getProd_name();
                     String product_price = String.valueOf(productVO.getProd_price());
                     String product_ID = productVO.getProd_id();
+//                    Log.d(TAG, "getProductVOList: product_ID : "+);
 
 
 
@@ -439,12 +440,15 @@ public class StoreFragment extends Fragment{
                         item_selected = parent.getItemAtPosition(position).toString();
                         item_selected_price = item_price_map.get(item_selected);
                         item_selected_id = item_prodID_map.get(item_selected);
+                        Log.d(TAG, "onItemSelected: item_selected_id : "+item_selected_id);
 
                         //ordertail
                         OrderdetailVO orderdetailvo = new OrderdetailVO();
-                        orderdetailvo.setOrd_id(item_selected_id);
+                        orderdetailvo.setProd_id(item_selected_id);
                         orderdetailvo.setProd_name(item_selected);
                         orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
+                        Log.d(TAG, "onItemSelected: orderdetailvo.getProd_id : "+orderdetailvo.getProd_id());
+
 
                         //放入orderdetailvolist
 
