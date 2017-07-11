@@ -53,6 +53,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private EditText etLocationName;
     private Button btSubmit;
+    private static final int REQ_PERMISSIONS = 0;
     // 定位管理器
     private LocationManager mLocationManager;
     // 定位監聽器
@@ -64,12 +65,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public final String LM_GPS = LocationManager.GPS_PROVIDER;
     public final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;
     private static List<StoreVO> storeList;
+    private final SupportMapFragment mapp = new SupportMapFragment();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mapsview = inflater.inflate(R.layout.rj_activity_maps, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View mapsview = inflater.inflate(R.layout.rj_fragmen_maps, container, false);
+
+        setUpLocationManager();
         findViews();
+        replaceFragmentToContainer(mapp);
         //載入地理管理器和監聽器
         inflateLocationManager();
         openGPS(getActivity());
@@ -79,7 +85,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
-        setUpLocationManager();
+
 
     }
 
@@ -117,20 +123,29 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        mapp.getMapAsync(this);
     }
 
 
 
     private void switchFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction =
-                getActivity().getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
+        SearchActivity activity = (SearchActivity) getActivity();
+        activity.switchFragment(fragment);
+    }
 
-        fragmentTransaction.replace(R.id.body, fragment);
+    private void replaceFragmentToContainer(Fragment fragment){
+        //使用動態新增Fragment 的方式
+        //因為本身是在Fragment 上要置換另一個fragment 需要getChildFragmentManager幫忙
+        FragmentTransaction fragmentTransaction =
+                getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.Mapcontainer, fragment);
         fragmentTransaction.commit();
     }
+
+
+
+
 
     @Override
     public void onStop() {
@@ -145,31 +160,37 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             inflateLocationManager();
         }
 
-        //授權
+        //前一頁已經要了
+//        askPermission();
+
+
+    }
+
+    private void askPermission() {
         String[] permissions = {
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         };
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION)==
-                PackageManager.PERMISSION_GRANTED) {
-            //如果有授權就做...
-        }
+
         Set<String> permissionsRequest = new HashSet<>();
-        boolean hasPermission = true;
         for (String permission : permissions) {
             int result = ContextCompat.checkSelfPermission(getActivity(), permission);
             if (result != PackageManager.PERMISSION_GRANTED) {
-                hasPermission = false;
                 permissionsRequest.add(permission);
             }
-            // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
-            mLocationManager
-                    .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
-            mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
-                    mLocationListener);
-
-
         }
+
+        if (!permissionsRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    permissionsRequest.toArray(new String[permissionsRequest.size()]),
+                    REQ_PERMISSIONS);
+        }
+
+        // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
+        mLocationManager
+                .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
+        mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
+                mLocationListener);
     }
 
 
@@ -183,10 +204,9 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void setSubmitLisntener() {
+        Log.d(TAG, "setSubmitLisntener: enter");
 
         Boolean showSearchMark=true;
-
-
 
         //search btsubmit listener
         Button submitButton = (Button) getActivity().findViewById(R.id.btSubmit);
@@ -197,11 +217,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 //先清空 再增加原本的
                 map.clear();
-                addStoresInfo();
+                Log.d(TAG, "onClick: storeList RR : "+storeList);
+//                addStoresInfo();
+                putMarkerOnMap();
 
                 EditText etLocationName = (EditText) getActivity().findViewById(R.id.etLocationName);
                 String locationName = etLocationName.getText().toString().trim();
-
+                Log.d(TAG, "onClick:storeList :  "+storeList);
                 for (StoreVO storevo : storeList){
                     String store_name = storevo.getStore_name();
                     String store_add = storevo.getStore_add();
@@ -219,8 +241,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                         //mark要變色 顯示該店家//hlposition
 
                         Marker this_marker =map_forsearch.get(storevo);
-                        this_marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.searchcoffeemarker));
-
+                        this_marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.mapflag));
 
 
 
@@ -295,7 +316,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
         //預設位置
-        LatLng position = new LatLng(24.9677420, 121.1917000);
+        LatLng position = new LatLng(25.039071, 121.548879);
 
 //        移動攝影機到預設位置
         map.moveCamera(CameraUpdateFactory.newLatLng(position));
@@ -312,31 +333,28 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     private void addStoresInfo() {
         if(Common_RJ.networkConnected(getActivity())){
             String url = Common_RJ.URL+"StoreServlet";
-            storeList = null;
+//            storeList = null;
+                StoreGetAllTask task = new StoreGetAllTask();
+                task.setListener(new StoreGetAllTask.Listener() {
+                    @Override
+                    public void onGetStoresDone(List<StoreVO> storeVOs) {
+                        storeList = storeVOs;
+                        putMarkerOnMap();
+                    }
+                });
+                task.execute(url);
 
-            try {
-                //取得物件資料
-                storeList = new StoreGetAllTask().execute(url).get();
-            } catch (Exception e) {
-                Log.d(TAG,e.toString());
-            }
-            if(storeList == null || storeList.isEmpty()){
-                Common_RJ.showToast(getActivity(),"no storeList found");
-            }else{
-                //已有資料  開始連結view
-                for (StoreVO stvo : storeList){
-                    LatLng  store_position = new LatLng(stvo.getLatitude(),stvo.getLongitude());
-                    Marker marker = map.addMarker(new MarkerOptions()
-                            .title(stvo.getStore_name())
-                            .position(store_position)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
-                    );
-                    //把當下這一組(marker,storeVO)相對應的關係存放在map中
-                    markerMap.put(marker, stvo);
-                    //for search
-                    map_forsearch.put(stvo,marker);
-                }
-            }
+
+//            try {
+//                storeList = new StoreGetAllTask().execute(url).get();
+//                putMarkerOnMap();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+
+
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -348,10 +366,37 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("StoreVO", storevo);
                     storeFragment.setArguments(bundle);
+
                     switchFragment(storeFragment);
                     return false;
                 }
             });
+        }
+    }
+
+    private void putMarkerOnMap() {
+        Log.d(TAG, "putMarkerOnMap: storeList : "+storeList);
+        if(storeList == null || storeList.isEmpty()){
+            Common_RJ.showToast(getActivity(),"no storeList found");
+        }else{
+            //已有資料  開始連結view
+            Log.d(TAG, "addStoresInfo: step1");
+            for (StoreVO stvo : storeList){
+                Log.d(TAG, "addStoresInfo: stvo.getLatitude() : "+stvo.getLatitude());
+                Log.d(TAG, "addStoresInfo: stvo.getLongitude() : "+stvo.getLongitude());
+
+                LatLng store_position = new LatLng(stvo.getLatitude(),stvo.getLongitude());
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .title(stvo.getStore_name())
+                        .position(store_position)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
+                );
+                Log.d(TAG, "addStoresInfo: step2");
+                //把當下這一組(marker,storeVO)相對應的關係存放在map中
+                markerMap.put(marker, stvo);
+                //for search
+                map_forsearch.put(stvo,marker);
+            }
         }
     }
 

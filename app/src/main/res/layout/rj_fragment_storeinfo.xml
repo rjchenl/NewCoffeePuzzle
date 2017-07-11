@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:textSize="26sp"
         android:textStyle="bold"
-        android:text="XXX咖啡店"/>
+        android:text="XXX咖啡店"
+        android:layout_alignTop="@+id/like"
+        android:layout_toEndOf="@+id/like" />
     <TextView
         android:id="@+id/store_add"
         android:layout_margin="20dp"
@@ -31,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="今日營業"/>
+        android:text="現在營業"/>
     <CheckBox
         android:id="@+id/is_wifi"
         android:layout_below="@id/isOpen"
@@ -73,41 +75,78 @@
         android:layout_below="@+id/is_meal"
         android:textSize="18sp"
         android:layout_alignStart="@+id/is_meal" />
-    <ImageView
-        android:id="@+id/takePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/photo_camera"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/is_plug"
-        android:layout_alignStart="@+id/store_add"
-        android:layout_marginStart="13dp" />
+
     <ImageView
         android:id="@+id/like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/unlike"
-        android:layout_alignTop="@+id/takePhoto"
-        android:layout_toEndOf="@+id/is_wifi" />
+        android:src="@drawable/like"
+        android:layout_marginTop="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/store_add" />
 
-    <ImageView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/message"
-        android:layout_alignTop="@+id/like"
-        android:layout_alignEnd="@+id/is_dessert" />
 
     <ImageView
         android:id="@+id/store_img"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/default_image"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/is_plug"
-        android:layout_marginBottom="23dp" />
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/is_dessert"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/canBeTakeOut"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="提供外帶外送商品"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/store_add" />
 
 
+    <Button
+        android:text="送出"
+        android:id="@+id/btSubmit_buytakeout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/canBeTakeOut"
+        android:layout_toStartOf="@+id/store_img" />
 
+    <Spinner
+        android:layout_marginTop="80dp"
+        android:layout_below="@id/canBeTakeOut"
+        android:id="@+id/spinner_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </Spinner>
+    
+    <ListView
+        android:layout_below="@id/spinner_item"
+        android:id="@+id/lvStoreitem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/tvtotalWorld"
+        android:text="目前總計"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvtotal"
+        android:layout_alignBottom="@+id/tvtotal"
+        android:layout_alignStart="@+id/canBeTakeOut" />
+
+    <TextView
+        android:id="@+id/tvtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/store_img"
+        android:layout_toRightOf="@+id/tvtotalWorld"
+        android:layout_marginStart="18dp" />
 
 </RelativeLayout>

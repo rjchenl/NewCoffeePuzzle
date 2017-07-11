@@ -19,13 +19,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -58,9 +58,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rj_search_activity);
 
-        fragmentManager = getSupportFragmentManager();
-        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        fragmentManager = getSupportFragmentManager();
+//        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
         findViews();
         askPermissions();
@@ -129,6 +129,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch(item.getItemId()){
+                        case R.id.searchBar:
+                            initBody();
+                            break;
                         case R.id.browerActivities:
                             fragment = new ActivityListFragment();
                             switchFragment(fragment);
@@ -147,6 +150,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 }
             });
         }
+    }
+
+    private void detachFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.detach(fragment);
+        fragmentTransaction.commit();
     }
 
     private void initBody() {
@@ -174,11 +183,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    private void switchFragment(Fragment fragment) {
+    void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.replace(R.id.body, fragment,"fragment");
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -202,7 +212,30 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 //        return translateAnimation;
 //    }
 
+    private void addFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(fragment,"addFragment");
+        fragmentTransaction.commit();
+    }
 
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        Log.d(TAG, "onKeyDown: enter onkeydown");
+//        int count = getSupportFragmentManager().getBackStackEntryCount();
+//        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+//            Log.d(TAG, "onKeyDown: step2");
+//            FragmentManager manager = getSupportFragmentManager();
+//            Log.d(TAG, "onKeyDown: manager.getBackStackEntryCount() : "+manager.getBackStackEntryCount());
+//            if (manager.getBackStackEntryCount() > 0) {
+//                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+//                Log.e(TAG, "clearBackStack: " + first.getName());
+//                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                Log.d(TAG, "onKeyDown: iii");
+//            }
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     private void locationNameToMarker(String locationName){
         map.clear();
