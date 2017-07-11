@@ -25,8 +25,8 @@
             android:id="@+id/mysusCofee"
             android:title="我的寄杯"/>
         <item
-            android:id="@+id/takeOutorderIn"
-            android:title="瀏覽外帶外送店家"/>
+            android:id="@+id/orderStatusList"
+            android:title="我的訂單"/>
         <item
             android:id="@+id/traceOrder"
             android:title="memInfo"/>
