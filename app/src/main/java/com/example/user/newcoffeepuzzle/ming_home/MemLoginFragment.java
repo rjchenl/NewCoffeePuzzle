@@ -73,9 +73,21 @@ public class MemLoginFragment extends Fragment{
                         }
                         Intent intent = new Intent(getContext(),SearchActivity.class);
                         Profile profile = new Profile(getContext());
-
-                                //將mem_id寫入profile
+                        //將mem_id寫入profile
                         profile.setMemId(mem_id);
+                        profile.setMem_acct(login_memVO.getMem_acct());
+                        //姓名,電話,地址,信箱,點數
+                        profile.setMem_name(login_memVO.getMem_name());
+                        profile.setMem_tel(login_memVO.getMem_tel());
+                        profile.setMem_add(login_memVO.getMem_add());
+                        profile.setMem_email(login_memVO.getMem_email());
+                        profile.setMem_points(login_memVO.getMem_points());
+
+
+
+
+
+
                         startActivity(intent);
                     }
                 }else {

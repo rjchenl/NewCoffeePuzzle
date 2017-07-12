@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MyInfoFragent;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderStatusListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -147,6 +148,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             fragment = new OrderStatusListFragment();
                             switchFragment(fragment);
                             setTitle("我的訂單");
+                            break;
+                        case R.id.memberInfo:
+                            fragment = new MyInfoFragent();
+                            switchFragment(fragment);
+                            setTitle("會員資料");
                             break;
                         default:
                             initBody();

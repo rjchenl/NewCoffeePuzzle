@@ -6,7 +6,7 @@
             android:title="回到搜尋列表"/>
 
         <item
-            android:id="@+id/news"
+            android:id="@+id/memberInfo"
             android:title="@string/member_info"/>
         <item
             android:id="@+id/browerActivities"
