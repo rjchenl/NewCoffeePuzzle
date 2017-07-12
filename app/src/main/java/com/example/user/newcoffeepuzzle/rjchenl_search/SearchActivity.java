@@ -60,9 +60,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rj_search_activity);
 
-//        fragmentManager = getSupportFragmentManager();
-//        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
+
 
         findViews();
         askPermissions();
@@ -164,15 +162,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private void detachFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.detach(fragment);
-        fragmentTransaction.commit();
-    }
+
 
     private void initBody() {
-//        Intent intent = new Intent(this,SearchActivity.class);
-//        startActivity(intent);
+
         Fragment fragment = new GoogleMapFragment();
         switchFragment(fragment);
         setTitle("GoogleMap page");
@@ -184,7 +177,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUpActionBar() {
 
-        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用i
+        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -214,40 +207,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
 
 
-//    private Animation getTranslateAnimation() {
-//     detailStore_container
-//        float distance = parentView.getHeight()-parentView.getPaddingStart()-parentView.getPaddingEnd()-tvStoreName.getHeight();
-//        //看一下多長
-//        showToast(String.valueOf(distance));
-//        TranslateAnimation translateAnimation = new TranslateAnimation(0,0,300,600);
-//        translateAnimation.setDuration(1000);
-//        return translateAnimation;
-//    }
 
-    private void addFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(fragment,"addFragment");
-        fragmentTransaction.commit();
-    }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        Log.d(TAG, "onKeyDown: enter onkeydown");
-//        int count = getSupportFragmentManager().getBackStackEntryCount();
-//        if (keyCode == KeyEvent.KEYCODE_BACK ) {
-//            Log.d(TAG, "onKeyDown: step2");
-//            FragmentManager manager = getSupportFragmentManager();
-//            Log.d(TAG, "onKeyDown: manager.getBackStackEntryCount() : "+manager.getBackStackEntryCount());
-//            if (manager.getBackStackEntryCount() > 0) {
-//                FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
-//                Log.e(TAG, "clearBackStack: " + first.getName());
-//                manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                Log.d(TAG, "onKeyDown: iii");
-//            }
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
+
+
 
     private void locationNameToMarker(String locationName){
         map.clear();
