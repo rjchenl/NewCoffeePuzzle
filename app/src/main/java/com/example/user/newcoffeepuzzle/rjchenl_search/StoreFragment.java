@@ -125,7 +125,7 @@ public class StoreFragment extends Fragment{
                 String store_id = store.getStore_id();
                 //得到總金額
                 int  ord_total = temp_inttotal;
-                int ord_pick = 2;
+                int ord_pick = 3;
                 int ord_shipping = 1;
                 Timestamp ord_time = new Timestamp(System.currentTimeMillis());
                 String ord_add="";
