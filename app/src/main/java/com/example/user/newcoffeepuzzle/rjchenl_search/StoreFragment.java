@@ -176,61 +176,77 @@ public class StoreFragment extends Fragment{
 
         Calendar calendar = Calendar.getInstance();
         int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+        if(store != null){
 
-        if(weekDay== Calendar.WEDNESDAY){
+            if(weekDay== Calendar.WEDNESDAY){
 
-            int open = store.getWed_isopen();
-            if(open == 1){
-                Timestamp opentime = store.getWed_open();
-                Timestamp closetime = store.getWed_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
-            }
+                if(store != null && store.getWed_isopen() != null){
+                    int open = store.getWed_isopen();
+                    if(open == 1){
+                        Timestamp opentime = store.getWed_open();
+                        Timestamp closetime = store.getWed_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                    }
+                }
+            }else if(weekDay== Calendar.THURSDAY){
+                if(store.getThu_isopen() != null && store != null){
 
-        }else if(weekDay== Calendar.THURSDAY){
-            int open = store.getThu_isopen();
-            if(open == 1 ){
-                Timestamp opentime = store.getThu_open();
-                Timestamp closetime = store.getThu_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
+                    int open = store.getThu_isopen();
+                    if(open == 1 ){
+                        Timestamp opentime = store.getThu_open();
+                        Timestamp closetime = store.getThu_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                        }
 
-            }
+                }
 
-        }else if(weekDay == Calendar.FRIDAY){
-            int open = store.getFri_isopen();
-            if(open == 1 ){
-                Timestamp opentime = store.getFri_open();
-                Timestamp closetime = store.getFri_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
-            }
+            }else if(weekDay == Calendar.FRIDAY){
+                if(store.getFri_isopen() != null && store != null){
+                    int open = store.getFri_isopen();
+                    if(open == 1 ){
+                        Timestamp opentime = store.getFri_open();
+                        Timestamp closetime = store.getFri_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                    }
+                }
 
-        }else if(weekDay == Calendar.SATURDAY){
-            int open = store.getSat_isopen();
-            if(open == 1){
-                Timestamp opentime = store.getSat_open();
-                Timestamp closetime = store.getSat_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
-            }
+            }else if(weekDay == Calendar.SATURDAY){
+                if(store.getSat_isopen() != null && store != null){
+                    int open = store.getSat_isopen();
+                    if(open == 1){
+                        Timestamp opentime = store.getSat_open();
+                        Timestamp closetime = store.getSat_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                    }
+                }
 
-        }else if(weekDay == Calendar.SUNDAY){
-            int open = store.getSun_isopen();
-            if(open == 1){
-                Timestamp opentime = store.getSun_open();
-                Timestamp closetime = store.getSun_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
-            }
-        }else if(weekDay == Calendar.MONDAY){
-            int open = store.getMon_isopen();
-            if(open ==1 ){
-                Timestamp opentime = store.getMon_open();
-                Timestamp closetime = store.getMon_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
-            }
-        }else if(weekDay == Calendar.THURSDAY){
-            int open = store.getTue_isopen();
-            if(open == 1 ){
-                Timestamp opentime = store.getMon_open();
-                Timestamp closetime = store.getMon_close();
-                isTodayOpenCovertToTimestmp(opentime,closetime);
+            }else if(weekDay == Calendar.SUNDAY){
+                if(store.getSun_isopen() != null && store != null){
+                    int open = store.getSun_isopen();
+                    if(open == 1){
+                        Timestamp opentime = store.getSun_open();
+                        Timestamp closetime = store.getSun_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                    }
+                }
+            }else if(weekDay == Calendar.MONDAY){
+                if(store.getMon_isopen() != null && store != null){
+                    int open = store.getMon_isopen();
+                    if(open ==1 ){
+                        Timestamp opentime = store.getMon_open();
+                        Timestamp closetime = store.getMon_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                    }
+                }
+            }else if(weekDay == Calendar.THURSDAY){
+                if(store.getTue_isopen() != null && store != null){
+                    int open = store.getTue_isopen();
+                    if(open == 1 ){
+                        Timestamp opentime = store.getMon_open();
+                        Timestamp closetime = store.getMon_close();
+                        isTodayOpenCovertToTimestmp(opentime,closetime);
+                    }
+                }
             }
         }
     }
@@ -271,53 +287,55 @@ public class StoreFragment extends Fragment{
 
 
     private void putCheckItems(View view) {
-        //放上店家名稱
-        TextView store_name = (TextView) view.findViewById(R.id.store_name);
-        store_name.setText(store.getStore_name());
-        //放上今日是否營業
-        CheckBox isOpen = (CheckBox) view.findViewById(R.id.isOpen);
-        isOpen.setChecked(isTodayOpen);
-        //放上資料庫的地址
-        TextView store_add = (TextView) view.findViewById(R.id.store_add);
-        String storeAddress = store.getStore_add();
-        store_add.setText(storeAddress);
-        //放上是否有wifi
-        CheckBox is_wifi = (CheckBox) view.findViewById(R.id.is_wifi);
-        if(store.getIs_wifi() == 1){
-            is_wifi.setChecked(true);
-        }
-        //放上是否有插座
-        CheckBox is_plug = (CheckBox) view.findViewById(R.id.is_plug);
-        if(store.getIs_plug() == 1){
-            is_plug.setChecked(true);
-        }
-        //放上是否限時
-        CheckBox is_time_limit = (CheckBox) view.findViewById(R.id.is_time_limit);
-        if(store.getIs_time_limit() == 1){
-            is_time_limit.setChecked(true);
-        }
-        //放上是否賣正餐
-        CheckBox is_meal = (CheckBox) view.findViewById(R.id.is_meal);
-        if(store.getIs_meal() == 1) {
-            is_meal.setChecked(true);
-        }
-        //放上是否賣甜點
-        CheckBox is_dessert = (CheckBox) view.findViewById(R.id.is_dessert);
-        if(store.getIs_dessert() == 1 ){
-            is_dessert.setChecked(true);
+        if(store != null){
+            //放上店家名稱
+            TextView store_name = (TextView) view.findViewById(R.id.store_name);
+            store_name.setText(store.getStore_name());
+            //放上今日是否營業
+            CheckBox isOpen = (CheckBox) view.findViewById(R.id.isOpen);
+            isOpen.setChecked(isTodayOpen);
+            //放上資料庫的地址
+            TextView store_add = (TextView) view.findViewById(R.id.store_add);
+            String storeAddress = store.getStore_add();
+            store_add.setText(storeAddress);
+            //放上是否有wifi
+            CheckBox is_wifi = (CheckBox) view.findViewById(R.id.is_wifi);
+            if(store.getIs_wifi() == 1){
+                is_wifi.setChecked(true);
+            }
+            //放上是否有插座
+            CheckBox is_plug = (CheckBox) view.findViewById(R.id.is_plug);
+            if(store.getIs_plug() == 1){
+                is_plug.setChecked(true);
+            }
+            //放上是否限時
+            CheckBox is_time_limit = (CheckBox) view.findViewById(R.id.is_time_limit);
+            if(store.getIs_time_limit() == 1){
+                is_time_limit.setChecked(true);
+            }
+            //放上是否賣正餐
+            CheckBox is_meal = (CheckBox) view.findViewById(R.id.is_meal);
+            if(store.getIs_meal() == 1) {
+                is_meal.setChecked(true);
+            }
+            //放上是否賣甜點
+            CheckBox is_dessert = (CheckBox) view.findViewById(R.id.is_dessert);
+            if(store.getIs_dessert() == 1 ){
+                is_dessert.setChecked(true);
+            }
         }
     }
 
     private void putStorePhoto(View view) {
-        //放上店家照片from DB
-        ImageView store_img = (ImageView) view.findViewById(R.id.store_img);
-        String url = Common_RJ.URL + "StoreServlet";
-        String store_id = store.getStore_id();
-        int imageSize = 250;
-        //執行拿照片
-        Log.d(TAG, "onCreateView: before doing StoreGetImageTask");
-        new StoreGetImageTask(store_img).execute(url,store_id,imageSize);
-        Log.d(TAG, "onCreateView: after doing StoreGetImageTask");
+        if(store != null){
+            //放上店家照片from DB
+            ImageView store_img = (ImageView) view.findViewById(R.id.store_img);
+            String url = Common_RJ.URL + "StoreServlet";
+            String store_id = store.getStore_id();
+            int imageSize = 250;
+            //執行拿照片
+            new StoreGetImageTask(store_img).execute(url,store_id,imageSize);
+        }
     }
 
     private void myFavoriateFunction(View view) {

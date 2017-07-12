@@ -46,12 +46,12 @@ public class MemLoginFragment extends Fragment{
         View view = inflater.inflate(R.layout.mem,container,false);
 
         findViews_Member(view);
-
+        askPermission();
         memLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                askPermission();
+
                 String userMemACCT = edmember_acct.getText().toString();
                 String userMemPSW = edmember_psw.getText().toString();
                 String mem_id = null;

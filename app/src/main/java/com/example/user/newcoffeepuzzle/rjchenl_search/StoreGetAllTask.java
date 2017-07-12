@@ -61,7 +61,7 @@ public class StoreGetAllTask extends AsyncTask<Object,Integer,List<StoreVO>>{
         super.onPostExecute(storeVOs);
         Log.d(TAG, "onPostExecute: storeVOs : "+storeVOs);
         Log.d(TAG, "onPostExecute: listener : "+listener);
-        listener.onGetStoresDone(storeVOs);
+//        listener.onGetStoresDone(storeVOs);
     }
 
 
