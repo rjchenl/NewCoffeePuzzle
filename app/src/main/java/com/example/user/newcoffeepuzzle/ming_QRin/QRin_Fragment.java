@@ -15,15 +15,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
+import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
+
+import org.json.JSONObject;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 
 public class QRin_Fragment extends Fragment {
     private static final String PACKAGE = "com.google.zxing.client.android";
     private static final int REQUEST_BARCODE_SCAN = 0;
     private TextView tvMessage;
+    private String store_id;
 
     @Nullable
     @Override
@@ -32,6 +38,8 @@ public class QRin_Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.ming_qrin_frangment,container,false);
         findViews(view);
+        Profile_ming profile_ming = new Profile_ming(getContext());
+        store_id = profile_ming.getStoreId();
         return view;
     }
 
@@ -49,16 +57,38 @@ public class QRin_Fragment extends Fragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
         if (requestCode == REQUEST_BARCODE_SCAN) {
             String message = "";
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String resultFormat = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                message = ("Content: " + contents + "\nResult format: " + resultFormat);
+                message = (  contents + "\nResult format: " + resultFormat);
             } else if (resultCode == RESULT_CANCELED) {
                 message = "Scan was Cancelled!";
             }
             tvMessage.setText(message);
+        }
+        if(Common_ming.networkConnected(getActivity())){
+            String url = Common_ming.URL + "ming_Spndcoffelist_Servlet";
+            try {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                JSONObject.quote(contents);
+                JSONObject json = new JSONObject(contents);
+                String list_id = json.getString("list_id");
+                Integer list_left = json.getInt("list_left");
+
+
+                Log.d(TAG, "list_id:  list_id" + list_id);
+                Log.d(TAG, "list_left: list_left" + list_left);
+
+                intent = new SpndcoffeelistGetUpdate().execute(url, list_id, list_left, store_id).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d(TAG, "intent: + intent" +intent);
+                Log.d(TAG, "onActivityResult: error");
+            }
+            Common_ming.showToast(getContext(),R.string.QR_OK);
         }
     }
 

@@ -32,6 +32,7 @@ import java.util.Set;
 
 public class MemLoginFragment extends Fragment{
     private static final String TAG = "MemLoginFragment";
+
     private static final int REQ_PERMISSIONS = 0;
 
     private EditText edmember_acct;
