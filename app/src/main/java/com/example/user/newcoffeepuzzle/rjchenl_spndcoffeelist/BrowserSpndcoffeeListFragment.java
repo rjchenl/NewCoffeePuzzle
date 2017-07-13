@@ -1,31 +1,25 @@
 package com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
@@ -38,37 +32,28 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import org.json.JSONObject;
-
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by user on 2017/7/1.
+ * Created by user on 2017/7/13.
  */
 
-public class SpndcoffeeListFragment extends Fragment {
-    private static final String TAG = "SpndcoffeeListFragment";
+public class BrowserSpndcoffeeListFragment extends Fragment {
+    private static final String TAG = "BrowserSpndcoffeeListFragment";
     private ListView spndList_view;
-    private List<SpndcoffeelistVO> spndcoffeelist_value;
+    private List<SpndcoffeeVO> coffeelist_value;
     private String mem_id;
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.rj_spndcoffeelist_fragment,container,false);
-
-        spndList_view = (ListView) view.findViewById(R.id.lvSpndcoffeelist);
-
-
-
+        View view = inflater.inflate(R.layout.rj_browserspndcoffeelist_fragment,container,false);
+        spndList_view = (ListView) view.findViewById(R.id.browerspndcoffeelist_listview);
         //會用到mem_id 先取得
         Profile profile = new Profile(getContext());
         mem_id = profile.getMemId();
-        Log.d(TAG, "onCreateView: mem_id : "+mem_id);
 
         return view;
     }
@@ -77,49 +62,50 @@ public class SpndcoffeeListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //取得物件資料
-        getDBdata();
-        //將資料與view做連結
-        spndList_view.setAdapter(new SpndCoffeeListAdapter(getActivity(),spndcoffeelist_value));
+        getSpndDBdata();
+        //將data與view做連結
+        spndList_view.setAdapter(new BrowserSpndcoffeeAdapter(getActivity(),coffeelist_value));
+
+
 
     }
 
-    private void getDBdata() {
+    private void getSpndDBdata() {
         if (Common_RJ.networkConnected(getActivity())) {
-            String url = Common_RJ.URL + "SpndcoffeelistServlet";
-            spndcoffeelist_value = null;
+            String url = Common_RJ.URL + "SpndcoffeeServlet";
+            coffeelist_value = null;
             try {
 
                 //連結資料庫取得物件資料
-                spndcoffeelist_value = new SpndcoffeelistGetMyspndlistTask().execute(url,mem_id).get();
+                coffeelist_value = new BrowerSpndcoffeeGetAllTask().execute(url,mem_id).get();
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
-            if (spndcoffeelist_value == null || spndcoffeelist_value.isEmpty()) {
+            if (coffeelist_value == null || coffeelist_value.isEmpty()) {
                 Common_RJ.showToast(getActivity(), "No spndcoffeelist found");
             }
         }
+
     }
 
-    private class SpndCoffeeListAdapter extends BaseAdapter{
+    private class BrowserSpndcoffeeAdapter extends BaseAdapter{
         Context context;
-        List<SpndcoffeelistVO> spndList_data;
-        Map<ImageView,String> map= new HashMap<>();
-        private AlertDialogFragment alertDialogFragment;
+        List<SpndcoffeeVO> list;
 
-        public SpndCoffeeListAdapter(Context context, List<SpndcoffeelistVO> spndList_data) {
+        public BrowserSpndcoffeeAdapter(Context context, List<SpndcoffeeVO> list){
             this.context = context;
-            this.spndList_data = spndList_data;
+            this.list = list;
         }
 
 
         @Override
         public int getCount() {
-            return spndList_data.size();
+            return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return spndList_data.get(position);
+            return list.get(position);
         }
 
         @Override
@@ -133,61 +119,57 @@ public class SpndcoffeeListFragment extends Fragment {
             //一開始什麼都還沒按的話  載入被選到的view的實體,也就是convertView
             if(convertView == null){
                 LayoutInflater layoutInflater = LayoutInflater.from(context);
-                convertView =layoutInflater.inflate(R.layout.rj_spndcoffeelist_item_fragment,parent,false);
+                convertView =layoutInflater.inflate(R.layout.rj_browserspndcoffeelist_item_fragment,parent,false);
             }
 
+            //取到當下的VO物件;設定到view上
+            SpndcoffeeVO vo = list.get(position);
+            TextView tv_spnd_id = (TextView) convertView.findViewById(R.id.tv_spnd_id);
+            Log.d(TAG, "getView: vo.getSpnd_id() : "+vo.getSpnd_id());
+            tv_spnd_id.setText(vo.getSpnd_id());
+            TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
+            Log.d(TAG, "getView: vo.getStore_name(): "+vo.getStore_name());
+            tv_store_name.setText(vo.getStore_name());
+            TextView tv_spnd_name = (TextView) convertView.findViewById(R.id.tv_spnd_name);
+            Log.d(TAG, "getView: vo.getSpnd_name() : "+vo.getSpnd_name());
+            tv_spnd_name.setText(vo.getSpnd_name());
+            TextView tv_spnd_prod = (TextView) convertView.findViewById(R.id.tv_spnd_prod);
+            Log.d(TAG, "getView: vo.getSpnd_prod() : "+vo.getSpnd_prod());
+            tv_spnd_prod.setText(vo.getSpnd_prod());
+            TextView spnd_enddate = (TextView) convertView.findViewById(R.id.spnd_enddate);
+            Log.d(TAG, "getView: vo.getSpnd_enddate() : "+vo.getSpnd_enddate());
+            spnd_enddate.setText(vo.getSpnd_enddate());
+            TextView tv_spnd_amt = (TextView) convertView.findViewById(R.id.tv_spnd_amt);
+            Log.d(TAG, "getView: vo.getSpnd_amt() : "+vo.getSpnd_amt().toString());
+            tv_spnd_amt.setText(vo.getSpnd_amt().toString());
 
-
-
-            //取到當下那個VO物件
-            final SpndcoffeelistVO spndcoffeelistVO = spndList_data.get(position);
-
-
-            //將抓到的view 設上其值
-            TextView sotre_name = (TextView) convertView.findViewById(R.id.sotre_name);
-            TextView store_add = (TextView) convertView.findViewById(R.id.store_add);
-            TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
-
-            sotre_name.setText(spndcoffeelistVO.getStore_name());
-            store_add.setText(spndcoffeelistVO.getStore_add());
-            list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
-
-
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
-            Log.d(TAG, "getView: spndcoffeelistVO.getList_id() : "+spndcoffeelistVO.getList_id());
-
+            Log.d(TAG, "getView: mem_id : "+mem_id);
+            //多加mem_id到vo上
+            vo.setMem_id(mem_id);
+            Log.d(TAG, "getView: vo.getMem_id() : "+vo.getMem_id());
 
             //夾帶資訊到qrcode
             final Bundle bundle = new Bundle();
-            bundle.putSerializable("spndcoffeelistVO",spndcoffeelistVO);
+            bundle.putSerializable("vo",vo);
 
-
-            //點擊顯示QR_code
-            Button showQRcode = (Button) convertView.findViewById(R.id.showQRcode);
-            showQRcode.setOnClickListener(new View.OnClickListener() {
+            //bt_attend
+            //按下button顯示qr code 參加活動
+            Button bt_attend = (Button) convertView.findViewById(R.id.bt_attend);
+            bt_attend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //show QRcode
-                    AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-                    alertDialogFragment.setArguments(bundle);
 
+                    AttendDialogFragment attend = new AttendDialogFragment();
+                    attend.setArguments(bundle);
                     FragmentManager fragmentManager = getFragmentManager();
-
-                    alertDialogFragment.show(fragmentManager,"alert");
-
-
+                    attend.show(fragmentManager,"show");
                 }
             });
-
-
-
             return convertView;
         }
     }
 
-    public static class AlertDialogFragment extends DialogFragment {
-
+    public static class AttendDialogFragment extends DialogFragment{
 
         @NonNull
         @Override
@@ -195,17 +177,13 @@ public class SpndcoffeeListFragment extends Fragment {
             Dialog dialog = super.onCreateDialog(savedInstanceState);
             //不顯示標題
             dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-
-
             return dialog;
         }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            //載入xml layout
-            View view = inflater.inflate(R.layout.rj_alertdialog, null);
+            View view = inflater.inflate(R.layout.rj_attendspnd_dialoge,null);
             return view;
         }
 
@@ -213,34 +191,27 @@ public class SpndcoffeeListFragment extends Fragment {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-
             Bundle bundle = getArguments();
-            SpndcoffeelistVO spndcoffeelistVO = (SpndcoffeelistVO) bundle.getSerializable("spndcoffeelistVO");
-            String List_id  =spndcoffeelistVO.getList_id();
-            String List_left = spndcoffeelistVO.getList_left().toString();
+            SpndcoffeeVO spndcoffeevo = (SpndcoffeeVO) bundle.getSerializable("vo");
 
             Gson gson = new Gson();
-            String json = gson.toJson(spndcoffeelistVO);
-
-
-            Log.d(TAG, "onCreateDialog: List_id : "+List_id);
-            Log.d(TAG, "onCreateDialog: List_left : "+List_left);
+            String jsonin = gson.toJson(spndcoffeevo);
 
             //註冊離開button事件聆聽
-            Button btleave = (Button) view.findViewById(R.id.btleave);
-            btleave.setOnClickListener(new View.OnClickListener() {
+            Button bt_toleave = (Button) view.findViewById(R.id.bt_toleave);
+            bt_toleave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismiss();
                 }
             });
-//            放入qr code image
-            ImageView qrimage = (ImageView) view.findViewById(R.id.qrimage);
-            qrimage.setImageResource(R.drawable.default_image);
+
+
+
 
             //startpaste
             // QR code 的內容
-            String QRCodeContent = json;
+            String QRCodeContent = jsonin;
             // QR code 寬度
             int QRCodeWidth = 800;
             // QR code 高度
@@ -273,7 +244,7 @@ public class SpndcoffeeListFragment extends Fragment {
                     }
                 }
 
-                ImageView imgView = (ImageView) view.findViewById(R.id.qrimage);
+                ImageView imgView = (ImageView) view.findViewById(R.id.attend_qr);
                 // 設定為 QR code 影像
                 imgView.setImageBitmap(bitmap);
             }
@@ -284,15 +255,10 @@ public class SpndcoffeeListFragment extends Fragment {
             }
 
 
+
+
         }
-
-
     }
-
-
-
-
-
 
 
 

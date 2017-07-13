@@ -12,10 +12,6 @@
             android:id="@+id/browerActivities"
             android:title="@string/activities"/>
         <item
-            android:id="@+id/selectActivities"
-            android:title="活動紀錄查詢(未完成)"/>
-
-        <item
             android:id="@+id/collectedStore"
             android:title="收藏店家清單(未完成)"/>
         <item
@@ -32,7 +28,7 @@
             android:title="memInfo"/>
         <item
             android:id="@+id/registerout"
-            android:title="登出"/>
+            android:title="登出(未完成)"/>
     </group>
 
 </menu>
