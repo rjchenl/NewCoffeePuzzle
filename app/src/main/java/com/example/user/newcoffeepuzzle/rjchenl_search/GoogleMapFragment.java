@@ -8,7 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
+import com.google.android.gms.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
@@ -105,22 +105,22 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-        //放入位置監聽器
-        mLocationManager
-                .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
-        mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
-                mLocationListener);
+//        //放入位置監聽器
+//        mLocationManager
+//                .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
+//        mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
+//                mLocationListener);
         super.onResume();
 
         //
-//        if (googleApiClient == null) {
-//            googleApiClient = new GoogleApiClient.Builder(getContext())
-//                    .addApi(LocationServices.API)
-//                    .addConnectionCallbacks(connectionCallbacks)
-//                    .addOnConnectionFailedListener(onConnectionFailedListener)
-//                    .build();
-//        }
-//        googleApiClient.connect();
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(getContext())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(connectionCallbacks)
+                    .addOnConnectionFailedListener(onConnectionFailedListener)
+                    .build();
+        }
+        googleApiClient.connect();
 
 
     }
@@ -182,7 +182,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onPause() {
         super.onPause();
-        mLocationManager.removeUpdates(mLocationListener);
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, mLocationListener);
     }
 
     private void askPermission() {
@@ -205,11 +205,11 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                     REQ_PERMISSIONS);
         }
 
-        // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
-        mLocationManager
-                .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
-        mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
-                mLocationListener);
+//        // 獲得地理位置的更新資料 (GPS 與 NETWORK都註冊)
+//        mLocationManager
+//                .requestLocationUpdates(LM_GPS, 0, 0, mLocationListener);
+//        mLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0,
+//                mLocationListener);
     }
 
 
@@ -317,12 +317,12 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void setUpMap() {
 //        //取得目前位置
-//        if (ActivityCompat.checkSelfPermission(getActivity(),
-//                Manifest.permission.ACCESS_COARSE_LOCATION) ==
-//                PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
 
-//        }
+        }
         map.getUiSettings().setZoomControlsEnabled(true);
 
         //設定自訂UIsetting
@@ -466,7 +466,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                                 .setInterval(10000)
                                 .setSmallestDisplacement(10);
                         LocationServices.FusedLocationApi.requestLocationUpdates(
-                                googleApiClient, locationRequest, (com.google.android.gms.location.LocationListener) mLocationListener);
+                                googleApiClient, locationRequest,  mLocationListener);
                     }
                 }
 
@@ -510,33 +510,39 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 lastLocation = location;
                 double Lat = lastLocation.getLatitude();
                 double Lgt = lastLocation.getLongitude();
+                LatLng point = new LatLng(Lat,Lgt);
+                String current_position = Helper.getAddressByLatLng(point);
+                //將位置資訊傳給會員資料
+                Bundle bundle = new Bundle();
+                bundle.putString("current_position",current_position);
+
 
                 showToast("現在經度:"+Lat+"/n"+"現在緯度"+Lgt);
                 showMarkerMe(Lat,Lgt);
             }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                switch (status) {
-                    case LocationProvider.AVAILABLE:
-                        getActivity().setTitle("GoogleMap 服務中");
-                        break;
-                    case LocationProvider.OUT_OF_SERVICE:
-                        getActivity().setTitle("沒有服務");
-                        break;
-                    case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                        getActivity().setTitle("暫時不可使用");
-                        break;
-                }
-            }
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//                switch (status) {
+//                    case LocationProvider.AVAILABLE:
+//                        getActivity().setTitle("GoogleMap 服務中");
+//                        break;
+//                    case LocationProvider.OUT_OF_SERVICE:
+//                        getActivity().setTitle("沒有服務");
+//                        break;
+//                    case LocationProvider.TEMPORARILY_UNAVAILABLE:
+//                        getActivity().setTitle("暫時不可使用");
+//                        break;
+//                }
+//            }
 
-            @Override
-            public void onProviderEnabled(String provider) {
-                showToast("GPS已開啟");
-            }
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//                showToast("GPS已開啟");
+//            }
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//            }
         }
 
     private void showMarkerMe(double lat, double lng){
