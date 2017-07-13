@@ -14,7 +14,22 @@ public class OrderlistVO {
     private Integer ord_pick;
     private String ord_add;
     private Integer ord_shipping;
-    private Timestamp ord_time;
+    private String ord_time;
+    private Integer score_seller;
+
+
+    public Integer getScore_seller() {
+        return score_seller;
+    }
+
+    public void setScore_seller(Integer score_seller) {
+        this.score_seller = score_seller;
+    }
+
+    public OrderlistVO(Integer score_seller) {
+
+        this.score_seller = score_seller;
+    }
 
     public String getOrd_id() {
         return ord_id;
@@ -72,15 +87,15 @@ public class OrderlistVO {
         this.ord_shipping = ord_shipping;
     }
 
-    public Timestamp getOrd_time() {
+    public String getOrd_time() {
         return ord_time;
     }
 
-    public void setOrd_time(Timestamp ord_time) {
+    public void setOrd_time(String ord_time) {
         this.ord_time = ord_time;
     }
 
-    public OrderlistVO(String ord_id, String mem_id, String store_id, Integer ord_total, Integer ord_pick, String ord_add, Integer ord_shipping, Timestamp ord_time) {
+    public OrderlistVO(String ord_id, String mem_id, String store_id, Integer ord_total, Integer ord_pick, String ord_add, Integer ord_shipping, String ord_time) {
 
         this.ord_id = ord_id;
         this.mem_id = mem_id;

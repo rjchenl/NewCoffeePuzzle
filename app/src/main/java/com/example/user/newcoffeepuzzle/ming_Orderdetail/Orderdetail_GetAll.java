@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_Orderlist;
+package com.example.user.newcoffeepuzzle.ming_Orderdetail;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -19,12 +19,12 @@ import java.net.URL;
 import java.util.List;
 
 
-public class Ordelist_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
-    private final static String TAG = "Ordelist_GetAllTask";
-    private final static String ACTION = "getOrdelist";
+public class Orderdetail_GetAll extends AsyncTask<Object,Integer,List<OrderdetailVO>> {
+    private final static String TAG = "Orderdetail_GetAll";
+    private final static String ACTION = "getOrderdetail";
 
     @Override
-    protected List<OrderlistVO> doInBackground(Object... params) {
+    protected List<OrderdetailVO> doInBackground(Object... params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String store_id = params[1].toString();
@@ -32,7 +32,6 @@ public class Ordelist_GetAllTask extends AsyncTask<Object,Integer,List<Orderlist
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
         jsonObject.addProperty("store_id", store_id);
-
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -42,9 +41,8 @@ public class Ordelist_GetAllTask extends AsyncTask<Object,Integer,List<Orderlist
             Log.d(TAG, "doInBackground: (step1_3)");
             return null;
         }
-
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<OrderlistVO>>() {}.getType();
+        Type listType = new TypeToken<List<OrderdetailVO>>() {}.getType();
 
         return gson.fromJson(jsonIn, listType);
     }

@@ -32,9 +32,12 @@
         android:id="@+id/store_gavigation"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="#BFBFBF"
+        android:background="#3B3B3B"
         android:layout_gravity="start"
-        app:menu="@menu/store_menu">
+        app:menu="@menu/store_menu"
+        app:itemTextColor="@color/baise"
+        android:maxWidth="300dp"
+        app:itemIconTint="@color/baise">
 
     </android.support.design.widget.NavigationView>
 

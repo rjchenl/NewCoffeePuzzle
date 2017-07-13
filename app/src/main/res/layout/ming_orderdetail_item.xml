@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="@color/color01"
+    tools:context="com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail">
+
+    <TextView
+        android:id="@+id/ORD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單明細"
+        android:textSize="20dp"
+        android:layout_marginLeft="150dp"/>
+
+    <TextView
+        android:id="@+id/PROD_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品編號："
+        android:textSize="16dp"
+        android:layout_below="@+id/ORD" />
+
+    <TextView
+        android:id="@+id/prod_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品編號"
+        android:textSize="16dp"
+        android:layout_below="@+id/ORD"
+        android:layout_toRightOf="@+id/PROD_ID"/>
+
+    <TextView
+        android:id="@+id/PROD_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂購商品："
+        android:layout_below="@+id/PROD_ID"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/prod_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂購商品"
+        android:layout_below="@+id/PROD_NAME"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/DETAIL_AMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品數量："
+        android:textSize="16dp"
+        android:layout_below="@+id/prod_name"/>
+
+    <TextView
+        android:id="@+id/detail_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textSize="16dp"
+        android:layout_below="@+id/prod_name"
+        android:layout_toRightOf="@+id/DETAIL_AMT"/>
+
+    <TextView
+        android:id="@+id/PROD_PRICE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品單價："
+        android:textSize="16dp"
+        android:layout_below="@+id/prod_name"
+        android:layout_marginLeft="150dp"/>
+
+    <TextView
+        android:id="@+id/prod_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:textSize="16dp"
+        android:layout_below="@+id/prod_name"
+        android:layout_toRightOf="@+id/PROD_PRICE"/>
+</RelativeLayout>
