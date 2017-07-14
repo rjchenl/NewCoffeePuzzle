@@ -13,21 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_login_mem.Login_MemVO;
 import com.example.user.newcoffeepuzzle.ming_login_mem.Login_Mem_GetId;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
-import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
-import com.example.user.newcoffeepuzzle.rjchenl_member.MemberGetAllTask;
-import com.example.user.newcoffeepuzzle.rjchenl_member.MemberVO;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
+
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 
 public class MemLoginFragment extends Fragment{

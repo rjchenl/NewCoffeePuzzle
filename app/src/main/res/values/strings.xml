@@ -15,7 +15,8 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Login_null">帳號或密碼錯誤</string>
-    <string name="QRin">寄杯掃描</string>
-    <string name="QR_OK">寄杯成功</string>
+    <string name="QRin">領杯掃描</string>
+    <string name="QR_OK">領杯成功</string>
+    <string name="spndcoffeQR">新增寄杯訂單</string>
 
 </resources>

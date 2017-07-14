@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.ming_HomeFragment.HomeFragment;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_Fragment;
 import com.example.user.newcoffeepuzzle.ming_QRin.QRin_Fragment;
 import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
@@ -32,13 +33,21 @@ public class StoreActivity extends AppCompatActivity {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
 
+        store_Frame();
         initDrawer();
     }
-//有線條
+
+    private void store_Frame() {
+        Fragment frangment = new HomeFragment();
+        switchFragment(frangment);
+    }
+
+    //有線條
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         actionbardrawertoggle.syncState();
+        setTitle("首頁");
     }
 
     private void initDrawer() {
@@ -70,7 +79,7 @@ public class StoreActivity extends AppCompatActivity {
                             switchFragment(fragment);
                             setTitle("掃描器");
                         default:
-//                            store_Frame();
+                            store_Frame();
                             break;
                     }
                     return true;
@@ -80,6 +89,7 @@ public class StoreActivity extends AppCompatActivity {
 
     }
 
+    //Fragment的交易:讓Fragment可以刪除、新增上去
     private void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();

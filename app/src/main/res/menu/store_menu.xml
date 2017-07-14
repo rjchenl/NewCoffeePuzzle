@@ -3,22 +3,28 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/store_home"
-            android:title="@string/store_home" />
+            android:title="@string/store_home"
+            android:icon="@drawable/house"/>
         <item
             android:id="@+id/take_orders"
-            android:title="@string/take_orders" />
+            android:title="@string/take_orders"
+            android:icon="@drawable/shopping_bag"/>
         <item
             android:id="@+id/outbound_orders"
-            android:title="@string/outbound_orders" />
+            android:title="@string/outbound_orders"
+            android:icon="@drawable/scooter"/>
         <item
             android:id="@+id/spndcoffeelist"
-            android:title="@string/spndcoffeelist" />
+            android:title="@string/spndcoffeelist"
+            android:icon="@drawable/cup"/>
         <item
             android:id="@+id/QRin"
-            android:title="@string/QRin" />
+            android:title="@string/QRin"
+            android:icon="@drawable/supermarket"/>
         <item
             android:id="@+id/out"
-            android:title="@string/out" />
+            android:title="@string/out"
+            android:icon="@drawable/sign_out"/>
 
     </group>
 </menu>
