@@ -484,6 +484,7 @@ public class StoreFragment extends Fragment{
                         orderdetailvo.setProd_id(item_selected_id);
                         orderdetailvo.setProd_name(item_selected);
                         orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
+//                        orderdetailvo.setDetail_amt(1);
                         Log.d(TAG, "onItemSelected: orderdetailvo.getProd_id : "+orderdetailvo.getProd_id());
 
 
@@ -603,17 +604,22 @@ public class StoreFragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     Integer countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
-                    countofcups = countofcups-1;
-                    orderdetailvo.setDetail_amt(countofcups);
-                    tvcountOfCup.setText(String.valueOf(countofcups));
+                    if(countofcups != 1){
+                        countofcups = countofcups-1;
+                        orderdetailvo.setDetail_amt(countofcups);
+                        tvcountOfCup.setText(String.valueOf(countofcups));
 
 
-                    //單項商品小計  單價 x 杯數
-                    int subtotal = price*countofcups;
-                    tvsubtotal.setText(String.valueOf(subtotal));
+                        //單項商品小計  單價 x 杯數
+                        int subtotal = price*countofcups;
+                        tvsubtotal.setText(String.valueOf(subtotal));
 
-                    temp_inttotal = temp_inttotal-price;
-                    tvtotal.setText(String.valueOf(temp_inttotal));
+                        temp_inttotal = temp_inttotal-price;
+                        tvtotal.setText(String.valueOf(temp_inttotal));
+                    }else{
+//                        showToast("一項商品最少購買一個!!");
+                    }
+
                 }
             });
 
