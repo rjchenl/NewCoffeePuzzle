@@ -146,11 +146,11 @@ public class StoreFragment extends Fragment{
                 int ord_shipping = 1;
                 Timestamp ord_time = new Timestamp(System.currentTimeMillis());
                 //新增地址
-                String ord_add= "";
+                String ord_add= et_takeout_position.getText().toString();
                 int score_seller = 1;
 
                 OrderListVO orderlistvo = new OrderListVO(mem_id,store_id,ord_total,ord_pick,ord_add,ord_shipping,ord_time,score_seller);
-
+                showToast("新增訂單成功!!!");
                 //新增訂單詳情列表
                 for(OrderdetailVO vo : orderdetailvolist){
                     Log.d(TAG, "onClick: vo.getProd_name() : "+vo.getProd_name());
@@ -174,6 +174,8 @@ public class StoreFragment extends Fragment{
 
             }
         });
+
+
     }
 
 
