@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -65,11 +67,11 @@ public class OrderStatusListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getDBdata();
+        getOrderListDBdata();
         lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_value));
     }
 
-    private void getDBdata() {
+    private void getOrderListDBdata() {
         if (Common_RJ.networkConnected(getActivity())) {
             String url = Common_RJ.URL + "OrderlistServlet";
             orderStatusVOList_value = null;
@@ -152,9 +154,30 @@ public class OrderStatusListFragment extends Fragment {
             });
 
 
+            //點選詳情按紐時
+            final Bundle bundle2 = new Bundle();
+            String ord_id = orderStatusVO.getOrd_id();
+            bundle2.putString("ord_id",ord_id);
+
+
+            Button checkDetailInfo = (Button) convertView.findViewById(R.id.checkDetailInfo);
+            checkDetailInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderdetailListFragment ordedetailfragment = new OrderdetailListFragment();
+                    ordedetailfragment.setArguments(bundle2);
+                    FragmentTransaction  fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.body,ordedetailfragment,"fragment");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
+
             return convertView;
         }
+
     }
+
 
     public static class OrderListDialogFragment extends DialogFragment{
 

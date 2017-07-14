@@ -89,10 +89,6 @@ public class SpndcoffeeListFragment extends Fragment {
         Log.d(TAG, "onCreateView: mem_id : "+mem_id);
 
 
-
-
-
-
         return view;
     }
 
@@ -384,7 +380,6 @@ public class SpndcoffeeListFragment extends Fragment {
         startActivity(intent);
     }
 
-    //開始貼
 
     private GoogleApiClient.ConnectionCallbacks connectionCallbacks =
             new GoogleApiClient.ConnectionCallbacks() {

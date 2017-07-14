@@ -125,21 +125,33 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" />
 
-
-
       </LinearLayout>
 
-          <Button
-              android:id="@+id/bt_showIDqrcode"
-              android:text="領取QR"
+          <LinearLayout
+              android:orientation="horizontal"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content" />
+              android:layout_height="wrap_content">
+
+              <Button
+                  android:id="@+id/checkDetailInfo"
+                  android:text="查看詳情"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+
+
+              <Button
+                  android:layout_marginStart="20dp"
+                  android:id="@+id/bt_showIDqrcode"
+                  android:text="領取QR"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+
+
+          </LinearLayout>
+
+
 
       </LinearLayout>
-
-
-
-
 
   </LinearLayout>
 
