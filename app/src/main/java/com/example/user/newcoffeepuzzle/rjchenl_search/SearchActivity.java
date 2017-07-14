@@ -19,14 +19,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MyInfoFragent;
+import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderStatusListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.BrowserSpndcoffeeListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,9 +61,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rj_search_activity);
 
-        fragmentManager = getSupportFragmentManager();
-        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
 
         findViews();
         askPermissions();
@@ -129,6 +130,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch(item.getItemId()){
+                        case R.id.searchBar:
+                            initBody();
+                            break;
                         case R.id.browerActivities:
                             fragment = new ActivityListFragment();
                             switchFragment(fragment);
@@ -138,6 +142,21 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             fragment = new SpndcoffeeListFragment();
                             switchFragment(fragment);
                             setTitle("瀏覽我的寄杯");
+                            break;
+                        case R.id.orderStatusList:
+                            fragment = new OrderStatusListFragment();
+                            switchFragment(fragment);
+                            setTitle("我的訂單");
+                            break;
+                        case R.id.memberInfo:
+                            fragment = new MyInfoFragent();
+                            switchFragment(fragment);
+                            setTitle("會員資料");
+                            break;
+                        case R.id.susCoffeeStore:
+                            fragment = new BrowserSpndcoffeeListFragment();
+                            switchFragment(fragment);
+                            setTitle("瀏覽寄杯活動");
                             break;
                         default:
                             initBody();
@@ -149,9 +168,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+
+
     private void initBody() {
-//        Intent intent = new Intent(this,SearchActivity.class);
-//        startActivity(intent);
+
         Fragment fragment = new GoogleMapFragment();
         switchFragment(fragment);
         setTitle("GoogleMap page");
@@ -163,7 +183,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void setUpActionBar() {
 
-        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用i
+        //放入toolbar 物件 原本的toolbar 要先去manifests註冊停用
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -174,11 +194,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    private void switchFragment(Fragment fragment) {
+    void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.replace(R.id.body, fragment);
+        fragmentTransaction.replace(R.id.body, fragment,"fragment");
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -192,15 +213,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
 
 
-//    private Animation getTranslateAnimation() {
-//     detailStore_container
-//        float distance = parentView.getHeight()-parentView.getPaddingStart()-parentView.getPaddingEnd()-tvStoreName.getHeight();
-//        //看一下多長
-//        showToast(String.valueOf(distance));
-//        TranslateAnimation translateAnimation = new TranslateAnimation(0,0,300,600);
-//        translateAnimation.setDuration(1000);
-//        return translateAnimation;
-//    }
+
+
 
 
 

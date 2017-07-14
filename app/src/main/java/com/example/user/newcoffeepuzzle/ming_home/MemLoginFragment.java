@@ -1,8 +1,12 @@
 package com.example.user.newcoffeepuzzle.ming_home;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +22,17 @@ import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
+
 public class MemLoginFragment extends Fragment{
     private static final String TAG = "MemLoginFragment";
+
+    private static final int REQ_PERMISSIONS = 0;
+
     private EditText edmember_acct;
     private EditText edmember_psw;
     private Button memLogin;
@@ -31,10 +44,12 @@ public class MemLoginFragment extends Fragment{
         View view = inflater.inflate(R.layout.mem,container,false);
 
         findViews_Member(view);
-
+        askPermission();
         memLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String userMemACCT = edmember_acct.getText().toString();
                 String userMemPSW = edmember_psw.getText().toString();
                 String mem_id = null;
@@ -56,8 +71,21 @@ public class MemLoginFragment extends Fragment{
                         }
                         Intent intent = new Intent(getContext(),SearchActivity.class);
                         Profile profile = new Profile(getContext());
-                                //將mem_id寫入profile
+                        //將mem_id寫入profile
                         profile.setMemId(mem_id);
+                        profile.setMem_acct(login_memVO.getMem_acct());
+                        //姓名,電話,地址,信箱,點數
+                        profile.setMem_name(login_memVO.getMem_name());
+                        profile.setMem_tel(login_memVO.getMem_tel());
+                        profile.setMem_add(login_memVO.getMem_add());
+                        profile.setMem_email(login_memVO.getMem_email());
+                        profile.setMem_points(login_memVO.getMem_points());
+
+
+
+
+
+
                         startActivity(intent);
                     }
                 }else {
@@ -67,6 +95,27 @@ public class MemLoginFragment extends Fragment{
         });
 
         return view;
+    }
+
+    private void askPermission() {
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        Set<String> permissionsRequest = new HashSet<>();
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(getActivity(), permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                permissionsRequest.add(permission);
+            }
+        }
+
+        if (!permissionsRequest.isEmpty()) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    permissionsRequest.toArray(new String[permissionsRequest.size()]),
+                    REQ_PERMISSIONS);
+        }
     }
 
     private void findViews_Member(View view) {

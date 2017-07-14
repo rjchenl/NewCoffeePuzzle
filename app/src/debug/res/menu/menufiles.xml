@@ -6,33 +6,29 @@
             android:title="回到搜尋列表"/>
 
         <item
-            android:id="@+id/news"
-            android:title="@string/text_news"/>
+            android:id="@+id/memberInfo"
+            android:title="@string/member_info"/>
         <item
             android:id="@+id/browerActivities"
             android:title="@string/activities"/>
         <item
-            android:id="@+id/selectActivities"
-            android:title="活動紀錄查詢"/>
-
-        <item
             android:id="@+id/collectedStore"
-            android:title="收藏店家清單"/>
+            android:title="收藏店家清單(未完成)"/>
         <item
             android:id="@+id/susCoffeeStore"
-            android:title="瀏覽寄杯活動店家"/>
+            android:title="瀏覽寄杯活動店家(未完成)"/>
         <item
             android:id="@+id/mysusCofee"
             android:title="我的寄杯"/>
         <item
-            android:id="@+id/takeOutorderIn"
-            android:title="瀏覽外帶外送店家"/>
+            android:id="@+id/orderStatusList"
+            android:title="我的訂單"/>
         <item
             android:id="@+id/traceOrder"
             android:title="memInfo"/>
         <item
             android:id="@+id/registerout"
-            android:title="登出"/>
+            android:title="登出(未完成)"/>
     </group>
 
 </menu>
