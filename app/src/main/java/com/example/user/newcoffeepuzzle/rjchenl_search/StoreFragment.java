@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -61,8 +62,8 @@ public class StoreFragment extends Fragment{
     private String item_selected_id;
     private ProductVO shopingVO;
     private List<OrderdetailVO> orderdetailvolist;
-
-
+    private String mem_add;
+    private EditText et_takeout_position;
 
 
     @Override
@@ -98,6 +99,22 @@ public class StoreFragment extends Fragment{
         lvStoreitem = (ListView) view.findViewById(R.id.lvStoreitem);
         tvtotal = (TextView) view.findViewById(R.id.tvtotal);
 
+        //設定外送地點預設為 會員註冊地址
+        et_takeout_position = (EditText) view.findViewById(R.id.et_takeout_position);
+        final Profile profile = new Profile(getActivity());
+        et_takeout_position.setText(profile.getMem_add());
+
+        //按下"使用現在位置按紐"
+        View bt_useCurrentGPS_position = view.findViewById(R.id.bt_useCurrentGPS_position);
+        bt_useCurrentGPS_position.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_takeout_position.setText(profile.getCurrentPosition());
+            }
+        });
+
+
+
         //按下送出選單後
         btSubmit_buytakeout1 = (Button) view.findViewById(R.id.btSubmit_buytakeout);
         onClickSubmitButton();
@@ -128,7 +145,8 @@ public class StoreFragment extends Fragment{
                 int ord_pick = 3;
                 int ord_shipping = 1;
                 Timestamp ord_time = new Timestamp(System.currentTimeMillis());
-                String ord_add="";
+                //新增地址
+                String ord_add= "";
                 int score_seller = 1;
 
                 OrderListVO orderlistvo = new OrderListVO(mem_id,store_id,ord_total,ord_pick,ord_add,ord_shipping,ord_time,score_seller);
@@ -162,7 +180,6 @@ public class StoreFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: enter");
         getStoreVOList();
         getProductVOList();
 

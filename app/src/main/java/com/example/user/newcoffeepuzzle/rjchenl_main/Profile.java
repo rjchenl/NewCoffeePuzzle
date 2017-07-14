@@ -76,6 +76,16 @@ public class Profile {
         return sharedPreferences.getString("mem_email","");
     }
 
+    public void setCurrentPosition(String currentPosition){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("current_position",currentPosition);
+        editor.apply();
+    }
+
+    public String getCurrentPosition(){
+        return sharedPreferences.getString("current_position","");
+    }
+
 
 
 

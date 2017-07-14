@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="10dp"
     android:background="#eabe6b">
 
 
@@ -19,7 +19,7 @@
         android:layout_toEndOf="@+id/like" />
     <TextView
         android:id="@+id/store_add"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:layout_below="@id/store_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,72 +81,156 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/like"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/store_add" />
 
-
-    <ImageView
-        android:id="@+id/store_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/default_image"
-        android:layout_marginEnd="11dp"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/is_dessert"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:id="@+id/canBeTakeOut"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="提供外帶外送商品"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/store_add" />
-
-
-    <Button
-        android:text="送出訂單"
-        android:id="@+id/btSubmit_buytakeout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/canBeTakeOut"
-        android:layout_toStartOf="@+id/store_img" />
-
-    <Spinner
-        android:layout_marginTop="80dp"
-        android:layout_below="@id/canBeTakeOut"
-        android:id="@+id/spinner_item"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </Spinner>
-    
-    <ListView
-        android:layout_below="@id/spinner_item"
-        android:id="@+id/lvStoreitem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </ListView>
-
-    <TextView
-        android:id="@+id/tvtotalWorld"
-        android:text="目前總計"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvtotal"
-        android:layout_alignBottom="@+id/tvtotal"
-        android:layout_alignStart="@+id/canBeTakeOut" />
+        android:layout_below="@+id/is_plug"
+        android:layout_alignStart="@+id/store_add">
 
-    <TextView
-        android:id="@+id/tvtotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/store_img"
-        android:layout_toRightOf="@+id/tvtotalWorld"
-        android:layout_marginStart="18dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/store_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/default_image"
+                android:layout_marginEnd="11dp"
+                android:layout_marginTop="17dp"
+                android:layout_below="@+id/is_dessert"
+                android:layout_alignParentEnd="true" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="外送地址 : "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:layout_marginStart="60dp"
+                        android:id="@+id/bt_useCurrentGPS_position"
+                        android:text="使用現在位置"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+
+                <EditText
+                    android:textSize="15sp"
+                    android:id="@+id/et_takeout_position"
+                    android:background="#def"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvtotalWorld"
+                        android:text="目前總計"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/tvtotal"
+                        android:layout_alignBottom="@+id/tvtotal"
+                        android:layout_alignStart="@+id/canBeTakeOut" />
+
+                    <TextView
+                        android:id="@+id/tvtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/store_img"
+                        android:layout_toRightOf="@+id/tvtotalWorld"
+                        android:layout_marginStart="18dp" />
+
+
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/canBeTakeOut"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="提供外帶外送商品"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/store_img"
+            android:layout_alignParentStart="true" />
+
+
+
+
+
+           <Button
+               android:text="送出訂單"
+               android:id="@+id/btSubmit_buytakeout"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/canBeTakeOut"
+               android:layout_toStartOf="@+id/store_img" />
+
+       </LinearLayout>
+
+
+
+
+        <Spinner
+            android:background="#ffc600"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/canBeTakeOut"
+            android:id="@+id/spinner_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </Spinner>
+
+        <ListView
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/spinner_item"
+            android:id="@+id/lvStoreitem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+
+
+
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>

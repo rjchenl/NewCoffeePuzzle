@@ -39,7 +39,7 @@ public class StoreGetProductTask extends AsyncTask<Object,Integer,List<ProductVO
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
-            Log.d(TAG, "doInBackground: jsonIn07111 : "+jsonIn);
+            Log.d(TAG, "doInBackground: jsonIn : "+jsonIn);
         } catch (IOException e) {
             Log.e(TAG, e.toString());
             return  null;
@@ -65,7 +65,7 @@ public class StoreGetProductTask extends AsyncTask<Object,Integer,List<ProductVO
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut(request action from app_0702): " + jsonOut);
+        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
         //{"action":"getAll"}
         bw.close();
 
