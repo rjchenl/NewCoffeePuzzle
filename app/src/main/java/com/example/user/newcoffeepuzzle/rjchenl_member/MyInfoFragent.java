@@ -26,11 +26,12 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 
 
-public class MyInfoFragent extends Fragment {
+public class MyInfoFragent extends Fragment implements Serializable {
 
     private String mem_id;
 
@@ -42,10 +43,20 @@ public class MyInfoFragent extends Fragment {
         mem_id = profile.getMemId();
 
 
+        //設定現在位置
+        TextView tvcurrent_position = (TextView) view.findViewById(R.id.tvcurrent_position);
+        tvcurrent_position.setText(profile.getCurrentPosition());
+
+        //會員名稱
         TextView tvmember_name = (TextView) view.findViewById(R.id.tvmember_name);
         tvmember_name.setText(profile.getMem_name());
+
+        //外送地址
         TextView tvmem_add = (TextView) view.findViewById(R.id.tvmem_add);
         tvmem_add.setText(profile.getMem_add());
+
+
+
         TextView tvmem_tel = (TextView) view.findViewById(R.id.tvmem_tel);
         tvmem_tel.setText(profile.getMem_tel());
         TextView tvmem_email = (TextView) view.findViewById(R.id.tvmem_email);
@@ -66,6 +77,9 @@ public class MyInfoFragent extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
 
         //夾帶資訊-出去
         final Bundle bundle = new Bundle();

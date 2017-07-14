@@ -1,15 +1,22 @@
 package com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.icu.text.LocaleDisplayNames;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +37,14 @@ import android.widget.Toast;
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_search.Helper;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -43,6 +58,7 @@ import org.json.JSONObject;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -54,6 +70,10 @@ public class SpndcoffeeListFragment extends Fragment {
     private ListView spndList_view;
     private List<SpndcoffeelistVO> spndcoffeelist_value;
     private String mem_id;
+    private Profile profile;
+    private Location lastLocation;
+    private GoogleApiClient googleApiClient;
+    private final static int REQUEST_CODE_RESOLUTION = 1;
 
 
     @Nullable
@@ -63,12 +83,15 @@ public class SpndcoffeeListFragment extends Fragment {
 
         spndList_view = (ListView) view.findViewById(R.id.lvSpndcoffeelist);
 
-
-
         //會用到mem_id 先取得
-        Profile profile = new Profile(getContext());
+        profile = new Profile(getContext());
         mem_id = profile.getMemId();
         Log.d(TAG, "onCreateView: mem_id : "+mem_id);
+
+
+
+
+
 
         return view;
     }
@@ -78,6 +101,7 @@ public class SpndcoffeeListFragment extends Fragment {
         super.onStart();
         //取得物件資料
         getDBdata();
+
         //將資料與view做連結
         spndList_view.setAdapter(new SpndCoffeeListAdapter(getActivity(),spndcoffeelist_value));
 
@@ -99,6 +123,40 @@ public class SpndcoffeeListFragment extends Fragment {
             }
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(connectionCallbacks)
+                    .addOnConnectionFailedListener(onConnectionFailedListener)
+                    .build();
+        }
+        googleApiClient.connect();
+    }
+    private GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener =
+            new GoogleApiClient.OnConnectionFailedListener() {
+                @Override
+                public void onConnectionFailed(@NonNull ConnectionResult result) {
+                    if (!result.hasResolution()) {
+                        GoogleApiAvailability.getInstance().getErrorDialog(
+                                getActivity(),
+                                result.getErrorCode(),
+                                0
+                        ).show();
+                        return;
+                    }
+                    try {
+                        result.startResolutionForResult(
+                                getActivity(),
+                                REQUEST_CODE_RESOLUTION);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.e(TAG, "Exception while starting resolution activity");
+                    }
+                }
+            };
 
     private class SpndCoffeeListAdapter extends BaseAdapter{
         Context context;
@@ -152,6 +210,29 @@ public class SpndcoffeeListFragment extends Fragment {
             store_add.setText(spndcoffeelistVO.getStore_add());
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
 
+            //按下導航
+            Button bt_direct = (Button) convertView.findViewById(R.id.bt_direct);
+            bt_direct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //取得目前經緯度
+//                    float current_lat = profile.getLat();
+//                    float current_lng = profile.getLng();
+                    double current_lat =lastLocation.getLatitude();
+                    double current_lng =lastLocation.getLongitude();
+
+
+                    //取得店家位置的經緯度
+                    LatLng store_latlng = Helper.getLatLngByAddress(spndcoffeelistVO.getStore_add().toString());
+                    double store_lat = store_latlng.latitude;
+                    double store_lng = store_latlng.longitude;
+                    Log.d(TAG, "onClick: store_lat : "+store_lat);
+                    Log.d(TAG, "onClick: store_lng : "+store_lng);
+
+                    direct(current_lat,current_lng,store_lat,store_lng);
+                }
+            });
+
 
             Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
             Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
@@ -187,8 +268,6 @@ public class SpndcoffeeListFragment extends Fragment {
     }
 
     public static class AlertDialogFragment extends DialogFragment {
-
-
 
 
         @NonNull
@@ -291,6 +370,54 @@ public class SpndcoffeeListFragment extends Fragment {
 
     }
 
+
+    private void direct(double fromLat, double fromLng, double toLat,
+                        double toLng) {
+        String uriStr = String.format(Locale.US,
+                "http://maps.google.com/maps?saddr=%f,%f&daddr=%f,%f", fromLat,
+                fromLng, toLat, toLng);
+        Intent intent = new Intent();
+        intent.setClassName("com.google.android.apps.maps",
+                "com.google.android.maps.MapsActivity");
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(uriStr));
+        startActivity(intent);
+    }
+
+    //開始貼
+
+    private GoogleApiClient.ConnectionCallbacks connectionCallbacks =
+            new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(Bundle bundle) {
+                    Log.i(TAG, "GoogleApiClient connected");
+                    //需要使用者同意授權
+                    if (ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                            PackageManager.PERMISSION_GRANTED) {
+                        lastLocation = LocationServices.FusedLocationApi
+                                .getLastLocation(googleApiClient);  //取得手機中最後一筆定位位址
+                        LocationRequest locationRequest = LocationRequest.create()       //真正開始定位(現在位址)，需耗電
+                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                .setInterval(10000)
+                                .setSmallestDisplacement(1000);
+                        LocationServices.FusedLocationApi.requestLocationUpdates(
+                                googleApiClient, locationRequest, locationListener);
+                    }
+                }
+
+                @Override
+                public void onConnectionSuspended(int i) {
+                  //do nothing
+                }
+            };
+
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            lastLocation = location;
+        }
+    };
 
 
 

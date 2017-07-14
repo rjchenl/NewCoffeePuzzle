@@ -1,10 +1,10 @@
-package com.example.user.newcoffeepuzzle.rjchenl_search;
+package com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeelistVO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,41 +16,36 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-/**
- * Created by user on 2017/7/5.
- */
 
-public class StoreGetProductTask extends AsyncTask<Object,Integer,List<ProductVO>> {
-    private final static String TAG = "StoreGetProductTask";
-    private final static String ACTION = "getStoreProductByStoreName";
-
-
+public class BrowerSpndcoffeeGetAllTask extends AsyncTask<Object,Integer,List<SpndcoffeeVO>> {
+    private final static String TAG = "BrowerSpndcoffeeGetAllTask";
+    private final static String ACTION = "getAll_store_name";
 
     @Override
-    protected List<ProductVO> doInBackground(Object... params) {
+    protected List<SpndcoffeeVO> doInBackground(Object... params) {
         String url = params[0].toString();
-        String store_name = params[1].toString();
+        String mem_id = params[1].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_name",store_name);
+        jsonObject.addProperty("mem_id",mem_id);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
-            Log.d(TAG, "doInBackground: jsonIn : "+jsonIn);
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
-            return  null;
+            e.printStackTrace();
+            return null;
         }
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<ProductVO>>() {
+        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        Type listType = new TypeToken<List<SpndcoffeeVO>>() {
         }.getType();
 
         return gson.fromJson(jsonIn, listType);
     }
-
 
 
 
@@ -65,7 +60,7 @@ public class StoreGetProductTask extends AsyncTask<Object,Integer,List<ProductVO
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
+        Log.d(TAG, "jsonOut(request action from app_0713): " + jsonOut);
         //{"action":"getAll"}
         bw.close();
 
@@ -81,7 +76,7 @@ public class StoreGetProductTask extends AsyncTask<Object,Integer,List<ProductVO
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
+        Log.d(TAG, "jsonIn:(receive response from servlet_0713) " + jsonIn);
         return jsonIn.toString();
 
     }
