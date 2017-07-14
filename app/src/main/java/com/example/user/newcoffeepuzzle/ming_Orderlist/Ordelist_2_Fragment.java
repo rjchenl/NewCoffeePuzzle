@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,27 +23,25 @@ import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 import java.util.List;
 
 /**
- * Created by Java on 2017/6/29.
+ * Created by Java on 2017/7/14.
  */
 
-public class Ordelist_Fragment extends Fragment{
-    private final static String TAG = "ming_ordelist_fragment";
-    private RecyclerView ry_ordelist;
+public class Ordelist_2_Fragment extends Fragment{
+    private final static String TAG = "ming_ordelist_2_fragment";
+    private RecyclerView ry_ordelist_2;
     private String store_id;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.ming_ordelist_fragment, container, false);
-        ry_ordelist = (RecyclerView) view.findViewById(R.id.ry_ordelist);
-        ry_ordelist.setLayoutManager(new LinearLayoutManager(getActivity()));
+        View view = inflater.inflate(R.layout.ming_ordelist_2_fragment, container, false);
+        ry_ordelist_2 = (RecyclerView) view.findViewById(R.id.ry_ordelist_2);
+        ry_ordelist_2.setLayoutManager(new LinearLayoutManager(getActivity()));
         Profile_ming profile_ming = new Profile_ming(getContext());
         store_id = profile_ming.getStoreId();
         return view;
     }
-
     @Override
     public void onStart(){
         super.onStart();
@@ -54,7 +53,7 @@ public class Ordelist_Fragment extends Fragment{
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             try{
-                orderlistVOList = new Ordelist_GetAllTask().execute(url,store_id).get();
+                orderlistVOList = new Ordelist_2_GetAllTask().execute(url,store_id).get();
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e(TAG, e.toString());
@@ -63,7 +62,7 @@ public class Ordelist_Fragment extends Fragment{
             if (orderlistVOList == null || orderlistVOList.isEmpty()){
                 Common_ming.showToast(getActivity(), "no activity found");
             }else {
-                ry_ordelist.setAdapter(new Ordelist_Fragment.Orders_RecyclerViewAdapter(getActivity(),orderlistVOList));
+                ry_ordelist_2.setAdapter(new Ordelist_2_Fragment.Orders_2_RecyclerViewAdapter(getActivity(),orderlistVOList));
             }
         }else {
             Common_ming.showToast(getActivity(), "no network connection available");
@@ -71,47 +70,46 @@ public class Ordelist_Fragment extends Fragment{
 
     }
 
-    private class Orders_RecyclerViewAdapter extends RecyclerView.Adapter<Orders_RecyclerViewAdapter.ViewHolder>{
+    public class Orders_2_RecyclerViewAdapter extends RecyclerView.Adapter<Ordelist_2_Fragment.Orders_2_RecyclerViewAdapter.ViewHolder> {
         private LayoutInflater layoutInflater;
         private List<OrderlistVO> orderlistVOList;
         private boolean[] actExpanded;
 
-        public Orders_RecyclerViewAdapter(Context context, List<OrderlistVO> orderlistVOList) {
+        public Orders_2_RecyclerViewAdapter(Context context, List<OrderlistVO> orderlistVOList) {
             layoutInflater = LayoutInflater.from(context);
             this.orderlistVOList = orderlistVOList;
             actExpanded = new boolean[orderlistVOList.size()];
         }
-
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView ord_id,ord_total,ord_time,ord_shipping;
+            TextView ord_id_2,ord_total_2,ord_time_2,ord_shipping_2;
             public ViewHolder(View itemView) {
                 super(itemView);
-                ord_id = (TextView) itemView.findViewById(R.id.ord_id);
-                ord_total = (TextView) itemView.findViewById(R.id.ord_total);
-                ord_time = (TextView) itemView.findViewById(R.id.ord_time);
-                ord_shipping = (TextView) itemView.findViewById(R.id.ord_shipping);
+                ord_id_2 = (TextView) itemView.findViewById(R.id.ord_id_2);
+                ord_total_2 = (TextView) itemView.findViewById(R.id.ord_total_2);
+                ord_time_2 = (TextView) itemView.findViewById(R.id.ord_time_2);
+                ord_shipping_2 = (TextView) itemView.findViewById(R.id.ord_shipping_2);
 
             }
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemview = layoutInflater.inflate(R.layout.ming_ordelist_item,parent,false);
+        public Orders_2_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemview = layoutInflater.inflate(R.layout.ming_ordelist_2_item,parent,false);
             return new ViewHolder(itemview);
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(Orders_2_RecyclerViewAdapter.ViewHolder holder, int position) {
             OrderlistVO orderlistVO = orderlistVOList.get(position);
 
-            String ord_id = orderlistVO.getOrd_id();
-            holder.ord_id.setText(ord_id);
-            Integer ord_total = orderlistVO.getOrd_total();
-            holder.ord_total.setText(ord_total.toString());
-            String ord_time = orderlistVO.getOrd_time();
-            holder.ord_time.setText(ord_time);
-            Integer ord_shipping = orderlistVO.getOrd_shipping();
-            holder.ord_shipping.setText(ord_shipping.toString());
+            String ord_id_2 = orderlistVO.getOrd_id();
+            holder.ord_id_2.setText(ord_id_2);
+            Integer ord_total_2 = orderlistVO.getOrd_total();
+            holder.ord_total_2.setText(ord_total_2.toString());
+            String ord_time_2 = orderlistVO.getOrd_time();
+            holder.ord_time_2.setText(ord_time_2);
+            Integer ord_shipping_2 = orderlistVO.getOrd_shipping();
+            holder.ord_shipping_2.setText(ord_shipping_2.toString());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,7 +124,6 @@ public class Ordelist_Fragment extends Fragment{
         public int getItemCount() {
             return orderlistVOList.size();
         }
-
         private void expand(int position) {
             // 被點擊的資料列才會彈出內容，其他資料列的內容會自動縮起來
             // for (int i=0; i<newsExpanded.length; i++) {

@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_Fragment;
-import com.example.user.newcoffeepuzzle.ming_Orderlist.OrderlistVO;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 

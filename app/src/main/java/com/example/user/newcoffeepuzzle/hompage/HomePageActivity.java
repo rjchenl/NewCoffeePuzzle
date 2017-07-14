@@ -39,7 +39,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.homepage_layout);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));//Support支援
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.Tab);
         tabLayout.setupWithViewPager(viewPager);
