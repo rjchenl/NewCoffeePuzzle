@@ -479,12 +479,17 @@ public class StoreFragment extends Fragment{
                         item_selected_id = item_prodID_map.get(item_selected);
                         Log.d(TAG, "onItemSelected: item_selected_id : "+item_selected_id);
 
+                        //舊的VO值要保留
+
+
+
                         //ordertail
                         OrderdetailVO orderdetailvo = new OrderdetailVO();
                         orderdetailvo.setProd_id(item_selected_id);
                         orderdetailvo.setProd_name(item_selected);
                         orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
-//                        orderdetailvo.setDetail_amt(1);
+                        orderdetailvo.setDetail_amt(1);
+                        Integer orderDetail_amt =  orderdetailvo.getDetail_amt();
                         Log.d(TAG, "onItemSelected: orderdetailvo.getProd_id : "+orderdetailvo.getProd_id());
 
 
@@ -498,7 +503,7 @@ public class StoreFragment extends Fragment{
 
 
                         //設定總價 = 取得現有所有單價並加總
-                        temp_inttotal = temp_inttotal+Integer.parseInt(item_selected_price);
+                        temp_inttotal = temp_inttotal+Integer.parseInt(item_selected_price)*orderDetail_amt;
                         tvtotal.setText(String.valueOf(temp_inttotal));
 
 
@@ -557,10 +562,10 @@ public class StoreFragment extends Fragment{
 
             final OrderdetailVO orderdetailvo = orderdetailvolist.get(position);
 
-
+            //設定商品名稱
             TextView tv_takeout_item_name = (TextView) convertView.findViewById(R.id.tv_takeout_item_name);
             tv_takeout_item_name.setText(orderdetailvo.getProd_name());
-
+            //設定商品單價
             final TextView tv_cup = (TextView) convertView.findViewById(R.id.tv_cup);
             tv_cup.setText(String.valueOf(orderdetailvo.getProd_price()));
 
@@ -568,12 +573,16 @@ public class StoreFragment extends Fragment{
 
             ImageView add_item_count = (ImageView) convertView.findViewById(R.id.add_item_count);
             ImageView minus_item_count = (ImageView) convertView.findViewById(R.id.minus_item_count);
+            //杯數tv
             final TextView tvcountOfCup = (TextView) convertView.findViewById(R.id.countOfCup);
+            //舊的杯數要設上
+            tvcountOfCup.setText(orderdetailvo.getDetail_amt().toString());
+            //小計tv
             final TextView tvsubtotal = (TextView) convertView.findViewById(R.id.subtotal);
 
 
             //Spinner選出來後預設一個item的價格為單價
-            tvsubtotal.setText(String.valueOf(orderdetailvo.getProd_price()));
+            tvsubtotal.setText(String.valueOf(orderdetailvo.getProd_price()*orderdetailvo.getDetail_amt()));
 
 
             final int price = orderdetailvo.getProd_price();
@@ -584,17 +593,21 @@ public class StoreFragment extends Fragment{
 
                 @Override
                 public void onClick(View v) {
-                    int countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
-                    countofcups = countofcups +1;
-                    orderdetailvo.setDetail_amt(countofcups);
-                    tvcountOfCup.setText(String.valueOf(countofcups));
+                    int count  = orderdetailvo.getDetail_amt();
+                    count = count +1 ;
+
+                    orderdetailvo.setDetail_amt(count);
+                    //設定view杯數
+                    tvcountOfCup.setText(String.valueOf(count));
 
 
                     //單項商品小計  單價 x 杯數
-                    int subtotal = price*countofcups;
+                    int subtotal = price*count;
+                    //設定view小計值
                     tvsubtotal.setText(String.valueOf(subtotal));
 
                     temp_inttotal = temp_inttotal+price;
+                    //設定總額
                     tvtotal.setText(String.valueOf(temp_inttotal));
 
                 }
@@ -603,21 +616,24 @@ public class StoreFragment extends Fragment{
             minus_item_count.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer countofcups = Integer.parseInt((tvcountOfCup.getText().toString()));
-                    if(countofcups != 1){
-                        countofcups = countofcups-1;
-                        orderdetailvo.setDetail_amt(countofcups);
-                        tvcountOfCup.setText(String.valueOf(countofcups));
+                    int count = orderdetailvo.getDetail_amt();
+                    if(count != 1){
+                        count = count-1;
+                        orderdetailvo.setDetail_amt(count);
+                        tvcountOfCup.setText(String.valueOf(count));
 
 
                         //單項商品小計  單價 x 杯數
-                        int subtotal = price*countofcups;
+                        int subtotal = price*count;
                         tvsubtotal.setText(String.valueOf(subtotal));
 
                         temp_inttotal = temp_inttotal-price;
                         tvtotal.setText(String.valueOf(temp_inttotal));
                     }else{
-//                        showToast("一項商品最少購買一個!!");
+                        //將此商品Delete
+//                        orderdetailvolist.remove(orderdetailvo);
+                        showToast("最低商品數量為一");
+
                     }
 
                 }
