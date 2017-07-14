@@ -504,14 +504,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
                 lastLocation = location;
                 double Lat = lastLocation.getLatitude();
                 double Lgt = lastLocation.getLongitude();
+
+
+
                 LatLng point = new LatLng(Lat,Lgt);
                 String current_position = Helper.getAddressByLatLng(point);
                 //每次位置改變時，將位置資訊傳給會員資料
                 showToast(current_position);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("current_position",current_position);
                 Profile profile = new Profile(getActivity());
                 profile.setCurrentPosition(current_position);
+                profile.setLat((float) Lat);
+                profile.setLng((float) Lgt);
 
                 showToast("現在經度:"+Lat+"/n"+"現在緯度"+Lgt);
                 showMarkerMe(Lat,Lgt);

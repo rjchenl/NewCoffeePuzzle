@@ -3,6 +3,8 @@ package com.example.user.newcoffeepuzzle.rjchenl_main;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by user on 2017/6/29.
  */
@@ -84,6 +86,26 @@ public class Profile {
 
     public String getCurrentPosition(){
         return sharedPreferences.getString("current_position","");
+    }
+
+    public void setLat(Float lat){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("Lat",lat);
+        editor.apply();
+    }
+
+    public Float getLat(){
+        return sharedPreferences.getFloat("Lat",0);
+    }
+
+    public void setLng(Float lng){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("Lat",lng);
+        editor.apply();
+    }
+
+    public Float getLng(){
+        return sharedPreferences.getFloat("Lat",0);
     }
 
 
