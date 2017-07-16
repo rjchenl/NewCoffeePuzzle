@@ -158,6 +158,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             switchFragment(fragment);
                             setTitle("瀏覽寄杯活動");
                             break;
+                        case R.id.registerout:
+                            finish();
+                            break;
                         default:
                             initBody();
                             break;

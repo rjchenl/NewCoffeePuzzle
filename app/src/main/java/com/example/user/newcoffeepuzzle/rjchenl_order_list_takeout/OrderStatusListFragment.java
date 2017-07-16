@@ -128,16 +128,50 @@ public class OrderStatusListFragment extends Fragment {
             TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
             tv_store_name.setText(orderStatusVO.getStore_name());
             TextView tv_ord_pick = (TextView) convertView.findViewById(R.id.tv_ord_pick);
-
             Log.d(TAG, "getView: orderStatusVO.getOrd_pick() : "+orderStatusVO.getOrd_pick());
+            switch (orderStatusVO.getOrd_pick()){
+                case 1:
+                    tv_ord_pick.setText("購物");
+                    break;
+                case 2:
+                    tv_ord_pick.setText("外帶");
+                    break;
+                case 3:
+                    tv_ord_pick.setText("外送");
+                    break;
+                default:
+                    tv_ord_pick.setText("無法歸類");
+                    break;
+            }
 
-            tv_ord_pick.setText(orderStatusVO.getOrd_pick().toString());
+
+//            tv_ord_pick.setText(orderStatusVO.getOrd_pick().toString());
             TextView tv_ord_time = (TextView) convertView.findViewById(R.id.tv_ord_time);
             tv_ord_time.setText(orderStatusVO.getOrd_time().toString());
             TextView tv_ord_total = (TextView) convertView.findViewById(R.id.tv_ord_total);
             tv_ord_total.setText(orderStatusVO.getOrd_total().toString());
             TextView tv_ord_shipping = (TextView) convertView.findViewById(R.id.tv_ord_shipping);
-            tv_ord_shipping.setText(orderStatusVO.getOrd_shipping().toString());
+            switch (orderStatusVO.getOrd_shipping()){
+                case 1:
+                    tv_ord_shipping.setText("未處理");
+                    break;
+                case 2 :
+                    tv_ord_shipping.setText("審核此筆交易失敗");
+                    break;
+                case 3:
+                    tv_ord_shipping.setText("已接單");
+                    break;
+                case 4:
+                    tv_ord_shipping.setText("已出貨");
+                    break;
+                case 5:
+                    tv_ord_shipping.setText("交易完成");
+                    break;
+                default:
+                    tv_ord_shipping.setText("無法歸類");
+                    break;
+            }
+//            tv_ord_shipping.setText(orderStatusVO.getOrd_shipping().toString());
 
             final Bundle bundle = new Bundle();
             bundle.putSerializable("orderStatusVO",orderStatusVO);
