@@ -18,10 +18,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Created by Java on 2017/7/15.
+ */
 
-public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
-    private final static String TAG = "Ordelist_2_GetAllTask";
-    private final static String ACTION = "getOrdelist_2";
+public class Ordelist_4_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
+    private final static String TAG = "Ordelist_4_GetAllTask";
+    private final static String ACTION = "getOrdelist_4";
 
     @Override
     protected List<OrderlistVO> doInBackground(Object... params) {

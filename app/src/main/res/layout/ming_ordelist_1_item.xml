@@ -73,6 +73,20 @@
         android:layout_toRightOf="@+id/ORD_TIME"
         android:layout_below="@+id/ord_total"/>
 
+    <Button
+        android:id="@+id/Bt_yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="接受訂單"
+        android:layout_below="@+id/ORD_TIME"
+        android:layout_marginLeft="60dp"/>
 
+    <Button
+        android:id="@+id/Bt_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="取消訂單"
+        android:layout_below="@+id/ORD_TIME"
+        android:layout_marginLeft="200dp"/>
 
 </RelativeLayout>

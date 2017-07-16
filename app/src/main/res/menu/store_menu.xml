@@ -14,6 +14,10 @@
             android:title="@string/outbound_orders"
             android:icon="@drawable/scooter"/>
         <item
+            android:id="@+id/delivery"
+            android:title="@string/delivery"
+            android:icon="@drawable/delivery"/>
+        <item
             android:id="@+id/spndcoffeelist"
             android:title="@string/spndcoffeelist"
             android:icon="@drawable/cup"/>

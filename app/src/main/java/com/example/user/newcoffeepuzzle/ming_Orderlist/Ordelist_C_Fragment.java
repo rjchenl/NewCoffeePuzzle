@@ -6,9 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +43,7 @@ public class Ordelist_C_Fragment extends Fragment{
             ordelist_page= new ArrayList<>();
             ordelist_page.add(new Ordelist_Page(new Ordelist_1_Fragment(),"未接單"));
             ordelist_page.add(new Ordelist_Page(new Ordelist_2_Fragment(),"已接單"));
+            ordelist_page.add(new Ordelist_Page(new Ordelist_4_Fragment(),"出貨中"));
             ordelist_page.add(new Ordelist_Page(new Ordelist_3_Fragment(),"完成訂單"));
         }
 

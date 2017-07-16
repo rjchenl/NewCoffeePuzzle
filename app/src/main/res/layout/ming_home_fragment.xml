@@ -8,7 +8,8 @@
         android:id="@+id/imagecoco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/cocoa"/>
+        android:src="@drawable/cocoa"
+        android:layout_marginLeft="120dp"/>
 
     <TextView
         android:id="@+id/TV"
@@ -16,7 +17,8 @@
         android:layout_height="wrap_content"
         android:text="新增寄杯"
         android:textSize="30dp"
-        android:layout_below="@+id/imagecoco"/>
+        android:layout_below="@+id/imagecoco"
+        android:layout_marginLeft="120dp"/>
 
     <TextView
         android:id="@+id/Message"

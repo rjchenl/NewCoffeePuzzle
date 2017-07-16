@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
@@ -22,14 +22,13 @@ import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
 import java.util.List;
 
-/**
- * Created by Java on 2017/7/14.
- */
+
 
 public class Ordelist_2_Fragment extends Fragment{
     private final static String TAG = "ming_ordelist_2_fragment";
     private RecyclerView ry_ordelist_2;
     private String store_id;
+    Button Bt_GO;
 
     @Nullable
     @Override
@@ -88,6 +87,7 @@ public class Ordelist_2_Fragment extends Fragment{
                 ord_total_2 = (TextView) itemView.findViewById(R.id.ord_total_2);
                 ord_time_2 = (TextView) itemView.findViewById(R.id.ord_time_2);
                 ord_shipping_2 = (TextView) itemView.findViewById(R.id.ord_shipping_2);
+                Bt_GO = (Button) itemView.findViewById(R.id.Bt_GO);
 
             }
         }
@@ -102,7 +102,7 @@ public class Ordelist_2_Fragment extends Fragment{
         public void onBindViewHolder(Orders_2_RecyclerViewAdapter.ViewHolder holder, int position) {
             OrderlistVO orderlistVO = orderlistVOList.get(position);
 
-            String ord_id_2 = orderlistVO.getOrd_id();
+            final String ord_id_2 = orderlistVO.getOrd_id();
             holder.ord_id_2.setText(ord_id_2);
             Integer ord_total_2 = orderlistVO.getOrd_total();
             holder.ord_total_2.setText(ord_total_2.toString());
@@ -110,6 +110,34 @@ public class Ordelist_2_Fragment extends Fragment{
             holder.ord_time_2.setText(ord_time_2);
             Integer ord_shipping_2 = orderlistVO.getOrd_shipping();
             holder.ord_shipping_2.setText(ord_shipping_2.toString());
+
+            Bt_GO.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Common_ming.networkConnected(getActivity())){
+                        String url = Common_ming.URL + "ming_Orderlist_Servlet";
+                        List<OrderlistVO> orderlistVOList = null;
+
+                        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setMessage("Loading...");
+                        progressDialog.show();
+                        try{
+                            orderlistVOList = new Ordelist_Get_GO_Update().execute(url,store_id,ord_id_2).get();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e(TAG, e.toString());
+                        }
+                        progressDialog.cancel();
+                        if (orderlistVOList == null || orderlistVOList.isEmpty()){
+                            Common_ming.showToast(getActivity(), "訂單出貨");
+                        }else {
+                            ry_ordelist_2.setAdapter(new Ordelist_2_Fragment.Orders_2_RecyclerViewAdapter(getActivity(),orderlistVOList));
+                        }
+                    }else {
+                        Common_ming.showToast(getActivity(), "no network connection available");
+                    }
+                }
+            });
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

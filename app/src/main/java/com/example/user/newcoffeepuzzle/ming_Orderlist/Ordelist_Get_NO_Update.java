@@ -18,20 +18,25 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Created by Java on 2017/7/15.
+ */
 
-public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
-    private final static String TAG = "Ordelist_2_GetAllTask";
-    private final static String ACTION = "getOrdelist_2";
+public class Ordelist_Get_NO_Update extends AsyncTask<Object,Integer,List<OrderlistVO>> {
+    private final static String TAG = "Ordelist_Get_NO_Update";
+    private final static String ACTION = "getOrdelist_NO_Update";
 
     @Override
     protected List<OrderlistVO> doInBackground(Object... params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String store_id = params[1].toString();
+        String ord_id = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
         jsonObject.addProperty("store_id", store_id);
+        jsonObject.addProperty("ord_id", ord_id);
 
 
         try {
@@ -46,7 +51,7 @@ public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<Orderli
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         Type listType = new TypeToken<List<OrderlistVO>>() {}.getType();
 
-        return gson.fromJson(jsonIn, listType);
+        return null;
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException{
@@ -78,4 +83,5 @@ public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<Orderli
         return jsonIn.toString();
 
     }
+
 }

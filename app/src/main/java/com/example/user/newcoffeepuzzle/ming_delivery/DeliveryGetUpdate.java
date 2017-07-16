@@ -1,38 +1,38 @@
-package com.example.user.newcoffeepuzzle.ming_Orderlist;
+package com.example.user.newcoffeepuzzle.ming_delivery;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 
-public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
-    private final static String TAG = "Ordelist_2_GetAllTask";
-    private final static String ACTION = "getOrdelist_2";
+public class DeliveryGetUpdate extends AsyncTask<Object,Integer,Intent> {
+    private final static String TAG = "DeliveryGetUpdate";
+    private final static String ACTION = "getDeliveryUpdate";
 
     @Override
-    protected List<OrderlistVO> doInBackground(Object... params) {
-        Log.d(TAG, "doInBackground: (step1_1)");
+    protected Intent doInBackground(Object[] params) {
         String url = params[0].toString();
-        String store_id = params[1].toString();
+        String ord_id = params[1].toString();
+        String list_left = params[2].toString();
+        String ord_shipping = params[3].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_id", store_id);
-
+        jsonObject.addProperty("ord_id", ord_id);
+        jsonObject.addProperty("list_left", list_left);
+        jsonObject.addProperty("ord_shipping", ord_shipping);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -44,9 +44,9 @@ public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<Orderli
         }
 
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<OrderlistVO>>() {}.getType();
 
-        return gson.fromJson(jsonIn, listType);
+
+        return null;
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException{
