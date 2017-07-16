@@ -164,12 +164,19 @@ public class OrderStatusListFragment extends Fragment {
             checkDetailInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    OrderdetailListFragment ordedetailfragment = new OrderdetailListFragment();
-                    ordedetailfragment.setArguments(bundle2);
-                    FragmentTransaction  fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.body,ordedetailfragment,"fragment");
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+//                    OrderdetailListFragment ordedetailfragment = new OrderdetailListFragment();
+//                    ordedetailfragment.setArguments(bundle2);
+
+
+//                    FragmentTransaction  fragmentTransaction = getFragmentManager().beginTransaction();
+//                    fragmentTransaction.replace(R.id.body,ordedetailfragment,"fragment");
+//                    fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
+
+                    OrderDetailDialogFragment orderdetaildialogfragment = new OrderDetailDialogFragment();
+                    orderdetaildialogfragment.setArguments(bundle2);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    orderdetaildialogfragment.show(fragmentManager,"show detail");
                 }
             });
 
@@ -272,7 +279,108 @@ public class OrderStatusListFragment extends Fragment {
     }
 
 
+    public static class OrderDetailDialogFragment extends DialogFragment{
 
+        List<OrderdetailVO> orderdetailVO_list;
+        private ListView lvorderdetaillist;
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Dialog dialog = super.onCreateDialog(savedInstanceState);
+            //不顯示標題
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            return dialog;
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.rj_orderlist_dialoge_fragmen,container,false);
+            lvorderdetaillist = (ListView) view.findViewById(R.id.lvorderdetaillist);
+            getOrdertailVO_DBdata();
+            lvorderdetaillist.setAdapter(new OrderDetailItemAdapter(getActivity(),orderdetailVO_list));
+
+            return view;
+        }
+
+        private void getOrdertailVO_DBdata() {
+            Bundle bundle = getArguments();
+            String ord_id = bundle.getString("ord_id");
+
+
+            if (Common_RJ.networkConnected(getActivity())) {
+                String url = Common_RJ.URL + "OrderdetailServlet_RJ";
+                orderdetailVO_list = null;
+                try {
+
+                    //連結資料庫取得物件資料
+                    orderdetailVO_list = new OrderDetailGetTask().execute(url,ord_id).get();
+                } catch (Exception e) {
+
+                }
+                if (orderdetailVO_list == null || orderdetailVO_list.isEmpty()) {
+                    Common_RJ.showToast(getActivity(), "No spndcoffeelist found");
+                }
+            }
+        }
+
+        public class OrderDetailItemAdapter extends BaseAdapter{
+            Context context;
+            List<OrderdetailVO> OrderdetailVO_List;
+
+            public OrderDetailItemAdapter(Context context,List<OrderdetailVO> OrderdetailVO_List){
+                this.context = context;
+                this.OrderdetailVO_List = OrderdetailVO_List;
+            }
+
+            @Override
+            public int getCount() {
+                return OrderdetailVO_List.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return OrderdetailVO_List.get(position);
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                if(convertView == null){
+                    LayoutInflater layoutInflater = LayoutInflater.from(context);
+                    convertView =layoutInflater.inflate(R.layout.rj_orderdetail_item_info_fragment,parent,false);
+                }
+
+
+                Log.d(TAG, "getView: here");
+                OrderdetailVO orderdetailvo = OrderdetailVO_List.get(position);
+                Log.d(TAG, "getView: orderdetailvo.getProd_name() : "+orderdetailvo.getProd_name());
+                Log.d(TAG, "getView: orderdetailvo.getProd_price().toString() : "+orderdetailvo.getProd_price().toString());
+                Log.d(TAG, "getView: orderdetailvo.getDetail_amt().toString() : "+orderdetailvo.getDetail_amt().toString());
+
+                TextView tvprod_name = (TextView) convertView.findViewById(R.id.tvprod_name);
+                Log.d(TAG, "getView: here2");
+                tvprod_name.setText(orderdetailvo.getProd_name());
+                TextView tvprod_price = (TextView) convertView.findViewById(R.id.tvprod_price);
+                tvprod_price.setText(orderdetailvo.getProd_price().toString());
+                TextView tvdetail_amt = (TextView) convertView.findViewById(R.id.tvdetail_amt);
+                tvdetail_amt.setText(orderdetailvo.getDetail_amt().toString());
+
+
+
+
+                return convertView;
+            }
+        }
+
+
+    }
 
 
 
