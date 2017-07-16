@@ -13,8 +13,9 @@ import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_HomeFragment.HomeFragment;
-import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_Fragment;
+import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_C_Fragment;
 import com.example.user.newcoffeepuzzle.ming_QRin.QRin_Fragment;
+import com.example.user.newcoffeepuzzle.ming_delivery.Delivery_Fragment;
 import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 
 public class StoreActivity extends AppCompatActivity {
@@ -64,16 +65,20 @@ public class StoreActivity extends AppCompatActivity {
                     store_drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch (menuItem.getItemId()) {
-                        case R.id.take_orders:
-                            fragment = new Ordelist_Fragment();
+                        case R.id.outbound_orders:
+                            fragment = new Ordelist_C_Fragment();
                             switchFragment(fragment);
-                            setTitle("外帶");
+                            setTitle("外送");
                             break;
                         case R.id.spndcoffeelist:
                             fragment = new Spndcoffelist_Fragment();
                             switchFragment(fragment);
                             setTitle("寄杯");
                             break;
+                        case R.id.delivery:
+                            fragment = new Delivery_Fragment();
+                            switchFragment(fragment);
+                            setTitle("外帶確認");
                         case R.id.QRin:
                             fragment = new QRin_Fragment();
                             switchFragment(fragment);

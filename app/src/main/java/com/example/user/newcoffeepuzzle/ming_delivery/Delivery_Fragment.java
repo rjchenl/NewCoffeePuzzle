@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_HomeFragment;
+package com.example.user.newcoffeepuzzle.ming_delivery;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -6,12 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
@@ -26,38 +26,26 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 
-public class HomeFragment extends Fragment{
+public class Delivery_Fragment extends Fragment{
     private static final String PACKAGE = "com.google.zxing.client.android";
     private static final int REQUEST_BARCODE_SCAN = 0;
-    private TextView Message;
-    String store_id;
-    ImageView imagecoco;
+    private TextView tvMessage;
+    private String store_id;
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        final View view = inflater.inflate(R.layout.ming_home_fragment,container,false);
-        findView_Home(view);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
+            Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.ming_delivery_fragment,container,false);
+        findViews(view);
         Profile_ming profile_ming = new Profile_ming(getContext());
         store_id = profile_ming.getStoreId();
-
-        imagecoco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findView_QR(view);
-                }
-        });
-
         return view;
     }
 
-    private void findView_Home(View view) {
-        imagecoco = (ImageView) view.findViewById(R.id.imagecoco);
-        Message = (TextView) view.findViewById(R.id.Message);
-    }
-
-    private void findView_QR(View view) {
-
+    private void findViews(View view) {
+        tvMessage = (TextView) view.findViewById(R.id.tvMessage);
         Intent intent = new Intent(
                 "com.google.zxing.client.android.SCAN");
         try {
@@ -66,6 +54,36 @@ public class HomeFragment extends Fragment{
         // 如果沒有安裝Barcode Scanner，就跳出對話視窗請user安裝
         catch (ActivityNotFoundException e) {
             showDownloadDialog();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+        if (requestCode == REQUEST_BARCODE_SCAN) {
+            String message = "";
+            if (resultCode == RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String resultFormat = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                message = (  contents + "\nResult format: " + resultFormat);
+            } else if (resultCode == RESULT_CANCELED) {
+                message = "Scan was Cancelled!";
+            }
+            tvMessage.setText(message);
+        }
+        if(Common_ming.networkConnected(getActivity())){
+            String url = Common_ming.URL + "ming_Orderlist_Servlet";
+            try {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                JSONObject.quote(contents);
+                JSONObject json = new JSONObject(contents);
+                String ord_id = json.getString("list_id");
+                Integer ord_shipping = json.getInt("list_left");
+
+                intent = new DeliveryGetUpdate().execute(url, ord_id, ord_shipping, store_id).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Common_ming.showToast(getContext(),R.string.delivery_OK);
         }
     }
 
@@ -95,36 +113,5 @@ public class HomeFragment extends Fragment{
                     }
                 });
         downloadDialog.show();
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == REQUEST_BARCODE_SCAN) {
-            String message = "";
-            if (resultCode == RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                String resultFormat = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                message = (  contents + "\nResult format: " + resultFormat);
-            } else if (resultCode == RESULT_CANCELED) {
-                message = "Scan was Cancelled!";
-            }
-
-        }
-        if(Common_ming.networkConnected(getActivity())){
-            String url = Common_ming.URL + "ming_Spndcoffelist_Servlet";
-            try {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                JSONObject.quote(contents);
-                JSONObject json = new JSONObject(contents);
-                String mem_id = json.getString("mem_id");
-                String spnd_id = json.getString("spnd_id");
-                String spnd_prod = json.getString("spnd_prod");
-
-                intent = new SpndcoffeelistGetInsert().execute(url,store_id,mem_id,spnd_id,spnd_prod).get();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, "intent: + intent" +intent);
-            }
-            Common_ming.showToast(getContext(),R.string.spndcoffeQR);
-        }
     }
 }

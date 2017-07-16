@@ -15,7 +15,7 @@
         android:layout_marginLeft="110dp"/>
 
     <TextView
-        android:id="@+id/ord_shipping"
+        android:id="@+id/ord_shipping_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單狀態"
@@ -31,7 +31,7 @@
         android:layout_below="@+id/ORD_SHIPPING"/>
 
     <TextView
-        android:id="@+id/ord_id"
+        android:id="@+id/ord_id_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單編號"
@@ -48,12 +48,12 @@
         android:layout_below="@+id/ORD_ID"/>
 
     <TextView
-        android:id="@+id/ord_total"
+        android:id="@+id/ord_total_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="總金額"
         android:textSize="16dp"
-        android:layout_below="@+id/ord_id"
+        android:layout_below="@+id/ord_id_2"
         android:layout_toRightOf="@+id/ORD_TOTAL"/>
 
     <TextView
@@ -65,14 +65,21 @@
         android:layout_below="@+id/ORD_TOTAL"/>
 
     <TextView
-        android:id="@+id/ord_time"
+        android:id="@+id/ord_time_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單日期"
         android:textSize="16dp"
         android:layout_toRightOf="@+id/ORD_TIME"
-        android:layout_below="@+id/ord_total"/>
+        android:layout_below="@+id/ord_total_2"/>
 
 
+    <Button
+        android:id="@+id/Bt_GO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ORD_TIME"
+        android:layout_marginLeft="135dp"
+        android:text="外送出貨"/>
 
 </RelativeLayout>

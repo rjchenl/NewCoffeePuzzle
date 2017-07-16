@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color01"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/ORD_SHIPPING"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單狀態："
+        android:textSize="16dp"
+        android:layout_marginLeft="110dp"/>
+
+    <TextView
+        android:id="@+id/ord_shipping_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單狀態"
+        android:textSize="16dp"
+        android:layout_toRightOf="@+id/ORD_SHIPPING"/>
+
+    <TextView
+        android:id="@+id/ORD_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單編號："
+        android:textSize="16dp"
+        android:layout_below="@+id/ORD_SHIPPING"/>
+
+    <TextView
+        android:id="@+id/ord_id_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單編號"
+        android:textSize="16dp"
+        android:layout_below="@+id/ORD_SHIPPING"
+        android:layout_toRightOf="@+id/ORD_ID"/>
+
+    <TextView
+        android:id="@+id/ORD_TOTAL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="總金額："
+        android:textSize="16dp"
+        android:layout_below="@+id/ORD_ID"/>
+
+    <TextView
+        android:id="@+id/ord_total_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="總金額"
+        android:textSize="16dp"
+        android:layout_below="@+id/ord_id_4"
+        android:layout_toRightOf="@+id/ORD_TOTAL"/>
+
+    <TextView
+        android:id="@+id/ORD_TIME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單日期："
+        android:textSize="16dp"
+        android:layout_below="@+id/ORD_TOTAL"/>
+
+    <TextView
+        android:id="@+id/ord_time_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單日期"
+        android:textSize="16dp"
+        android:layout_toRightOf="@+id/ORD_TIME"
+        android:layout_below="@+id/ord_total_4"/>
+
+
+
+</RelativeLayout>

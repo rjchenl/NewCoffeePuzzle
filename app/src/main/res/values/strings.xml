@@ -10,6 +10,7 @@
     <string name="store_home">主頁</string>>
     <string name="take_orders">外帶訂單</string>
     <string name="outbound_orders">外送訂單</string>
+    <string name="delivery">外送確認</string>
     <string name="spndcoffeelist">寄杯訂單</string>
     <string name="out">登出</string>
 
@@ -17,6 +18,7 @@
     <string name="Login_null">帳號或密碼錯誤</string>
     <string name="QRin">領杯掃描</string>
     <string name="QR_OK">領杯成功</string>
+    <string name="delivery_OK">領取成功</string>
     <string name="spndcoffeQR">新增寄杯訂單</string>
 
 </resources>

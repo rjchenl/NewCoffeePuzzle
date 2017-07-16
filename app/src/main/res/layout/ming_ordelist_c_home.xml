@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/Ordelist_Layout">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/Ordelist_Tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tabMode="fixed"
+        tabGravity="center">
+
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/Ordelist_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

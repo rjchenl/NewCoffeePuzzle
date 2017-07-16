@@ -19,9 +19,9 @@ import java.net.URL;
 import java.util.List;
 
 
-public class Ordelist_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
-    private final static String TAG = "Ordelist_GetAllTask";
-    private final static String ACTION = "getOrdelist";
+public class Ordelist_2_GetAllTask extends AsyncTask<Object,Integer,List<OrderlistVO>> {
+    private final static String TAG = "Ordelist_2_GetAllTask";
+    private final static String ACTION = "getOrdelist_2";
 
     @Override
     protected List<OrderlistVO> doInBackground(Object... params) {
