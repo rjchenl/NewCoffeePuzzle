@@ -79,7 +79,8 @@
         android:layout_height="wrap_content"
         android:text="接受訂單"
         android:layout_below="@+id/ORD_TIME"
-        android:layout_marginLeft="60dp"/>
+        android:layout_marginLeft="60dp"
+        android:onClick="onBt_yes_Click"/>
 
     <Button
         android:id="@+id/Bt_no"

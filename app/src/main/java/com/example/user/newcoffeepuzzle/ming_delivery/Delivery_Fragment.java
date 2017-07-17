@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_QRin.SpndcoffeelistGetUpdate;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
@@ -76,12 +75,13 @@ public class Delivery_Fragment extends Fragment{
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 JSONObject.quote(contents);
                 JSONObject json = new JSONObject(contents);
-                String ord_id = json.getString("list_id");
-                Integer ord_shipping = json.getInt("list_left");
+                String ord_id = json.getString("ord_id");
+                Integer ord_shipping = json.getInt("ord_shipping");
 
                 intent = new DeliveryGetUpdate().execute(url, ord_id, ord_shipping, store_id).get();
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d(TAG, "intent: + intent" +intent);
             }
             Common_ming.showToast(getContext(),R.string.delivery_OK);
         }

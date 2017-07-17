@@ -12,10 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_HomeFragment.HomeFragment;
-import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_C_Fragment;
+import com.example.user.newcoffeepuzzle.ming_Home_C_Ordelist.HomeFragment;
 import com.example.user.newcoffeepuzzle.ming_QRin.QRin_Fragment;
 import com.example.user.newcoffeepuzzle.ming_delivery.Delivery_Fragment;
+import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffeelist_Inser;
 import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
 
 public class StoreActivity extends AppCompatActivity {
@@ -65,10 +65,15 @@ public class StoreActivity extends AppCompatActivity {
                     store_drawerlayout.closeDrawers();
                     Fragment fragment;
                     switch (menuItem.getItemId()) {
-                        case R.id.outbound_orders:
-                            fragment = new Ordelist_C_Fragment();
+                        case R.id.store_home:
+                            fragment = new HomeFragment();
                             switchFragment(fragment);
-                            setTitle("外送");
+                            setTitle("主頁");
+                            break;
+                        case R.id.spndcoffeelist_inser:
+                            fragment = new Spndcoffeelist_Inser();
+                            switchFragment(fragment);
+                            setTitle("新增寄杯訂單");
                             break;
                         case R.id.spndcoffeelist:
                             fragment = new Spndcoffelist_Fragment();
@@ -78,13 +83,18 @@ public class StoreActivity extends AppCompatActivity {
                         case R.id.delivery:
                             fragment = new Delivery_Fragment();
                             switchFragment(fragment);
-                            setTitle("外帶確認");
+                            setTitle("外送確認");
+                            break;
                         case R.id.QRin:
                             fragment = new QRin_Fragment();
                             switchFragment(fragment);
                             setTitle("掃描器");
+                            break;
+                        case R.id.out:
+                            finish();
+                            break;
                         default:
-                            store_Frame();
+//                            store_Frame();
                             break;
                     }
                     return true;

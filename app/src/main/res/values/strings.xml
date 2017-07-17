@@ -11,6 +11,7 @@
     <string name="take_orders">外帶訂單</string>
     <string name="outbound_orders">外送訂單</string>
     <string name="delivery">外送確認</string>
+    <string name="spndcoffeelist_inser">新增寄杯訂單</string>
     <string name="spndcoffeelist">寄杯訂單</string>
     <string name="out">登出</string>
 

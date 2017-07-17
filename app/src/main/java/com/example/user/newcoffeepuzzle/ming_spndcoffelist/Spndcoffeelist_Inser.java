@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_HomeFragment;
+package com.example.user.newcoffeepuzzle.ming_spndcoffelist;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -11,11 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
-import com.example.user.newcoffeepuzzle.ming_QRin.SpndcoffeelistGetUpdate;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
@@ -26,34 +24,19 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 
-public class HomeFragment extends Fragment{
+public class Spndcoffeelist_Inser extends Fragment {
     private static final String PACKAGE = "com.google.zxing.client.android";
     private static final int REQUEST_BARCODE_SCAN = 0;
     private TextView Message;
     String store_id;
-    ImageView imagecoco;
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        final View view = inflater.inflate(R.layout.ming_home_fragment,container,false);
-        findView_Home(view);
+                             Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.ming_spndcoffeelist_inser, container, false);
         Profile_ming profile_ming = new Profile_ming(getContext());
         store_id = profile_ming.getStoreId();
-
-        imagecoco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findView_QR(view);
-                }
-        });
-
+        findView_QR(view);
         return view;
-    }
-
-    private void findView_Home(View view) {
-        imagecoco = (ImageView) view.findViewById(R.id.imagecoco);
-        Message = (TextView) view.findViewById(R.id.Message);
     }
 
     private void findView_QR(View view) {
@@ -124,6 +107,7 @@ public class HomeFragment extends Fragment{
                 e.printStackTrace();
                 Log.d(TAG, "intent: + intent" +intent);
             }
+
             Common_ming.showToast(getContext(),R.string.spndcoffeQR);
         }
     }

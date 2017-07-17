@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.ming_HomeFragment;
+package com.example.user.newcoffeepuzzle.ming_spndcoffelist;
 
 import android.content.Intent;
 import android.os.AsyncTask;

@@ -22,6 +22,8 @@ public class Orderdetail extends AppCompatActivity {
     private final static String TAG = "Orderdetail";
     private RecyclerView ry_orderdetail;
     String store_id;
+    Bundle bundle = getIntent().getExtras();
+    String ord_id = bundle.getString("ord_id");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class Orderdetail extends AppCompatActivity {
 
         ry_orderdetail = (RecyclerView) findViewById(R.id.ry_orderdetail);
         ry_orderdetail.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @Override
@@ -47,7 +50,7 @@ public class Orderdetail extends AppCompatActivity {
             progressDialog.show();
 
             try {
-                orderdetailVOlist = new Orderdetail_GetAll().execute(url,store_id).get();
+                orderdetailVOlist = new Orderdetail_GetAll().execute(url,store_id,ord_id).get();
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e(TAG, e.toString());

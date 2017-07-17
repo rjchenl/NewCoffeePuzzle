@@ -18,6 +18,9 @@
             android:title="@string/delivery"
             android:icon="@drawable/delivery"/>
         <item
+            android:id="@+id/spndcoffeelist_inser"
+            android:title="@string/spndcoffeelist_inser"/>
+        <item
             android:id="@+id/spndcoffeelist"
             android:title="@string/spndcoffeelist"
             android:icon="@drawable/cup"/>

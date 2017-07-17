@@ -28,10 +28,12 @@ public class Orderdetail_GetAll extends AsyncTask<Object,Integer,List<Orderdetai
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String store_id = params[1].toString();
+        String ord_id = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
         jsonObject.addProperty("store_id", store_id);
+        jsonObject.addProperty("ord_id", ord_id);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());

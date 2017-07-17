@@ -25,14 +25,14 @@ public class DeliveryGetUpdate extends AsyncTask<Object,Integer,Intent> {
     protected Intent doInBackground(Object[] params) {
         String url = params[0].toString();
         String ord_id = params[1].toString();
-        String list_left = params[2].toString();
-        String ord_shipping = params[3].toString();
+        String ord_shipping = params[2].toString();
+        String store_id = params[3].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
         jsonObject.addProperty("ord_id", ord_id);
-        jsonObject.addProperty("list_left", list_left);
         jsonObject.addProperty("ord_shipping", ord_shipping);
+        jsonObject.addProperty("store_id", store_id);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());

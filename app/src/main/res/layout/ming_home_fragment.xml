@@ -9,16 +9,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/cocoa"
-        android:layout_marginLeft="120dp"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="70dp"/>
 
     <TextView
         android:id="@+id/TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="新增寄杯"
+        android:text="未處理訂單"
         android:textSize="30dp"
         android:layout_below="@+id/imagecoco"
-        android:layout_marginLeft="120dp"/>
+        android:layout_marginLeft="8dp"/>
+
+    <ImageView
+        android:id="@+id/cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cart"
+        android:layout_marginLeft="190dp"
+        android:layout_marginTop="70dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已接受訂單"
+        android:textSize="30dp"
+        android:layout_below="@+id/cart"
+        android:layout_marginLeft="190dp"/>
 
     <TextView
         android:id="@+id/Message"
@@ -26,4 +43,37 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TV"/>
 
+    <ImageView
+        android:id="@+id/delivery_truck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delivery_truck"
+        android:layout_below="@+id/Message"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="70dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未出貨訂單"
+        android:textSize="30dp"
+        android:layout_below="@+id/delivery_truck"
+        android:layout_marginLeft="8dp"/>
+
+    <ImageView
+        android:id="@+id/checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/checked"
+        android:layout_below="@+id/Message"
+        android:layout_marginLeft="190dp"
+        android:layout_marginTop="70dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已完成訂單"
+        android:textSize="30dp"
+        android:layout_below="@+id/checked"
+        android:layout_marginLeft="190dp"/>
 </RelativeLayout>
