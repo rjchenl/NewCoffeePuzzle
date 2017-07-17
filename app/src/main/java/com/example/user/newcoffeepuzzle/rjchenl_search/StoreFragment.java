@@ -154,7 +154,7 @@ public class StoreFragment extends Fragment {
                     int ord_total = temp_inttotal;
                     int ord_pick = 3;
                     int ord_shipping = 1;
-                    Timestamp ord_time = new Timestamp(System.currentTimeMillis());
+                    String ord_time = new Timestamp(System.currentTimeMillis()).toString();
                     Log.d(TAG, "onClick: Timestamp :"+String.valueOf(ord_time));
                     //新增地址
                     String ord_add = et_takeout_position.getText().toString();
@@ -668,8 +668,8 @@ public class StoreFragment extends Fragment {
                         tvtotal.setText(String.valueOf(temp_inttotal));
                     } else {
                         //將此商品Delete
-//                        orderdetailvolist.remove(orderdetailvo);
-                        showToast("最低商品數量為一");
+                        orderdetailvolist.remove(orderdetailvo);
+                        notifyDataSetChanged();
                     }
                 }
             });

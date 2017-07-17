@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeelistVO;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,7 +45,8 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
             e.printStackTrace();
             return null;
         }
-        Gson gson = new Gson();
+//        Gson gson = new Gson();
+        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         Type listType = new TypeToken<List<OrderStatusVO>>() {
         }.getType();
 

@@ -13,12 +13,12 @@ public class OrderListVO implements Serializable {
     private Integer ord_pick;
     private String ord_add;
     private Integer ord_shipping;
-    private Timestamp ord_time;
+    private String ord_time;
     private Integer score_seller;
 
     public OrderListVO(){}
 
-    public OrderListVO(String mem_id, String store_id, Integer ord_total, Integer ord_pick, String ord_add, Integer ord_shipping, Timestamp ord_time, Integer score_seller) {
+    public OrderListVO(String mem_id, String store_id, Integer ord_total, Integer ord_pick, String ord_add, Integer ord_shipping, String ord_time, Integer score_seller) {
         this.mem_id = mem_id;
         this.store_id = store_id;
         this.ord_total = ord_total;
@@ -29,7 +29,7 @@ public class OrderListVO implements Serializable {
         this.score_seller = score_seller;
     }
 
-    public OrderListVO(String ord_id, String mem_id, String store_id, Integer ord_total, Integer ord_pick, String ord_add, Integer ord_shipping, Timestamp ord_time, Integer score_seller){
+    public OrderListVO(String ord_id, String mem_id, String store_id, Integer ord_total, Integer ord_pick, String ord_add, Integer ord_shipping, String ord_time, Integer score_seller){
         this.ord_id = ord_id;
         this.mem_id = mem_id;
         this.store_id = store_id;
@@ -97,11 +97,13 @@ public class OrderListVO implements Serializable {
         this.ord_shipping = ord_shipping;
     }
 
-    public Timestamp getOrd_time() {
+    public String getOrd_time() {
+
+
         return ord_time;
     }
 
-    public void setOrd_time(Timestamp ord_time) {
+    public void setOrd_time(String ord_time) {
         this.ord_time = ord_time;
     }
 
