@@ -65,6 +65,8 @@
         android:src="@drawable/add"/>
 
         <TextView
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_marginStart="20dp"
             android:id="@+id/countOfCup"
             android:layout_width="wrap_content"
@@ -92,6 +94,7 @@
         <TextView
             android:id="@+id/subtotal"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

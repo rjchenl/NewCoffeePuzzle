@@ -9,11 +9,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
-import com.example.user.newcoffeepuzzle.rjchenl_member.MyInfoFragent;
 import com.google.android.gms.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

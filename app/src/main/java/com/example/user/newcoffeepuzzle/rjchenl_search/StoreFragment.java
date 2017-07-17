@@ -2,6 +2,8 @@ package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -153,6 +155,7 @@ public class StoreFragment extends Fragment {
                     int ord_pick = 3;
                     int ord_shipping = 1;
                     Timestamp ord_time = new Timestamp(System.currentTimeMillis());
+                    Log.d(TAG, "onClick: Timestamp :"+String.valueOf(ord_time));
                     //新增地址
                     String ord_add = et_takeout_position.getText().toString();
                     int score_seller = 1;
@@ -460,13 +463,19 @@ public class StoreFragment extends Fragment {
 
 
                     //將商品名稱指定給矩陣好放入spinnerView的adapter
-                    items[i] = product_name;
+                    items[i] = product_name + "  price : "+product_price;
+//                    items[i] = product_name;
                     i = i + 1;
 
                 }
                 //把商品名稱放入spinner
+                //simple_spinner_item
+                //rj_spinnerlayout
                 ArrayAdapter<String> adapterPlace = new ArrayAdapter<>(getActivity(),
                         android.R.layout.simple_spinner_item, items);
+//                ArrayAdapter<String> adapterPlace = new MySpinnerAdapter(getActivity(),R.layout.rj_spinnerlayout,items);
+
+
                 adapterPlace
                         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_item.setAdapter(adapterPlace);
@@ -478,7 +487,14 @@ public class StoreFragment extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         //在listView 上新增選到的東西
-                        item_selected = parent.getItemAtPosition(position).toString();
+//                        item_selected = parent.getItemAtPosition(position).toString();
+                        String[] item_selected_array =
+                                parent.getItemAtPosition(position).toString().split("  price : ");
+                        for(String str : item_selected_array){
+                            Log.d(TAG, "onItemSelected: "+str);
+                        }
+
+                        item_selected = item_selected_array[0];
                         item_selected_price = item_price_map.get(item_selected);
                         item_selected_id = item_prodID_map.get(item_selected);
                         //舊的VO值要保留
@@ -488,6 +504,7 @@ public class StoreFragment extends Fragment {
                         OrderdetailVO orderdetailvo = new OrderdetailVO();
                         orderdetailvo.setProd_id(item_selected_id);
                         orderdetailvo.setProd_name(item_selected);
+                        Log.d(TAG, "onItemSelected: item_selected_price : "+item_selected_price);
                         orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
                         orderdetailvo.setDetail_amt(1);
                         Integer orderDetail_amt = orderdetailvo.getDetail_amt();
@@ -523,6 +540,16 @@ public class StoreFragment extends Fragment {
 
             }
         }
+    }
+
+    private class MySpinnerAdapter extends ArrayAdapter{
+
+
+        public MySpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull Object[] objects) {
+            super(context, resource, objects);
+        }
+
+
     }
 
 
