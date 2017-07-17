@@ -22,12 +22,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MemberImageGetTask;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderStatusListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.BrowserSpndcoffeeListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
@@ -122,13 +125,14 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
 
         Profile profile = new Profile(this);
-//        String mem_id = profile.getMemId();
+        String mem_id = profile.getMemId();
         //使用navigationView 得到headerView
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         View navView = navigationView.getHeaderView(0);
 
-        TextView tvcurrent_position = (TextView) navView.findViewById(R.id.tvcurrent_position);
-        tvcurrent_position.setText(profile.getCurrentPosition());
+//        TextView tvcurrent_position = (TextView) navView.findViewById(R.id.tvcurrent_position);
+//        tvcurrent_position.setText(profile.getCurrentPosition());
+//        Log.d(TAG, "initDrawer: profile.getCurrentPosition():"+profile.getCurrentPosition());
 
         TextView tvmember_name = (TextView) navView.findViewById(R.id.tvmember_name);
         tvmember_name.setText(profile.getMem_name());
@@ -136,15 +140,21 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         TextView tvmem_add = (TextView) navView.findViewById(R.id.tvmem_add);
         tvmem_add.setText(profile.getMem_add());
 
-        TextView tvmem_tel = (TextView) navView.findViewById(R.id.tvmem_tel);
-        tvmem_tel.setText(profile.getMem_tel());
+//        TextView tvmem_tel = (TextView) navView.findViewById(R.id.tvmem_tel);
+//        tvmem_tel.setText(profile.getMem_tel());
+//
+//        TextView tvmem_email = (TextView) navView.findViewById(R.id.tvmem_email);
+//        tvmem_email.setText(profile.getMem_email());
+//
+//        TextView tvmem_points = (TextView) navView.findViewById(R.id.tvmem_points);
+//        tvmem_points.setText(profile.getMem_points().toString());
 
-        TextView tvmem_email = (TextView) navView.findViewById(R.id.tvmem_email);
-        tvmem_email.setText(profile.getMem_email());
-
-        TextView tvmem_points = (TextView) navView.findViewById(R.id.tvmem_points);
-        tvmem_points.setText(profile.getMem_points().toString());
-
+        ImageView member_image = (ImageView) navView.findViewById(R.id.member_image);
+        //執行拿照片
+        String url = Common_RJ.URL + "MemberServlet";
+        int imageSize = 250;
+        new MemberImageGetTask(member_image).execute(url,mem_id,imageSize);
+//        member_image.setImageResource();
 
 
 
@@ -192,6 +202,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             });
         }
     }
+
 
 
 
