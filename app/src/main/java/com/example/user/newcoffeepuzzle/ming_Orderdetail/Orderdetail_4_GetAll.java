@@ -1,43 +1,42 @@
-package com.example.user.newcoffeepuzzle.ming_HomeFragment;
+package com.example.user.newcoffeepuzzle.ming_Orderdetail;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 /**
- * Created by Java on 2017/7/14.
+ * Created by Java on 2017/7/19.
  */
 
-public class SpndcoffeelistGetInsert extends AsyncTask<Object,Integer,Intent> {
-    private final static String TAG = "SpndcoffeelistGetInsert";
-    private final static String ACTION = "getInsert";
+public class Orderdetail_4_GetAll extends AsyncTask<Object,Integer,List<OrderdetailVO>> {
+    private final static String TAG = "Orderdetail_4_GetAll";
+    private final static String ACTION = "getOrderdetail_4";
 
     @Override
-    protected Intent doInBackground(Object... params) {
+    protected List<OrderdetailVO> doInBackground(Object... params) {
+        Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String store_id = params[1].toString();
-        String mem_id = params[2].toString();
-        String spnd_id = params[3].toString();
-        String spnd_prod = params[4].toString();
+        String ord_id_4 = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
         jsonObject.addProperty("store_id", store_id);
-        jsonObject.addProperty("mem_id", mem_id);
-        jsonObject.addProperty("spnd_id", spnd_id);
-        jsonObject.addProperty("spnd_prod", spnd_prod);
+        jsonObject.addProperty("ord_id_4", ord_id_4);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -47,9 +46,10 @@ public class SpndcoffeelistGetInsert extends AsyncTask<Object,Integer,Intent> {
             Log.d(TAG, "doInBackground: (step1_3)");
             return null;
         }
-
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        return null;
+        Type listType = new TypeToken<List<OrderdetailVO>>() {}.getType();
+
+        return gson.fromJson(jsonIn, listType);
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException{
@@ -81,4 +81,5 @@ public class SpndcoffeelistGetInsert extends AsyncTask<Object,Integer,Intent> {
         return jsonIn.toString();
 
     }
+
 }

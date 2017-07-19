@@ -1,39 +1,41 @@
-package com.example.user.newcoffeepuzzle.ming_Orderdetail;
+package com.example.user.newcoffeepuzzle.ming_home;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 
-public class Orderdetail_GetAll extends AsyncTask<Object,Integer,List<OrderdetailVO>> {
-    private final static String TAG = "Orderdetail_GetAll";
-    private final static String ACTION = "getOrderdetail";
-
+public class MemGetInsert extends AsyncTask<Object,Integer,Intent> {
+    private final static String TAG = "MemGetInsert";
+    private final static String ACTION = "getMem_Insert";
     @Override
-    protected List<OrderdetailVO> doInBackground(Object... params) {
-        Log.d(TAG, "doInBackground: (step1_1)");
+    protected Intent doInBackground(Object... params) {
         String url = params[0].toString();
-        String store_id = params[1].toString();
-        String ord_id = params[2].toString();
+        String inser_memid = params[1].toString();
+        String inser_mem_psw = params[2].toString();
+        String inser_mem_name = params[3].toString();
+        String inser_mem_nanber = params[4].toString();
+        String inser_mem_mail = params[5].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_id", store_id);
-        jsonObject.addProperty("ord_id", ord_id);
+        jsonObject.addProperty("inser_memid", inser_memid);
+        jsonObject.addProperty("inser_mem_psw", inser_mem_psw);
+        jsonObject.addProperty("inser_mem_name", inser_mem_name);
+        jsonObject.addProperty("inser_mem_nanber", inser_mem_nanber);
+        jsonObject.addProperty("inser_mem_mail", inser_mem_mail);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -43,10 +45,9 @@ public class Orderdetail_GetAll extends AsyncTask<Object,Integer,List<Orderdetai
             Log.d(TAG, "doInBackground: (step1_3)");
             return null;
         }
-        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<OrderdetailVO>>() {}.getType();
 
-        return gson.fromJson(jsonIn, listType);
+        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        return null;
     }
 
     private String getRemoteData(String url, String jsonOut) throws IOException{

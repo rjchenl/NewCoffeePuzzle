@@ -1,12 +1,10 @@
-package com.example.user.newcoffeepuzzle.ming_Orderlist;
+package com.example.user.newcoffeepuzzle.ming_Home_C_Ordelist;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,39 +15,39 @@ import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail;
+import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail_3;
+import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_3_GetAllTask;
+import com.example.user.newcoffeepuzzle.ming_Orderlist.OrderlistVO;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
 import java.util.List;
 
-/**
- * Created by Java on 2017/7/14.
- */
-
-public class Ordelist_3_Fragment extends Fragment{
-    private final static String TAG = "ming_ordelist_3_fragment";
+public class Ordelist_3_Activtiy extends AppCompatActivity {
+    private final static String TAG = "Ordelist_3_Activtiy";
     private RecyclerView ry_ordelist_3;
     private String store_id;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
-            Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.ming_ordelist_3_fragment, container, false);
-        ry_ordelist_3 = (RecyclerView) view.findViewById(R.id.ry_ordelist_3);
-        ry_ordelist_3.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Profile_ming profile_ming = new Profile_ming(getContext());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.ming_ordelist_3_fragment);
+
+        ry_ordelist_3 = (RecyclerView) findViewById(R.id.ry_ordelist_3);
+        ry_ordelist_3.setLayoutManager(new LinearLayoutManager(this));
+
+        Profile_ming profile_ming = new Profile_ming(this);
         store_id = profile_ming.getStoreId();
-        return view;
     }
+
     @Override
     public void onStart(){
         super.onStart();
-        if (Common_ming.networkConnected(getActivity())){
+        if (Common_ming.networkConnected(this)){
             String url = Common_ming.URL + "ming_Orderlist_Servlet";
             List<OrderlistVO> orderlistVOList = null;
 
-            ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Loading...");
             progressDialog.show();
             try{
@@ -60,17 +58,17 @@ public class Ordelist_3_Fragment extends Fragment{
             }
             progressDialog.cancel();
             if (orderlistVOList == null || orderlistVOList.isEmpty()){
-                Common_ming.showToast(getActivity(), "no activity found");
+                Common_ming.showToast(this, "no activity found");
             }else {
-                ry_ordelist_3.setAdapter(new Ordelist_3_Fragment.Orders_3_RecyclerViewAdapter(getActivity(),orderlistVOList));
+                ry_ordelist_3.setAdapter(new Ordelist_3_Activtiy.Orders_3_RecyclerViewAdapter(this,orderlistVOList));
             }
         }else {
-            Common_ming.showToast(getActivity(), "no network connection available");
+            Common_ming.showToast(this, "no network connection available");
         }
 
     }
 
-    public class Orders_3_RecyclerViewAdapter extends RecyclerView.Adapter<Ordelist_3_Fragment.Orders_3_RecyclerViewAdapter.ViewHolder> {
+    public class Orders_3_RecyclerViewAdapter extends RecyclerView.Adapter<Ordelist_3_Activtiy.Orders_3_RecyclerViewAdapter.ViewHolder> {
         private LayoutInflater layoutInflater;
         private List<OrderlistVO> orderlistVOList;
         private boolean[] actExpanded;
@@ -93,16 +91,16 @@ public class Ordelist_3_Fragment extends Fragment{
         }
 
         @Override
-        public Orders_3_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public Ordelist_3_Activtiy.Orders_3_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemview = layoutInflater.inflate(R.layout.ming_ordelist_3_item,parent,false);
-            return new ViewHolder(itemview);
+            return new Ordelist_3_Activtiy.Orders_3_RecyclerViewAdapter.ViewHolder(itemview);
         }
 
         @Override
-        public void onBindViewHolder(Orders_3_RecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(Ordelist_3_Activtiy.Orders_3_RecyclerViewAdapter.ViewHolder holder, int position) {
             OrderlistVO orderlistVO = orderlistVOList.get(position);
 
-            String ord_id_3 = orderlistVO.getOrd_id();
+            final String ord_id_3 = orderlistVO.getOrd_id();
             holder.ord_id_3.setText(ord_id_3);
             Integer ord_total_3 = orderlistVO.getOrd_total();
             holder.ord_total_3.setText(ord_total_3.toString());
@@ -114,7 +112,10 @@ public class Ordelist_3_Fragment extends Fragment{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getContext(),Orderdetail.class);
+                    final Bundle bundle = new Bundle();
+                    bundle.putString("ord_id_3",ord_id_3);
+                    Intent intent = new Intent(Ordelist_3_Activtiy.this,Orderdetail_3.class);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
             });

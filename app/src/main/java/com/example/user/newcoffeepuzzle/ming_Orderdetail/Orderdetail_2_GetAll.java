@@ -18,22 +18,25 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Created by Java on 2017/7/19.
+ */
 
-public class Orderdetail_GetAll extends AsyncTask<Object,Integer,List<OrderdetailVO>> {
-    private final static String TAG = "Orderdetail_GetAll";
-    private final static String ACTION = "getOrderdetail";
+public class Orderdetail_2_GetAll extends AsyncTask<Object,Integer,List<OrderdetailVO>> {
+    private final static String TAG = "Orderdetail_2_GetAll";
+    private final static String ACTION = "getOrderdetail_2";
 
     @Override
     protected List<OrderdetailVO> doInBackground(Object... params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
         String store_id = params[1].toString();
-        String ord_id = params[2].toString();
+        String ord_id_2 = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
         jsonObject.addProperty("store_id", store_id);
-        jsonObject.addProperty("ord_id", ord_id);
+        jsonObject.addProperty("ord_id_2", ord_id_2);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    tools:context="com.example.user.newcoffeepuzzle.ming_home.Inser_Mem">
+
+
+
+
+    <TextView
+        android:id="@+id/INSER_MEM_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員帳號："
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/inser_memid"
+        android:layout_alignBottom="@+id/inser_memid"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/inser_memid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="16"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/INSER_MEM_ID"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/INSER_MEM_PSW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員密碼："
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/inser_mem_psw"
+        android:layout_alignBottom="@+id/inser_mem_psw"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/inser_mem_psw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:maxLength="16"
+        android:inputType="textPassword"
+        android:textSize="20dp"
+        android:layout_below="@+id/inser_memid"
+        android:layout_marginTop="30dp"
+        android:layout_toEndOf="@+id/INSER_MEM_PSW"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/INSER_MEM_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員姓名："
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/inser_mem_name"
+        android:layout_alignBottom="@+id/inser_mem_name"
+        android:layout_toStartOf="@+id/inser_mem_name" />
+
+    <EditText
+        android:id="@+id/inser_mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:maxLength="18"
+        android:inputType="textPersonName"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_below="@+id/inser_mem_psw"
+        android:layout_marginTop="30dp"
+        android:layout_alignStart="@+id/inser_mem_psw"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/INSER_MEM_NANBER"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員電話："
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/inser_mem_nanber"
+        android:layout_alignBottom="@+id/inser_mem_nanber"
+        android:layout_toStartOf="@+id/inser_mem_nanber" />
+
+    <EditText
+        android:id="@+id/inser_mem_nanber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:maxLength="20"
+        android:inputType="number"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_below="@+id/inser_mem_name"
+        android:layout_marginTop="30dp"
+        android:layout_alignStart="@+id/inser_mem_name"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/INSER_MEM_MAIL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="e-mail"
+        android:textSize="30dp"
+        android:layout_below="@+id/inser_mem_nanber"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:id="@+id/inser_mem_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/INSER_MEM_MAIL"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:maxLength="80"
+        android:layout_marginTop="30dp"
+        android:inputType="textMultiLine"/>
+
+
+    <Button
+        android:id="@+id/inser_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="加入會員"/>
+
+</RelativeLayout>

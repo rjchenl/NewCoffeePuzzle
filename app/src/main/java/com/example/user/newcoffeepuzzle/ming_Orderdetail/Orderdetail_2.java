@@ -18,27 +18,25 @@ import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
 import java.util.List;
 
-public class Orderdetail extends AppCompatActivity {
-    private final static String TAG = "Orderdetail";
-    private RecyclerView ry_orderdetail;
-    String store_id,ord_id;
-
+public class Orderdetail_2 extends AppCompatActivity {
+    private final static String TAG = "Orderdetail_2";
+    private RecyclerView ry_orderdetail_2;
+    String store_id,ord_id_2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ming_orderdetail_recyclerview);
+        setContentView(R.layout.ming_orderdetail_2_recyclerview);
 
         Profile_ming profile_ming = new Profile_ming(this);
         store_id = profile_ming.getStoreId();
 
-        ry_orderdetail = (RecyclerView) findViewById(R.id.ry_orderdetail);
-        ry_orderdetail.setLayoutManager(new LinearLayoutManager(this));
+        ry_orderdetail_2 = (RecyclerView) findViewById(R.id.ry_orderdetail_2);
+        ry_orderdetail_2.setLayoutManager(new LinearLayoutManager(this));
 
         Bundle bundle = getIntent().getExtras();
-        ord_id = bundle.getString("ord_id");
+        ord_id_2 = bundle.getString("ord_id_2");
     }
-
     @Override
     public void onStart(){
         super.onStart();
@@ -51,7 +49,7 @@ public class Orderdetail extends AppCompatActivity {
             progressDialog.show();
 
             try {
-                orderdetailVOlist = new Orderdetail_GetAll().execute(url,store_id,ord_id).get();
+                orderdetailVOlist = new Orderdetail_2_GetAll().execute(url,store_id,ord_id_2).get();
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e(TAG, e.toString());
@@ -60,7 +58,7 @@ public class Orderdetail extends AppCompatActivity {
             if (orderdetailVOlist == null || orderdetailVOlist.isEmpty()){
                 Common_ming.showToast(this, "no activity found");
             }else {
-                ry_orderdetail.setAdapter(new Orderdetail.Orderdetail_RecyclerViewAdapter(this, orderdetailVOlist));
+                ry_orderdetail_2.setAdapter(new Orderdetail_2.Orderdetail_RecyclerViewAdapter(this, orderdetailVOlist));
 
             }
         }else {
@@ -68,7 +66,7 @@ public class Orderdetail extends AppCompatActivity {
         }
     }
 
-    public class Orderdetail_RecyclerViewAdapter extends RecyclerView.Adapter <Orderdetail.Orderdetail_RecyclerViewAdapter.ViewHolder>{
+    public class Orderdetail_RecyclerViewAdapter extends RecyclerView.Adapter <Orderdetail_2.Orderdetail_RecyclerViewAdapter.ViewHolder>{
         private LayoutInflater layoutInflater;
         private List<OrderdetailVO> orderdetailVOlist;
         private boolean[] actExpanded;
@@ -92,13 +90,13 @@ public class Orderdetail extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public Orderdetail_2.Orderdetail_RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemview = layoutInflater.inflate(R.layout.ming_orderdetail_item,parent,false);
-            return new ViewHolder(itemview);
+            return new Orderdetail_2.Orderdetail_RecyclerViewAdapter.ViewHolder(itemview);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(Orderdetail_2.Orderdetail_RecyclerViewAdapter.ViewHolder holder, int position) {
             OrderdetailVO orderdetailVO = orderdetailVOlist.get(position);
 
             String prod_id = orderdetailVO.getProd_id();
@@ -128,4 +126,5 @@ public class Orderdetail extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
+
 }
