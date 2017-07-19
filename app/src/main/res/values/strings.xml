@@ -21,5 +21,6 @@
     <string name="QR_OK">領杯成功</string>
     <string name="delivery_OK">領取成功</string>
     <string name="spndcoffeQR">新增寄杯訂單</string>
+    <string name="inser_ok">新增會員成功</string>
 
 </resources>

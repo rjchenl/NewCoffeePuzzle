@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail;
+import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail_4;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_4_GetAllTask;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.OrderlistVO;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
@@ -101,7 +102,7 @@ public class Ordelist_4_Activtiy extends AppCompatActivity {
         public void onBindViewHolder(Ordelist_4_Activtiy.Orders_4_RecyclerViewAdapter.ViewHolder holder, int position) {
             OrderlistVO orderlistVO = orderlistVOList.get(position);
 
-            String ord_id_4 = orderlistVO.getOrd_id();
+            final String ord_id_4 = orderlistVO.getOrd_id();
             holder.ord_id_4.setText(ord_id_4);
             Integer ord_total_4 = orderlistVO.getOrd_total();
             holder.ord_total_4.setText(ord_total_4.toString());
@@ -113,7 +114,10 @@ public class Ordelist_4_Activtiy extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Ordelist_4_Activtiy.this,Orderdetail.class);
+                    final Bundle bundle = new Bundle();
+                    bundle.putString("ord_id_4",ord_id_4);
+                    Intent intent = new Intent(Ordelist_4_Activtiy.this,Orderdetail_4.class);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
             });

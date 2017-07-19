@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail;
+import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail_2;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_2_GetAllTask;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_Get_GO_Update;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.OrderlistVO;
@@ -144,7 +145,7 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
                 public void onClick(View v) {
                     final Bundle bundle = new Bundle();
                     bundle.putString("ord_id_2",ord_id_2);
-                    Intent intent = new Intent(Ordelist_2_Activtiy.this,Orderdetail.class);
+                    Intent intent = new Intent(Ordelist_2_Activtiy.this,Orderdetail_2.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

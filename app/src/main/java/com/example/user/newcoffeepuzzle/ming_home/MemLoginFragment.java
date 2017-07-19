@@ -35,7 +35,7 @@ public class MemLoginFragment extends Fragment{
 
     private EditText edmember_acct;
     private EditText edmember_psw;
-    private Button memLogin;
+    private Button memLogin,inser_mem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +94,14 @@ public class MemLoginFragment extends Fragment{
             }
         });
 
+        inser_mem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),Inser_Mem.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -122,6 +130,7 @@ public class MemLoginFragment extends Fragment{
         edmember_acct = (EditText) view.findViewById(R.id.edmember_acct);
         edmember_psw = (EditText) view.findViewById(R.id.edmember_psw);
         memLogin = (Button) view.findViewById(R.id.memLogin);
+        inser_mem = (Button) view.findViewById(R.id.inser_mem);
     }
 
 }

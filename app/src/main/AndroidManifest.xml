@@ -49,7 +49,11 @@
         <activity android:name=".ming_Home_C_Ordelist.Ordelist_1_Activtiy" />
         <activity android:name=".ming_Home_C_Ordelist.Ordelist_2_Activtiy" />
         <activity android:name=".ming_Home_C_Ordelist.Ordelist_4_Activtiy" />
-        <activity android:name=".ming_Home_C_Ordelist.Ordelist_3_Activtiy"></activity>
+        <activity android:name=".ming_Home_C_Ordelist.Ordelist_3_Activtiy" />
+        <activity android:name=".ming_Orderdetail.Orderdetail_2" />
+        <activity android:name=".ming_Orderdetail.Orderdetail_3" />
+        <activity android:name=".ming_Orderdetail.Orderdetail_4" />
+        <activity android:name=".ming_home.Inser_Mem"></activity>
     </application>
 
 </manifest>
