@@ -1,43 +1,38 @@
-package com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout;
+package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeelistVO;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 /**
- * Created by user on 2017/7/11.
+ * Created by user on 2017/7/18.
  */
 
-public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderStatusVO>> {
-    private final static String TAG = "OrderStatusListGetTask";
-    private final static String ACTION = "getMyOrderListByMemID";
+public class CheckMemStoreCombinationTask extends AsyncTask<Object,Integer,String> {
+    private final static String TAG = "CheckMemStoreCombinationTask";
+    private final static String ACTION = "isThisCombinationExist";
 
 
 
     @Override
-    protected List<OrderStatusVO> doInBackground(Object... params) {
+    protected String doInBackground(Object... params) {
         String url = params[0].toString();
         String mem_id = params[1].toString();
+        String store_id = params[2].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("mem_id",mem_id);
-
+        jsonObject.addProperty("mem_id", mem_id);
+        jsonObject.addProperty("store_id", store_id);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -45,12 +40,8 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
             e.printStackTrace();
             return null;
         }
-//        Gson gson = new Gson();
-        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<OrderStatusVO>>() {
-        }.getType();
 
-        return gson.fromJson(jsonIn, listType);
+        return jsonIn;
     }
 
 
@@ -66,8 +57,7 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut(request action from app ): " + jsonOut);
-        //{"action":"getAll"}
+        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
         bw.close();
 
         int responseCode = connection.getResponseCode();
@@ -82,10 +72,8 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
+        Log.d(TAG, "jsonIn:(receive response from servlet) isExistCheck " + jsonIn);
         return jsonIn.toString();
 
     }
-
-
 }

@@ -1,26 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0e68c"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#fcf8a1"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="159dp"
-        android:layout_gravity="left"
-        android:src="@drawable/coffeepuzzlelogo"/>
-
-    <TextView
-        android:text="@string/tv_memName"
-        android:textSize="20sp"
+    android:padding="10dp">
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:textSize="20sp"
-        android:text="@string/tv_memMail"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/member_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp" />
+
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="會員名稱 :　" />
+
+        <TextView
+            android:id="@+id/tvmember_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="吳永志xxx" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="會員地址 : " />
+
+        <TextView
+            android:id="@+id/tvmem_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="台北市中山北路二段120號" />
+
+    </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="會員電話 : " />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tvmem_tel"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="02 882 5512" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="email : " />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tvmem_email"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="kabaff@gmail.com" />-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:requiresFadingEdge="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="點數 : " />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tvmem_points"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:text="30 點" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="現在位置 : " />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tvcurrent_position"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:text="台北市承德路二段300號" />-->
+
+    <!--</LinearLayout>-->
+
+
+
+
 
 </LinearLayout>

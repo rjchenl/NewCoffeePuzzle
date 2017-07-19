@@ -6,9 +6,6 @@
             android:title="回到搜尋列表"/>
 
         <item
-            android:id="@+id/memberInfo"
-            android:title="@string/member_info"/>
-        <item
             android:id="@+id/browerActivities"
             android:title="@string/activities"/>
         <item
@@ -19,10 +16,10 @@
             android:title="我的寄杯"/>
         <item
             android:id="@+id/orderStatusList"
-            android:title="我的訂單"/>
+            android:title="我的外送訂單"/>
         <item
             android:id="@+id/collectedStore"
-            android:title="收藏店家清單(未完成)"/>
+            android:title="收藏店家清單"/>
         <item
             android:id="@+id/registerout"
             android:title="登出"/>

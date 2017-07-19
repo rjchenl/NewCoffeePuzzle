@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.getThisStoreInfoTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreVO;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -123,7 +128,37 @@ public class BrowserSpndcoffeeListFragment extends Fragment {
             }
 
             //取到當下的VO物件;設定到view上
-            SpndcoffeeVO vo = list.get(position);
+            final SpndcoffeeVO vo = list.get(position);
+
+            //設定詳情
+            TextView spndDetailInfo = (TextView) convertView.findViewById(R.id.spndDetailInfo);
+            String htmlString="<u>詳情</u>";
+            spndDetailInfo.setText(Html.fromHtml(htmlString));
+            spndDetailInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    StoreVO storevo = null;
+                    //找這家店的資料
+                    if(Common_RJ.networkConnected(getActivity())){
+                        String url = Common_RJ.URL + "StoreServlet";
+                        String store_id = vo.getStore_id();
+
+                        try {
+                            storevo = new getThisStoreInfoTask().execute(url,store_id).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    //傳送資訊到店家fragment
+                    Fragment storeFragment = new StoreFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("StoreVO",storevo);
+                    storeFragment.setArguments(bundle);
+                    switchFragment(storeFragment);
+                }
+            });
+
             TextView tv_spnd_id = (TextView) convertView.findViewById(R.id.tv_spnd_id);
             Log.d(TAG, "getView: vo.getSpnd_id() : "+vo.getSpnd_id());
             tv_spnd_id.setText(vo.getSpnd_id());
@@ -166,6 +201,11 @@ public class BrowserSpndcoffeeListFragment extends Fragment {
                 }
             });
             return convertView;
+        }
+
+        private void switchFragment(Fragment fragment) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.switchFragment(fragment);
         }
     }
 

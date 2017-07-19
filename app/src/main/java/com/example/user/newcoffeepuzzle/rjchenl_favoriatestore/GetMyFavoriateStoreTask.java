@@ -1,11 +1,9 @@
-package com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout;
+package com.example.user.newcoffeepuzzle.rjchenl_favoriatestore;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeelistVO;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,24 +18,21 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by user on 2017/7/11.
+ * Created by user on 2017/7/18.
  */
 
-public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderStatusVO>> {
-    private final static String TAG = "OrderStatusListGetTask";
-    private final static String ACTION = "getMyOrderListByMemID";
+public class GetMyFavoriateStoreTask extends AsyncTask<Object,Integer,List<Fav_storeVO>> {
+    private final static String TAG = "GetMyFavoriateStoreTask";
+    private final static String ACTION = "getAll";
 
 
 
     @Override
-    protected List<OrderStatusVO> doInBackground(Object... params) {
+    protected List<Fav_storeVO> doInBackground(Object... params) {
         String url = params[0].toString();
-        String mem_id = params[1].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("mem_id",mem_id);
-
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
@@ -45,11 +40,9 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
             e.printStackTrace();
             return null;
         }
-//        Gson gson = new Gson();
-        Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<OrderStatusVO>>() {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Fav_storeVO>>() {
         }.getType();
-
         return gson.fromJson(jsonIn, listType);
     }
 
@@ -66,7 +59,7 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
-        Log.d(TAG, "jsonOut(request action from app ): " + jsonOut);
+        Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
         //{"action":"getAll"}
         bw.close();
 
@@ -86,6 +79,4 @@ public class OrderStatusListGetTask extends AsyncTask<Object,Integer,List<OrderS
         return jsonIn.toString();
 
     }
-
-
 }
