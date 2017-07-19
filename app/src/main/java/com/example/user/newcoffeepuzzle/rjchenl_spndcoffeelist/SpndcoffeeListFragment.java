@@ -193,19 +193,20 @@ public class SpndcoffeeListFragment extends Fragment {
             TextView sotre_name = (TextView) convertView.findViewById(R.id.sotre_name);
             TextView store_add = (TextView) convertView.findViewById(R.id.store_add);
             TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
+            TextView originCount = (TextView) convertView.findViewById(R.id.originCount);
+
 
             sotre_name.setText(spndcoffeelistVO.getStore_name());
             store_add.setText(spndcoffeelistVO.getStore_add());
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
+            originCount.setText(String.valueOf(spndcoffeelistVO.getList_amt()));
 
             //按下導航
-            Button bt_direct = (Button) convertView.findViewById(R.id.bt_direct);
-            bt_direct.setOnClickListener(new View.OnClickListener() {
+            ImageView MapNavigation = (ImageView) convertView.findViewById(R.id.MapNavigation);
+            MapNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //取得目前經緯度
-//                    float current_lat = profile.getLat();
-//                    float current_lng = profile.getLng();
                     double current_lat =lastLocation.getLatitude();
                     double current_lng =lastLocation.getLongitude();
 
@@ -214,17 +215,14 @@ public class SpndcoffeeListFragment extends Fragment {
                     LatLng store_latlng = Helper.getLatLngByAddress(spndcoffeelistVO.getStore_add().toString());
                     double store_lat = store_latlng.latitude;
                     double store_lng = store_latlng.longitude;
-                    Log.d(TAG, "onClick: store_lat : "+store_lat);
-                    Log.d(TAG, "onClick: store_lng : "+store_lng);
 
                     direct(current_lat,current_lng,store_lat,store_lng);
+
                 }
             });
 
 
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
-            Log.d(TAG, "getView: spndcoffeelistVO.getList_id() : "+spndcoffeelistVO.getList_id());
+
 
 
             //夾帶資訊到qrcode

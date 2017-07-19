@@ -29,11 +29,21 @@
                     android:id="@+id/store_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/like"
-                    android:layout_toEndOf="@+id/like"
                     android:text="XXX咖啡店"
                     android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_alignBottom="@+id/image"
+                    android:layout_toEndOf="@+id/image"
+                    android:layout_marginStart="20dp" />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/like"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/store_add" />
 
                 <TextView
                     android:id="@+id/store_add"
@@ -43,6 +53,13 @@
                     android:layout_margin="10dp"
                     android:text="台北市中山北路一段200號"
                     android:textSize="20sp" />
+                <ImageView
+                    android:id="@+id/navigation"
+                    android:src="@drawable/map_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/store_add"
+                    android:layout_toEndOf="@+id/store_add" />
 
                 <CheckBox
                     android:id="@+id/isOpen"
@@ -99,14 +116,7 @@
                     android:text="有賣甜點"
                     android:textSize="18sp" />
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignStart="@+id/store_add"
-                    android:layout_marginTop="20dp"
-                    android:src="@drawable/like" />
+
 
                 <LinearLayout
                     android:id="@+id/button_linearlayout"
@@ -183,6 +193,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignBottom="@+id/store_img"
+                                    android:text="0"
                                     android:layout_marginStart="18dp"
                                     android:layout_toRightOf="@+id/tvtotalWorld"
                                     android:textSize="20sp"
@@ -199,6 +210,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
+                                    android:text="0"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
                             </LinearLayout>

@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,9 @@ import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreVO;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -32,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class BrowseMyFavoriateStoreListFragment extends Fragment {
     private static final String TAG = "BrowseMyFavoriateStoreListFragment";
@@ -100,7 +105,7 @@ public class BrowseMyFavoriateStoreListFragment extends Fragment {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv_store_name,tv_store_add,tv_distance;
+            TextView tv_store_name,tv_store_add,tv_distance,StoredetailInfo;
             ImageView iv_takemegotoicon;
 
 
@@ -109,6 +114,7 @@ public class BrowseMyFavoriateStoreListFragment extends Fragment {
                 tv_store_name = (TextView) itemView.findViewById(R.id.tv_store_name);
                 tv_store_add = (TextView) itemView.findViewById(R.id.tv_store_add);
                 tv_distance = (TextView) itemView.findViewById(R.id.tv_distance);
+                StoredetailInfo = (TextView) itemView.findViewById(R.id.StoredetailInfo);
                 iv_takemegotoicon = (ImageView) itemView.findViewById(R.id.iv_takemegotoicon);
             }
         }
@@ -123,10 +129,13 @@ public class BrowseMyFavoriateStoreListFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
 
+
+
             //收入資訊
-            Fav_storeVO fav_storeVO = Fav_storeVO_list.get(position);
+            final Fav_storeVO fav_storeVO = Fav_storeVO_list.get(position);
             holder.tv_store_add.setText(fav_storeVO.getStore_add());
             holder.tv_store_name.setText(fav_storeVO.getStore_name());
+
 
             //計算店家距離
             final LatLng sotre_latlng = Helper.getLatLngByAddress(fav_storeVO.getStore_add());
@@ -148,6 +157,39 @@ public class BrowseMyFavoriateStoreListFragment extends Fragment {
                 }
             });
 
+            //放入詳情
+            String htmlString="<u>詳情</u>";
+            holder.StoredetailInfo.setText(Html.fromHtml(htmlString));
+            //點選詳情
+            holder.StoredetailInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    StoreVO storevo = null;
+                    //找這家店的資料
+                    if(Common_RJ.networkConnected(getActivity())){
+                        String url = Common_RJ.URL + "StoreServlet";
+                        String store_id = fav_storeVO.getStore_id();
+
+                        try {
+                            storevo = new getThisStoreInfoTask().execute(url,store_id).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    //傳送資訊到店家fragment
+                    Fragment storeFragment = new StoreFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("StoreVO",storevo);
+                    storeFragment.setArguments(bundle);
+                    switchFragment(storeFragment);
+
+
+
+
+                }
+            });
+
 
 
 
@@ -158,6 +200,11 @@ public class BrowseMyFavoriateStoreListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return Fav_storeVO_list.size();
+        }
+
+        private void switchFragment(Fragment fragment) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.switchFragment(fragment);
         }
 
 

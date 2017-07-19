@@ -21,6 +21,15 @@
             android:layout_marginStart="20dp"
             android:id="@+id/tv_store_name"
             android:text="XXXX 咖啡店"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/StoredetailInfo"
+            android:layout_marginStart="20dp"
+            android:text="詳情"
+            android:textColor="#0000ff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -42,8 +51,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ImageView
+            android:layout_marginStart="20dp"
             android:id="@+id/iv_takemegotoicon"
             android:layout_width="wrap_content"
+            android:src="@drawable/map_location"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -61,7 +72,10 @@
         <TextView
             android:id="@+id/tv_distance"
             android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:text="200 m"
+            android:textColor="#e51a2e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

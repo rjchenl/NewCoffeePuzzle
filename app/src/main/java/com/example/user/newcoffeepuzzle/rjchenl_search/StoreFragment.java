@@ -1,6 +1,8 @@
 package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -28,10 +30,12 @@ import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.Fav_storeVO;
 import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.FavoriateStoreInsertTask;
 import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.InsertFavoriateTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListInsertTask;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListVO;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderdetailVO;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -39,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -89,7 +94,7 @@ public class StoreFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //得到傳過來的StoreVO物件
+        //得到從marker傳過來的StoreVO物件
         Bundle bundle = getArguments();
         store = (StoreVO) bundle.getSerializable("StoreVO");
         store.getMin_order();
@@ -103,6 +108,46 @@ public class StoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo, container, false);
+
+        takeOutFunction(view);
+        putCheckItems(view);
+        putStorePhoto(view);
+        judgeMyFavoriateIsExist(view);
+        NavigationFunction(view);
+
+
+        return view;
+    }
+
+    private void NavigationFunction(View view) {
+        //導航功能
+        Profile profile = new Profile(getActivity());
+        final LatLng nowPosition = Helper.getLatLngByAddress(profile.getCurrentPosition());
+        final LatLng storePosition = Helper.getLatLngByAddress(store.getStore_add());
+        //取得現在位置
+        ImageView navigation = (ImageView) view.findViewById(R.id.navigation);
+        navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                direct(nowPosition.latitude,nowPosition.longitude,storePosition.latitude,storePosition.longitude);
+            }
+        });
+    }
+
+    private void direct(double fromLat, double fromLng, double toLat,
+                        double toLng) {
+        String uriStr = String.format(Locale.US,
+                "http://maps.google.com/maps?saddr=%f,%f&daddr=%f,%f", fromLat,
+                fromLng, toLat, toLng);
+        Intent intent = new Intent();
+        intent.setClassName("com.google.android.apps.maps",
+                "com.google.android.maps.MapsActivity");
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(uriStr));
+        startActivity(intent);
+    }
+
+    private void takeOutFunction(View view) {
         spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
         btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
         lvStoreitem = (ListView) view.findViewById(R.id.lvStoreitem);
@@ -127,17 +172,6 @@ public class StoreFragment extends Fragment {
         //按下送出選單後
         btSubmit_buytakeout1 = (Button) view.findViewById(R.id.btSubmit_buytakeout);
         onClickSubmitButton();
-
-
-        putCheckItems(view);
-        putStorePhoto(view);
-
-        judgeMyFavoriateIsExist(view);
-
-//        myFavoriateFunction(view);
-
-
-        return view;
     }
 
     private void judgeMyFavoriateIsExist(View view) {
@@ -161,30 +195,7 @@ public class StoreFragment extends Fragment {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if(isPattenExist.equals("true")){
-                        try {
-                            new DeleteFavoriateTask().execute(url,mem_id,store_id).get();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        image.setImageResource(R.drawable.unlike);
-                    }else{
-                        try {
-                            Fav_storeVO fav_storevo= new Fav_storeVO();
-                            fav_storevo.setMem_id(mem_id);
-                            fav_storevo.setStore_id(store_id);
-                            new InsertFavoriateTask().execute(url,fav_storevo).get();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        image.setImageResource(R.drawable.like);
-
-                    }
+                    checkFavoriate(url, store_id);
                 }
             });
 
@@ -197,32 +208,37 @@ public class StoreFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     //insert 資料 image 轉實心
-                    try {
-                        isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if(isPattenExist.equals("true")){
-                        try {
-                            new DeleteFavoriateTask().execute(url,mem_id,store_id).get();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        image.setImageResource(R.drawable.unlike);
-                    }else{
-                        try {
-                            Fav_storeVO fav_storevo= new Fav_storeVO();
-                            fav_storevo.setMem_id(mem_id);
-                            fav_storevo.setStore_id(store_id);
-                            new InsertFavoriateTask().execute(url,fav_storevo).get();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        image.setImageResource(R.drawable.like);
-
-                    }
+                    checkFavoriate(url, store_id);
                 }
             });
+        }
+    }
+
+    private void checkFavoriate(String url, String store_id) {
+        try {
+            isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(isPattenExist.equals("true")){
+            try {
+                new DeleteFavoriateTask().execute(url,mem_id,store_id).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            image.setImageResource(R.drawable.unlike);
+            showToast("已刪除此店家收藏!!");
+        }else{
+            try {
+                Fav_storeVO fav_storevo= new Fav_storeVO();
+                fav_storevo.setMem_id(mem_id);
+                fav_storevo.setStore_id(store_id);
+                new InsertFavoriateTask().execute(url,fav_storevo).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            image.setImageResource(R.drawable.like);
+            showToast("已新增此店家收藏!!");
         }
     }
 
@@ -256,13 +272,6 @@ public class StoreFragment extends Fragment {
                     OrderListVO orderlistvo = new OrderListVO(mem_id, store_id, ord_total, ord_pick, ord_add, ord_shipping, ord_time, score_seller);
                     showToast("新增訂單成功!!!");
                     //新增訂單詳情列表
-                    for (OrderdetailVO vo : orderdetailvolist) {
-                        Log.d(TAG, "onClick: vo.getProd_name() : " + vo.getProd_name());
-                        Log.d(TAG, "onClick: vo.getProd_price() : " + vo.getProd_price());
-                        Log.d(TAG, "onClick: vo.setDetail_amt() : " + vo.getDetail_amt());
-                        Log.d(TAG, "onClick: vo.getProd_id() : " + vo.getProd_id());
-
-                    }
 
                     try {
 
@@ -461,36 +470,7 @@ public class StoreFragment extends Fragment {
         }
     }
 
-    private void myFavoriateFunction(final View view) {
-        //註冊收藏店家功能
-        ImageView heart = (ImageView) view.findViewById(R.id.like);
-        heart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //新增一筆收藏店家資料到資料庫
-                String url = Common_RJ.URL + "fav_storeServlet";
-                try {
-                    String store_id = store.getStore_id();
-                    isEsixt = new FavoriateStoreInsertTask().execute(url, mem_id, store_id).get();
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                showToast("新增收藏店家成功!!");
-                //此店家尚未在收藏店家內 => 新增
-                if (isEsixt.equals("false")) {
-                    //置換愛心圖片 => 空心變實心
-
-                    ImageView image = (ImageView) view.findViewById(R.id.like);
-                    image.setImageResource(R.drawable.unlike);
-                }
-            }
-        });
-
-
-    }
 
     private void showToast(String s) {
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
