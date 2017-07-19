@@ -10,8 +10,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -19,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,9 +36,11 @@ import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.InsertFavoriateTa
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Utility;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListInsertTask;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListVO;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderdetailVO;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Timestamp;
@@ -61,7 +67,7 @@ public class StoreFragment extends Fragment {
     private Button btSubmit_buytakeout;
     private List<ProductVO> productVOList = null;
     private List<StoreVO> storeList = null;
-    private ListView lvStoreitem;
+    private ExpandableHeightListView lvStoreitem;
     private String item_selected;
     private String item_selected_price;
     private int temp_inttotal;
@@ -77,6 +83,31 @@ public class StoreFragment extends Fragment {
     private String isEsixt;
     private String isPattenExist;
     private ImageView image;
+    private TakeOutItemAdapter listAdapter;
+    private ImageView cart;
+
+
+//    public static void setListViewHeightBasedOnChildren(ListView listView) {
+//        ListAdapter listAdapter = listView.getAdapter();
+//        if (listAdapter == null)
+//            return;
+//
+//        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+//        int totalHeight = 0;
+//        View view = null;
+//        for (int i = 0; i < listAdapter.getCount(); i++) {
+//            view = listAdapter.getView(i, view, listView);
+//            if (i == 0)
+//                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+//
+//            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+//            totalHeight += view.getMeasuredHeight();
+//        }
+//        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+//        listView.setLayoutParams(params);
+//    }
+
 
 
     @Override
@@ -108,6 +139,10 @@ public class StoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo, container, false);
+
+
+
+        cart = (ImageView) view.findViewById(R.id.cart);
 
         takeOutFunction(view);
         putCheckItems(view);
@@ -150,7 +185,62 @@ public class StoreFragment extends Fragment {
     private void takeOutFunction(View view) {
         spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
         btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
-        lvStoreitem = (ListView) view.findViewById(R.id.lvStoreitem);
+        lvStoreitem = (ExpandableHeightListView) view.findViewById(R.id.lvStoreitem);
+        lvStoreitem.setExpanded(true);
+        //貼的
+//        lvStoreitem.setOnTouchListener(new ListView.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                int action = event.getAction();
+//                switch (action) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        // Disallow ScrollView to intercept touch events.
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        break;
+//
+//                    case MotionEvent.ACTION_UP:
+//                        // Allow ScrollView to intercept touch events.
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        break;
+//                }
+//
+//                // Handle ListView touch events.
+//                v.onTouchEvent(event);
+//                return true;
+//            }
+//        });
+        //方法二
+//        View header = getLayoutInflater().inflate(R.layout.header, null);
+//        View footer = getLayoutInflater().inflate(R.layout.footer, null);
+//        lvStoreitem.addHeaderView(header);
+//        lvStoreitem.addFooterView(footer);
+
+
+
+
+
+
+
+        //網路上抄的
+//        lvStoreitem.setOnTouchListener(new View.OnTouchListener() {
+//            // Setting on Touch Listener for handling the touch inside ScrollView
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                // Disallow the touch request for parent scroll on touch of child view
+//                v.getParent().requestDisallowInterceptTouchEvent(true);
+//                return false;
+//            }
+//        });
+//        StoreFragment.setListViewHeightBasedOnChildren(lvStoreitem);
+
+//        ExpandableListView: view = listAdapter.getView(0, view, lvStoreitem);
+//        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(1073741823 , View.MeasureSpec.EXACTLY);
+//        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(1073741823, View.MeasureSpec.EXACTLY);
+//        view.measure(widthMeasureSpec, heightMeasureSpec);
+
+
+
+
         tvtotal = (TextView) view.findViewById(R.id.tvtotal);
         tvTotalItemCount = (TextView) view.findViewById(R.id.tvTotalItemCount);
 
@@ -426,6 +516,7 @@ public class StoreFragment extends Fragment {
             //放上今日是否營業
             CheckBox isOpen = (CheckBox) view.findViewById(R.id.isOpen);
             isOpen.setChecked(isTodayOpen);
+//            isOpen.setEnabled(false);
             //放上資料庫的地址
             TextView store_add = (TextView) view.findViewById(R.id.store_add);
             String storeAddress = store.getStore_add();
@@ -434,26 +525,31 @@ public class StoreFragment extends Fragment {
             CheckBox is_wifi = (CheckBox) view.findViewById(R.id.is_wifi);
             if (store.getIs_wifi() == 1) {
                 is_wifi.setChecked(true);
+//                is_wifi.setEnabled(false);
             }
             //放上是否有插座
             CheckBox is_plug = (CheckBox) view.findViewById(R.id.is_plug);
             if (store.getIs_plug() == 1) {
                 is_plug.setChecked(true);
+//                is_plug.setEnabled(false);
             }
             //放上是否限時
             CheckBox is_time_limit = (CheckBox) view.findViewById(R.id.is_time_limit);
             if (store.getIs_time_limit() == 1) {
                 is_time_limit.setChecked(true);
+//                is_time_limit.setEnabled(false);
             }
             //放上是否賣正餐
             CheckBox is_meal = (CheckBox) view.findViewById(R.id.is_meal);
             if (store.getIs_meal() == 1) {
                 is_meal.setChecked(true);
+//                is_meal.setEnabled(false);
             }
             //放上是否賣甜點
             CheckBox is_dessert = (CheckBox) view.findViewById(R.id.is_dessert);
             if (store.getIs_dessert() == 1) {
                 is_dessert.setChecked(true);
+//                is_dessert.setEnabled(false);
             }
         }
     }
@@ -481,28 +577,40 @@ public class StoreFragment extends Fragment {
         if (Common_RJ.networkConnected(getActivity())) {
             String url = Common_RJ.URL + "StoreServlet";
 
-            StoreGetAllTask task = new StoreGetAllTask();
-            task.setListener(new StoreGetAllTask.Listener() {
-                @Override
-                public void onGetStoresDone(List<StoreVO> storeVOs) {
-                    storeList = storeVOs;
-
-                }
-            });
-            task.execute(url);
-//                storeList = new StoreGetAllTask().execute(url).get();
+//            StoreGetAllTask task = new StoreGetAllTask();
+//            task.setListener(new StoreGetAllTask.Listener() {
+//                @Override
+//                public void onGetStoresDone(List<StoreVO> storeVOs) {
+//                    storeList = storeVOs;
+//
+//                }
+//            });
+//            task.execute(url);
+            try {
+                storeList = new StoreGetAllTask().execute(url).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
             if (storeList == null || storeList.isEmpty()) {
                 Common_RJ.showToast(getActivity(), "No storeList found");
             } else {
-                Common_RJ.showToast(getActivity(), "已有VO上的data開始連結view");
+//                Common_RJ.showToast(getActivity(), "已有VO上的data開始連結view");
             }
         }
     }
 
     Map<String, String> item_price_map = new HashMap<>();
     Map<String, String> item_prodID_map = new HashMap<>();
+
+    private TranslateAnimation getShakeAnimation() {
+        TranslateAnimation shakeAnimation = new TranslateAnimation(0, 10, 0, 0);
+        shakeAnimation.setDuration(1000);
+        CycleInterpolator cycleInterpolator = new CycleInterpolator(7);
+        shakeAnimation.setInterpolator(cycleInterpolator);
+        return shakeAnimation;
+    }
 
 
     private void getProductVOList() {
@@ -545,11 +653,8 @@ public class StoreFragment extends Fragment {
 
                 }
                 //把商品名稱放入spinner
-                //simple_spinner_item
-                //rj_spinnerlayout
                 ArrayAdapter<String> adapterPlace = new ArrayAdapter<>(getActivity(),
                         android.R.layout.simple_spinner_item, items);
-//                ArrayAdapter<String> adapterPlace = new MySpinnerAdapter(getActivity(),R.layout.rj_spinnerlayout,items);
 
 
                 adapterPlace
@@ -569,6 +674,12 @@ public class StoreFragment extends Fragment {
                         for(String str : item_selected_array){
                             Log.d(TAG, "onItemSelected: "+str);
                         }
+                        //按下後有動畫
+                        Log.d(TAG, "onItemSelected: cart_rj:"+cart);
+                        if(cart == null){
+                            Log.d(TAG, "onItemSelected: cart_rj is null");
+                        }
+                        cart.startAnimation(getShakeAnimation());
 
                         item_selected = item_selected_array[0];
                         item_selected_price = item_price_map.get(item_selected);
@@ -580,7 +691,6 @@ public class StoreFragment extends Fragment {
                         OrderdetailVO orderdetailvo = new OrderdetailVO();
                         orderdetailvo.setProd_id(item_selected_id);
                         orderdetailvo.setProd_name(item_selected);
-                        Log.d(TAG, "onItemSelected: item_selected_price : "+item_selected_price);
                         orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
                         orderdetailvo.setDetail_amt(1);
                         Integer orderDetail_amt = orderdetailvo.getDetail_amt();
@@ -591,7 +701,9 @@ public class StoreFragment extends Fragment {
                         orderdetailvolist.add(orderdetailvo);
 
                         //顯示在listView上
-                        lvStoreitem.setAdapter(new TakeOutItemAdapter(getActivity(), orderdetailvolist));
+                        listAdapter = new TakeOutItemAdapter(getActivity(), orderdetailvolist);
+
+                        lvStoreitem.setAdapter(listAdapter);
 
 
                         //設定總價 = 取得現有所有單價並加總
@@ -616,17 +728,10 @@ public class StoreFragment extends Fragment {
 
             }
         }
-    }
-
-    private class MySpinnerAdapter extends ArrayAdapter{
-
-
-        public MySpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull Object[] objects) {
-            super(context, resource, objects);
-        }
 
 
     }
+
 
 
     private class TakeOutItemAdapter extends BaseAdapter {
@@ -697,11 +802,9 @@ public class StoreFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     TotoalItemCount = TotoalItemCount + 1;
-                    Log.d(TAG, "onClick: TotoalItemCount"+TotoalItemCount);
                     tvTotalItemCount.setText(String.valueOf(TotoalItemCount));
                     int count = orderdetailvo.getDetail_amt();
                     count = count + 1;
-                    Log.d(TAG, "onClick: count"+count);
                     orderdetailvo.setDetail_amt(count);
                     //設定view杯數
                     tvcountOfCup.setText(String.valueOf(count));
@@ -727,11 +830,9 @@ public class StoreFragment extends Fragment {
                     if (count != 1 && TotoalItemCount != 1) {
                         //購買總量
                         TotoalItemCount = TotoalItemCount - 1;
-                        Log.d(TAG, "onClick: TotoalItemCount"+TotoalItemCount);
                         tvTotalItemCount.setText(String.valueOf(TotoalItemCount));
                         //該商品數量
                         count = count - 1;
-                        Log.d(TAG, "onClick: count"+count);
                         orderdetailvo.setDetail_amt(count);
                         tvcountOfCup.setText(String.valueOf(count));
 
@@ -745,6 +846,13 @@ public class StoreFragment extends Fragment {
                     } else {
                         //將此商品Delete
                         orderdetailvolist.remove(orderdetailvo);
+                        //總數/總價跟著變
+                        TotoalItemCount = TotoalItemCount-1;
+                        tvTotalItemCount.setText(String.valueOf(TotoalItemCount));
+                        temp_inttotal = temp_inttotal-price;
+                        tvtotal.setText(String.valueOf(temp_inttotal));
+
+
                         notifyDataSetChanged();
                     }
                 }

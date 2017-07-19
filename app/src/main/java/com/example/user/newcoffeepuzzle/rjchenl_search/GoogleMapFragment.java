@@ -111,7 +111,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
         super.onResume();
 
-        //
+
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(getContext())
                     .addApi(LocationServices.API)
@@ -270,48 +270,48 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-    private void locationNameToMarker(String locationName) {
-        map.clear();
-
-        Geocoder geocoder = new Geocoder(getActivity());
-        List<Address> addressList = null;
-        int maxResults = 1;
-        try {
-            addressList = geocoder
-                    .getFromLocationName(locationName, maxResults);
-
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        }
-
-        if (addressList == null || addressList.isEmpty()) {
-            showToast("Location name not found");
-        } else {
-            Address address = addressList.get(0);
-            LatLng position = new LatLng(address.getLatitude(), address.getLongitude());
-
-            String snippet = address.getAddressLine(0);
-
-            map.addMarker(new MarkerOptions()
-                    .position(position)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
-                    .title(locationName)
-                    .snippet(snippet));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(position).zoom(15).build();
-            map.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-        }
-
-    }
+//    private void locationNameToMarker(String locationName) {
+//        map.clear();
+//
+//        Geocoder geocoder = new Geocoder(getActivity());
+//        List<Address> addressList = null;
+//        int maxResults = 1;
+//        try {
+//            addressList = geocoder
+//                    .getFromLocationName(locationName, maxResults);
+//
+//        } catch (IOException e) {
+//            Log.e(TAG, e.toString());
+//        }
+//
+//        if (addressList == null || addressList.isEmpty()) {
+//            showToast("Location name not found");
+//        } else {
+//            Address address = addressList.get(0);
+//            LatLng position = new LatLng(address.getLatitude(), address.getLongitude());
+//
+//            String snippet = address.getAddressLine(0);
+//
+//            map.addMarker(new MarkerOptions()
+//                    .position(position)
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.coffeestoremapicon2))
+//                    .title(locationName)
+//                    .snippet(snippet));
+//
+//            CameraPosition cameraPosition = new CameraPosition.Builder()
+//                    .target(position).zoom(15).build();
+//            map.animateCamera(CameraUpdateFactory
+//                    .newCameraPosition(cameraPosition));
+//        }
+//
+//    }
 
     private void showToast(String s) {
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
     private void setUpMap() {
-//        //取得目前位置
+        //取得目前位置
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -326,11 +326,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
         //預設位置為現在位置
-//        Profile profile = new Profile(getContext());
-//        String current_position = profile.getCurrentPosition();
-//        LatLng position_now = Helper.getLatLngByAddress(current_position);
-        Log.d(TAG, "setUpMap: current_Lat:"+current_Lat);
-        Log.d(TAG, "setUpMap: current_Lng:"+current_Lng);
         LatLng position = new LatLng(25.063, 121.518);
 
 //        移動攝影機到預設位置

@@ -7,6 +7,7 @@
 
     <ScrollView
         android:id="@+id/scrollView"
+        android:nestedScrollingEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -29,21 +30,21 @@
                     android:id="@+id/store_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@+id/image"
                     android:text="XXX咖啡店"
                     android:textSize="26sp"
-                    android:textStyle="bold"
-                    android:layout_alignBottom="@+id/image"
-                    android:layout_toEndOf="@+id/image"
-                    android:layout_marginStart="20dp" />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/like"
-                    android:layout_marginStart="10dp"
                     android:layout_alignParentTop="true"
-                    android:layout_alignStart="@+id/store_add" />
+                    android:layout_alignStart="@+id/store_add"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/like" />
 
                 <TextView
                     android:id="@+id/store_add"
@@ -53,13 +54,14 @@
                     android:layout_margin="10dp"
                     android:text="台北市中山北路一段200號"
                     android:textSize="20sp" />
+
                 <ImageView
                     android:id="@+id/navigation"
-                    android:src="@drawable/map_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/store_add"
-                    android:layout_toEndOf="@+id/store_add" />
+                    android:layout_toEndOf="@+id/store_add"
+                    android:src="@drawable/map_location" />
 
                 <CheckBox
                     android:id="@+id/isOpen"
@@ -115,7 +117,6 @@
                     android:layout_below="@+id/is_meal"
                     android:text="有賣甜點"
                     android:textSize="18sp" />
-
 
 
                 <LinearLayout
@@ -193,9 +194,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignBottom="@+id/store_img"
-                                    android:text="0"
                                     android:layout_marginStart="18dp"
                                     android:layout_toRightOf="@+id/tvtotalWorld"
+                                    android:text="0"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
 
@@ -235,8 +236,16 @@
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
+                        <ImageView
+                            android:id="@+id/cart"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/cart_rj"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
 
                         <Button
+                            android:layout_marginStart="10dp"
                             android:id="@+id/btSubmit_buytakeout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -260,18 +269,24 @@
             </RelativeLayout>
 
 
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView
+                    android:id="@+id/lvStoreitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scrollView"
+                    android:layout_marginTop="10dp">
+                </com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView>
+            </ScrollView>
 
         </LinearLayout>
     </ScrollView>
 
-    <ListView
-        android:id="@+id/lvStoreitem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scrollView"
-        android:layout_marginTop="10dp">
 
-    </ListView>
 
 </LinearLayout>
 
