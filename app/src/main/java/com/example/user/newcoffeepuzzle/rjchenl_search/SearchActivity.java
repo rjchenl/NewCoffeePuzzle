@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.BrowseMyFavoriateStoreListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_member.MemberImageGetTask;
@@ -189,6 +190,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             fragment = new BrowserSpndcoffeeListFragment();
                             switchFragment(fragment);
                             setTitle("瀏覽寄杯活動");
+                            break;
+                        case R.id.collectedStore:
+                            fragment = new BrowseMyFavoriateStoreListFragment();
+                            switchFragment(fragment);
+                            setTitle("我的收藏店家");
                             break;
                         case R.id.registerout:
                             finish();

@@ -23,7 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.DeleteFavoriateTask;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.Fav_storeVO;
 import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.FavoriateStoreInsertTask;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.InsertFavoriateTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListInsertTask;
@@ -41,9 +44,7 @@ import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Java on 2017/6/21.
- */
+
 
 public class StoreFragment extends Fragment {
 
@@ -68,6 +69,9 @@ public class StoreFragment extends Fragment {
     private EditText et_takeout_position;
     private int TotoalItemCount;
     private TextView tvTotalItemCount;
+    private String isEsixt;
+    private String isPattenExist;
+    private ImageView image;
 
 
     @Override
@@ -127,10 +131,99 @@ public class StoreFragment extends Fragment {
 
         putCheckItems(view);
         putStorePhoto(view);
-        myFavoriateFunction(view);
+
+        judgeMyFavoriateIsExist(view);
+
+//        myFavoriateFunction(view);
 
 
         return view;
+    }
+
+    private void judgeMyFavoriateIsExist(View view) {
+
+        image = (ImageView) view.findViewById(R.id.image);
+        final String url = Common_RJ.URL + "fav_storeServlet";
+
+        final String store_id = store.getStore_id();
+
+        //查看這家店家和此使用者組合 是否存在在fav_store table中
+        try {
+            isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //若此組合已存在的話boolean = true   設定image 為實心  再設定onclick會delete 資料  image 會轉空心
+        if(isPattenExist.equals("true")){
+
+            image.setImageResource(R.drawable.like);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if(isPattenExist.equals("true")){
+                        try {
+                            new DeleteFavoriateTask().execute(url,mem_id,store_id).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        image.setImageResource(R.drawable.unlike);
+                    }else{
+                        try {
+                            Fav_storeVO fav_storevo= new Fav_storeVO();
+                            fav_storevo.setMem_id(mem_id);
+                            fav_storevo.setStore_id(store_id);
+                            new InsertFavoriateTask().execute(url,fav_storevo).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        image.setImageResource(R.drawable.like);
+
+                    }
+                }
+            });
+
+
+            //沒有存在的話boolean = false  設定image 為空心  再設定onclick會insert 資料  Image 轉實心
+        }else if(isPattenExist.equals("false")){
+
+            image.setImageResource(R.drawable.unlike);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //insert 資料 image 轉實心
+                    try {
+                        isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if(isPattenExist.equals("true")){
+                        try {
+                            new DeleteFavoriateTask().execute(url,mem_id,store_id).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        image.setImageResource(R.drawable.unlike);
+                    }else{
+                        try {
+                            Fav_storeVO fav_storevo= new Fav_storeVO();
+                            fav_storevo.setMem_id(mem_id);
+                            fav_storevo.setStore_id(store_id);
+                            new InsertFavoriateTask().execute(url,fav_storevo).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        image.setImageResource(R.drawable.like);
+
+                    }
+                }
+            });
+        }
     }
 
     private void onClickSubmitButton() {
@@ -368,7 +461,7 @@ public class StoreFragment extends Fragment {
         }
     }
 
-    private void myFavoriateFunction(View view) {
+    private void myFavoriateFunction(final View view) {
         //註冊收藏店家功能
         ImageView heart = (ImageView) view.findViewById(R.id.like);
         heart.setOnClickListener(new View.OnClickListener() {
@@ -377,23 +470,26 @@ public class StoreFragment extends Fragment {
                 //新增一筆收藏店家資料到資料庫
                 String url = Common_RJ.URL + "fav_storeServlet";
                 try {
-
                     String store_id = store.getStore_id();
-
-                    new FavoriateStoreInsertTask().execute(url, mem_id, store_id).get();
-
-                    //置換愛心圖片
-//                    ImageView image = (ImageView) view.findViewById(R.id.like);
-//                    image.setImageResource(R.drawable.unlike);
+                    isEsixt = new FavoriateStoreInsertTask().execute(url, mem_id, store_id).get();
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                showToast("我按了愛心");
+                showToast("新增收藏店家成功!!");
+                //此店家尚未在收藏店家內 => 新增
+                if (isEsixt.equals("false")) {
+                    //置換愛心圖片 => 空心變實心
+
+                    ImageView image = (ImageView) view.findViewById(R.id.like);
+                    image.setImageResource(R.drawable.unlike);
+                }
             }
         });
+
+
     }
 
     private void showToast(String s) {

@@ -1,10 +1,10 @@
 package com.example.user.newcoffeepuzzle.rjchenl_favoriatestore;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 
-import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityVO;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreVO;
+import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeelistVO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -19,39 +19,34 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Created by user on 2017/6/29.
- */
 
-public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,String> {
-    private final static String TAG = "FavoriateStoreInsertTask";
-    private final static String ACTION = "fav_sotreInsert";
+public class GetStoreInfoByIdTask extends AsyncTask<Object,Integer,List<Fav_storeVO>> {
+    private final static String TAG = "GetStoreInfoByIdTask";
+    private final static String ACTION = "getStoreInfoById";
+
 
 
     @Override
-    protected String doInBackground(Object... params) {
+    protected List<Fav_storeVO> doInBackground(Object... params) {
         String url = params[0].toString();
         String mem_id = params[1].toString();
-        String store_id = params[2].toString();
-
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
+        jsonObject.addProperty("mem_id",mem_id);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+            e.printStackTrace();
             return null;
         }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Fav_storeVO>>() {
+        }.getType();
 
-//        Gson gson = new Gson();
-//        Type listType = new TypeToken<List<Fav_storeVO>>() {
-//        }.getType();
-//        return gson.fromJson(jsonIn, listType);
-        return jsonIn;
+        return gson.fromJson(jsonIn, listType);
     }
-
 
     private String getRemoteData(String url, String jsonOut) throws IOException {
         StringBuilder jsonIn = new StringBuilder();//取得回應用的
@@ -65,7 +60,6 @@ public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,String> {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         bw.write(jsonOut);
         Log.d(TAG, "jsonOut(request action from app): " + jsonOut);
-        //{"action":"getAll"}
         bw.close();
 
         int responseCode = connection.getResponseCode();
@@ -80,9 +74,11 @@ public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,String> {
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn:(receive response from servlet) RJJ " + jsonIn);
+        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
         return jsonIn.toString();
 
     }
+
+
 
 }
