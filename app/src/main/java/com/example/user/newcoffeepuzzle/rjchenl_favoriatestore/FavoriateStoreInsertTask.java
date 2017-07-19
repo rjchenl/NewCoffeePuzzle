@@ -23,13 +23,13 @@ import java.util.List;
  * Created by user on 2017/6/29.
  */
 
-public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,List<Fav_storeVO>> {
+public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,String> {
     private final static String TAG = "FavoriateStoreInsertTask";
     private final static String ACTION = "fav_sotreInsert";
 
 
     @Override
-    protected List<Fav_storeVO> doInBackground(Object... params) {
+    protected String doInBackground(Object... params) {
         String url = params[0].toString();
         String mem_id = params[1].toString();
         String store_id = params[2].toString();
@@ -38,12 +38,6 @@ public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,List<Fav_
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
 
-        Fav_storeVO fav_storeVO = new Fav_storeVO(mem_id,store_id);
-        jsonObject.addProperty("fav_storeJsonObject",new Gson().toJson(fav_storeVO));
-
-
-
-
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());
         } catch (IOException e) {
@@ -51,10 +45,11 @@ public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,List<Fav_
             return null;
         }
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Fav_storeVO>>() {
-        }.getType();
-        return gson.fromJson(jsonIn, listType);
+//        Gson gson = new Gson();
+//        Type listType = new TypeToken<List<Fav_storeVO>>() {
+//        }.getType();
+//        return gson.fromJson(jsonIn, listType);
+        return jsonIn;
     }
 
 
@@ -85,7 +80,7 @@ public class FavoriateStoreInsertTask extends AsyncTask<Object,Integer,List<Fav_
             Log.d(TAG, "response code: " + responseCode);
         }
         connection.disconnect();
-        Log.d(TAG, "jsonIn:(receive response from servlet) " + jsonIn);
+        Log.d(TAG, "jsonIn:(receive response from servlet) RJJ " + jsonIn);
         return jsonIn.toString();
 
     }

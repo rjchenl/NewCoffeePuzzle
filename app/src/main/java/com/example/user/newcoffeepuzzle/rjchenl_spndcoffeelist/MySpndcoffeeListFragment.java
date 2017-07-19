@@ -1,16 +1,13 @@
 package com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.icu.text.LocaleDisplayNames;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,24 +17,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.getThisStoreInfoTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
-import com.example.user.newcoffeepuzzle.rjchenl_search.Helper;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,8 +52,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import org.json.JSONObject;
-
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -65,8 +62,8 @@ import java.util.Map;
  * Created by user on 2017/7/1.
  */
 
-public class SpndcoffeeListFragment extends Fragment {
-    private static final String TAG = "SpndcoffeeListFragment";
+public class MySpndcoffeeListFragment extends Fragment {
+    private static final String TAG = "MySpndcoffeeListFragment";
     private ListView spndList_view;
     private List<SpndcoffeelistVO> spndcoffeelist_value;
     private String mem_id;
@@ -201,19 +198,48 @@ public class SpndcoffeeListFragment extends Fragment {
             TextView sotre_name = (TextView) convertView.findViewById(R.id.sotre_name);
             TextView store_add = (TextView) convertView.findViewById(R.id.store_add);
             TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
+            TextView originCount = (TextView) convertView.findViewById(R.id.originCount);
+            TextView MySpndStoreDetail = (TextView) convertView.findViewById(R.id.MySpndStoreDetail);
+
 
             sotre_name.setText(spndcoffeelistVO.getStore_name());
             store_add.setText(spndcoffeelistVO.getStore_add());
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
+            originCount.setText(String.valueOf(spndcoffeelistVO.getList_amt()));
+            String htmlString="<u>詳情</u>";
+            MySpndStoreDetail.setText(Html.fromHtml(htmlString));
+            MySpndStoreDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String store_id = spndcoffeelistVO.getStore_id();
+                    StoreVO storevo = null;
+                    //有store_id 得到完整的StoreVO
+                    if(Common_RJ.networkConnected(getActivity())){
+                        String url = Common_RJ.URL + "StoreServlet";
+
+
+                        try {
+                            storevo = new getThisStoreInfoTask().execute(url,store_id).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Bundle bundle = new Bundle(getCount());
+                    StoreFragment storeFragment = new StoreFragment();
+                    bundle.putSerializable("StoreVO",storevo);
+                    storeFragment.setArguments(bundle);
+                    switchFragment(storeFragment);
+                }
+            });
+
 
             //按下導航
-            Button bt_direct = (Button) convertView.findViewById(R.id.bt_direct);
-            bt_direct.setOnClickListener(new View.OnClickListener() {
+            ImageView MapNavigation = (ImageView) convertView.findViewById(R.id.MapNavigation);
+            MapNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //取得目前經緯度
-//                    float current_lat = profile.getLat();
-//                    float current_lng = profile.getLng();
                     double current_lat =lastLocation.getLatitude();
                     double current_lng =lastLocation.getLongitude();
 
@@ -222,17 +248,11 @@ public class SpndcoffeeListFragment extends Fragment {
                     LatLng store_latlng = Helper.getLatLngByAddress(spndcoffeelistVO.getStore_add().toString());
                     double store_lat = store_latlng.latitude;
                     double store_lng = store_latlng.longitude;
-                    Log.d(TAG, "onClick: store_lat : "+store_lat);
-                    Log.d(TAG, "onClick: store_lng : "+store_lng);
 
                     direct(current_lat,current_lng,store_lat,store_lng);
+
                 }
             });
-
-
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_name() : "+spndcoffeelistVO.getStore_name());
-            Log.d(TAG, "getView: spndcoffeelistVO.getStore_add() : "+spndcoffeelistVO.getStore_add());
-            Log.d(TAG, "getView: spndcoffeelistVO.getList_id() : "+spndcoffeelistVO.getList_id());
 
 
             //夾帶資訊到qrcode
@@ -260,6 +280,12 @@ public class SpndcoffeeListFragment extends Fragment {
 
 
             return convertView;
+        }
+
+
+        private void switchFragment(Fragment fragment) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.switchFragment(fragment);
         }
     }
 
@@ -300,8 +326,6 @@ public class SpndcoffeeListFragment extends Fragment {
             String json = gson.toJson(spndcoffeelistVO);
 
 
-            Log.d(TAG, "onCreateDialog: List_id : "+List_id);
-            Log.d(TAG, "onCreateDialog: List_left : "+List_left);
 
             //註冊離開button事件聆聽
             Button btleave = (Button) view.findViewById(R.id.btleave);

@@ -1,4 +1,4 @@
-package com.example.user.newcoffeepuzzle.rjchenl_search;
+package com.example.user.newcoffeepuzzle.rjchenl_main;
 
 /**
  * Created by user on 2017/7/13.

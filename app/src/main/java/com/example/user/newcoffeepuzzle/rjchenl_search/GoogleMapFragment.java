@@ -9,11 +9,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
-import com.example.user.newcoffeepuzzle.rjchenl_member.MyInfoFragent;
 import com.google.android.gms.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -75,6 +74,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     public final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;
     private static List<StoreVO> storeList;
     private final SupportMapFragment mapp = new SupportMapFragment();
+    private double current_Lat,current_Lng;
+
 
     @Nullable
     @Override
@@ -324,8 +325,13 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-        //預設位置
-        LatLng position = new LatLng(25.039071, 121.548879);
+        //預設位置為現在位置
+//        Profile profile = new Profile(getContext());
+//        String current_position = profile.getCurrentPosition();
+//        LatLng position_now = Helper.getLatLngByAddress(current_position);
+        Log.d(TAG, "setUpMap: current_Lat:"+current_Lat);
+        Log.d(TAG, "setUpMap: current_Lng:"+current_Lng);
+        LatLng position = new LatLng(25.063, 121.518);
 
 //        移動攝影機到預設位置
         map.moveCamera(CameraUpdateFactory.newLatLng(position));
@@ -502,6 +508,8 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
             public void onLocationChanged(Location location) {
                 //得到現在的經緯度
                 lastLocation = location;
+                GoogleMapFragment.this.current_Lat = lastLocation.getLatitude();
+                GoogleMapFragment.this.current_Lng = lastLocation.getLongitude();
                 double Lat = lastLocation.getLatitude();
                 double Lgt = lastLocation.getLongitude();
 

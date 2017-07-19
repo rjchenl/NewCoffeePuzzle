@@ -98,14 +98,9 @@ public class OrderdetailListFragment extends Fragment {
                 }
 
 
-                Log.d(TAG, "getView: here");
                 OrderdetailVO orderdetailvo = OrderdetailVO_List.get(position);
-                Log.d(TAG, "getView: orderdetailvo.getProd_name() : "+orderdetailvo.getProd_name());
-                Log.d(TAG, "getView: orderdetailvo.getProd_price().toString() : "+orderdetailvo.getProd_price().toString());
-                Log.d(TAG, "getView: orderdetailvo.getDetail_amt().toString() : "+orderdetailvo.getDetail_amt().toString());
-                
+
                 TextView tvprod_name = (TextView) convertView.findViewById(R.id.tvprod_name);
-                Log.d(TAG, "getView: here2");
                 tvprod_name.setText(orderdetailvo.getProd_name());
                 TextView tvprod_price = (TextView) convertView.findViewById(R.id.tvprod_price);
                 tvprod_price.setText(orderdetailvo.getProd_price().toString());

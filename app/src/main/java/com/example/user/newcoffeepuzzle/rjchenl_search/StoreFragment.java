@@ -1,7 +1,11 @@
 package com.example.user.newcoffeepuzzle.rjchenl_search;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,12 +25,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.DeleteFavoriateTask;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.Fav_storeVO;
 import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.FavoriateStoreInsertTask;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.InsertFavoriateTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListInsertTask;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderListVO;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderdetailVO;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -34,14 +43,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Java on 2017/6/21.
- */
+
 
 public class StoreFragment extends Fragment {
 
@@ -66,6 +74,9 @@ public class StoreFragment extends Fragment {
     private EditText et_takeout_position;
     private int TotoalItemCount;
     private TextView tvTotalItemCount;
+    private String isEsixt;
+    private String isPattenExist;
+    private ImageView image;
 
 
     @Override
@@ -83,7 +94,7 @@ public class StoreFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //得到傳過來的StoreVO物件
+        //得到從marker傳過來的StoreVO物件
         Bundle bundle = getArguments();
         store = (StoreVO) bundle.getSerializable("StoreVO");
         store.getMin_order();
@@ -97,6 +108,46 @@ public class StoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.rj_fragment_storeinfo, container, false);
+
+        takeOutFunction(view);
+        putCheckItems(view);
+        putStorePhoto(view);
+        judgeMyFavoriateIsExist(view);
+        NavigationFunction(view);
+
+
+        return view;
+    }
+
+    private void NavigationFunction(View view) {
+        //導航功能
+        Profile profile = new Profile(getActivity());
+        final LatLng nowPosition = Helper.getLatLngByAddress(profile.getCurrentPosition());
+        final LatLng storePosition = Helper.getLatLngByAddress(store.getStore_add());
+        //取得現在位置
+        ImageView navigation = (ImageView) view.findViewById(R.id.navigation);
+        navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                direct(nowPosition.latitude,nowPosition.longitude,storePosition.latitude,storePosition.longitude);
+            }
+        });
+    }
+
+    private void direct(double fromLat, double fromLng, double toLat,
+                        double toLng) {
+        String uriStr = String.format(Locale.US,
+                "http://maps.google.com/maps?saddr=%f,%f&daddr=%f,%f", fromLat,
+                fromLng, toLat, toLng);
+        Intent intent = new Intent();
+        intent.setClassName("com.google.android.apps.maps",
+                "com.google.android.maps.MapsActivity");
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(uriStr));
+        startActivity(intent);
+    }
+
+    private void takeOutFunction(View view) {
         spinner_item = (Spinner) view.findViewById(R.id.spinner_item);
         btSubmit_buytakeout = (Button) view.findViewById(R.id.btSubmit_buytakeout);
         lvStoreitem = (ListView) view.findViewById(R.id.lvStoreitem);
@@ -121,14 +172,74 @@ public class StoreFragment extends Fragment {
         //按下送出選單後
         btSubmit_buytakeout1 = (Button) view.findViewById(R.id.btSubmit_buytakeout);
         onClickSubmitButton();
+    }
+
+    private void judgeMyFavoriateIsExist(View view) {
+
+        image = (ImageView) view.findViewById(R.id.image);
+        final String url = Common_RJ.URL + "fav_storeServlet";
+
+        final String store_id = store.getStore_id();
+
+        //查看這家店家和此使用者組合 是否存在在fav_store table中
+        try {
+            isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //若此組合已存在的話boolean = true   設定image 為實心  再設定onclick會delete 資料  image 會轉空心
+        if(isPattenExist.equals("true")){
+
+            image.setImageResource(R.drawable.like);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkFavoriate(url, store_id);
+                }
+            });
 
 
-        putCheckItems(view);
-        putStorePhoto(view);
-        myFavoriateFunction(view);
+            //沒有存在的話boolean = false  設定image 為空心  再設定onclick會insert 資料  Image 轉實心
+        }else if(isPattenExist.equals("false")){
 
+            image.setImageResource(R.drawable.unlike);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //insert 資料 image 轉實心
+                    checkFavoriate(url, store_id);
+                }
+            });
+        }
+    }
 
-        return view;
+    private void checkFavoriate(String url, String store_id) {
+        try {
+            isPattenExist = new CheckMemStoreCombinationTask().execute(url,mem_id,store_id).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(isPattenExist.equals("true")){
+            try {
+                new DeleteFavoriateTask().execute(url,mem_id,store_id).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            image.setImageResource(R.drawable.unlike);
+            showToast("已刪除此店家收藏!!");
+        }else{
+            try {
+                Fav_storeVO fav_storevo= new Fav_storeVO();
+                fav_storevo.setMem_id(mem_id);
+                fav_storevo.setStore_id(store_id);
+                new InsertFavoriateTask().execute(url,fav_storevo).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            image.setImageResource(R.drawable.like);
+            showToast("已新增此店家收藏!!");
+        }
     }
 
     private void onClickSubmitButton() {
@@ -152,7 +263,8 @@ public class StoreFragment extends Fragment {
                     int ord_total = temp_inttotal;
                     int ord_pick = 3;
                     int ord_shipping = 1;
-                    Timestamp ord_time = new Timestamp(System.currentTimeMillis());
+                    String ord_time = new Timestamp(System.currentTimeMillis()).toString();
+                    Log.d(TAG, "onClick: Timestamp :"+String.valueOf(ord_time));
                     //新增地址
                     String ord_add = et_takeout_position.getText().toString();
                     int score_seller = 1;
@@ -160,13 +272,6 @@ public class StoreFragment extends Fragment {
                     OrderListVO orderlistvo = new OrderListVO(mem_id, store_id, ord_total, ord_pick, ord_add, ord_shipping, ord_time, score_seller);
                     showToast("新增訂單成功!!!");
                     //新增訂單詳情列表
-                    for (OrderdetailVO vo : orderdetailvolist) {
-                        Log.d(TAG, "onClick: vo.getProd_name() : " + vo.getProd_name());
-                        Log.d(TAG, "onClick: vo.getProd_price() : " + vo.getProd_price());
-                        Log.d(TAG, "onClick: vo.setDetail_amt() : " + vo.getDetail_amt());
-                        Log.d(TAG, "onClick: vo.getProd_id() : " + vo.getProd_id());
-
-                    }
 
                     try {
 
@@ -365,33 +470,7 @@ public class StoreFragment extends Fragment {
         }
     }
 
-    private void myFavoriateFunction(View view) {
-        //註冊收藏店家功能
-        ImageView heart = (ImageView) view.findViewById(R.id.like);
-        heart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //新增一筆收藏店家資料到資料庫
-                String url = Common_RJ.URL + "fav_storeServlet";
-                try {
 
-                    String store_id = store.getStore_id();
-
-                    new FavoriateStoreInsertTask().execute(url, mem_id, store_id).get();
-
-                    //置換愛心圖片
-//                    ImageView image = (ImageView) view.findViewById(R.id.like);
-//                    image.setImageResource(R.drawable.unlike);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                showToast("我按了愛心");
-            }
-        });
-    }
 
     private void showToast(String s) {
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
@@ -460,13 +539,19 @@ public class StoreFragment extends Fragment {
 
 
                     //將商品名稱指定給矩陣好放入spinnerView的adapter
-                    items[i] = product_name;
+                    items[i] = product_name + "  price : "+product_price;
+//                    items[i] = product_name;
                     i = i + 1;
 
                 }
                 //把商品名稱放入spinner
+                //simple_spinner_item
+                //rj_spinnerlayout
                 ArrayAdapter<String> adapterPlace = new ArrayAdapter<>(getActivity(),
                         android.R.layout.simple_spinner_item, items);
+//                ArrayAdapter<String> adapterPlace = new MySpinnerAdapter(getActivity(),R.layout.rj_spinnerlayout,items);
+
+
                 adapterPlace
                         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_item.setAdapter(adapterPlace);
@@ -478,7 +563,14 @@ public class StoreFragment extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         //在listView 上新增選到的東西
-                        item_selected = parent.getItemAtPosition(position).toString();
+//                        item_selected = parent.getItemAtPosition(position).toString();
+                        String[] item_selected_array =
+                                parent.getItemAtPosition(position).toString().split("  price : ");
+                        for(String str : item_selected_array){
+                            Log.d(TAG, "onItemSelected: "+str);
+                        }
+
+                        item_selected = item_selected_array[0];
                         item_selected_price = item_price_map.get(item_selected);
                         item_selected_id = item_prodID_map.get(item_selected);
                         //舊的VO值要保留
@@ -488,6 +580,7 @@ public class StoreFragment extends Fragment {
                         OrderdetailVO orderdetailvo = new OrderdetailVO();
                         orderdetailvo.setProd_id(item_selected_id);
                         orderdetailvo.setProd_name(item_selected);
+                        Log.d(TAG, "onItemSelected: item_selected_price : "+item_selected_price);
                         orderdetailvo.setProd_price(Integer.parseInt(item_selected_price));
                         orderdetailvo.setDetail_amt(1);
                         Integer orderDetail_amt = orderdetailvo.getDetail_amt();
@@ -523,6 +616,16 @@ public class StoreFragment extends Fragment {
 
             }
         }
+    }
+
+    private class MySpinnerAdapter extends ArrayAdapter{
+
+
+        public MySpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull Object[] objects) {
+            super(context, resource, objects);
+        }
+
+
     }
 
 
@@ -641,8 +744,8 @@ public class StoreFragment extends Fragment {
                         tvtotal.setText(String.valueOf(temp_inttotal));
                     } else {
                         //將此商品Delete
-//                        orderdetailvolist.remove(orderdetailvo);
-                        showToast("最低商品數量為一");
+                        orderdetailvolist.remove(orderdetailvo);
+                        notifyDataSetChanged();
                     }
                 }
             });

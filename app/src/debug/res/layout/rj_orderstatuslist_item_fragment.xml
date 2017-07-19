@@ -86,6 +86,8 @@
           <TextView
               android:id="@+id/tv_ord_shipping"
               android:layout_marginStart="20dp"
+              android:textColor="#e51a2e"
+              android:textStyle="bold"
               android:text="未處理"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" />

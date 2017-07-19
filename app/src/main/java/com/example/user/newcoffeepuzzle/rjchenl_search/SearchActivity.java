@@ -19,22 +19,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_activities.ActivityListFragment;
-import com.example.user.newcoffeepuzzle.rjchenl_member.MyInfoFragent;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.BrowseMyFavoriateStoreListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_member.MemberImageGetTask;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderStatusListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.BrowserSpndcoffeeListFragment;
-import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.MySpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -112,6 +115,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         //建立drawer與toolbar間的toggle
         final DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         actionbardrawertoggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.app_name, R.string.app_name);
 
@@ -121,7 +125,41 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             drawerlayout.setDrawerListener(actionbardrawertoggle);
         }
 
+        Profile profile = new Profile(this);
+        String mem_id = profile.getMemId();
+        //使用navigationView 得到headerView
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        View navView = navigationView.getHeaderView(0);
+
+//        TextView tvcurrent_position = (TextView) navView.findViewById(R.id.tvcurrent_position);
+//        tvcurrent_position.setText(profile.getCurrentPosition());
+//        Log.d(TAG, "initDrawer: profile.getCurrentPosition():"+profile.getCurrentPosition());
+
+        TextView tvmember_name = (TextView) navView.findViewById(R.id.tvmember_name);
+        tvmember_name.setText(profile.getMem_name());
+
+        TextView tvmem_add = (TextView) navView.findViewById(R.id.tvmem_add);
+        tvmem_add.setText(profile.getMem_add());
+
+//        TextView tvmem_tel = (TextView) navView.findViewById(R.id.tvmem_tel);
+//        tvmem_tel.setText(profile.getMem_tel());
+//
+//        TextView tvmem_email = (TextView) navView.findViewById(R.id.tvmem_email);
+//        tvmem_email.setText(profile.getMem_email());
+//
+//        TextView tvmem_points = (TextView) navView.findViewById(R.id.tvmem_points);
+//        tvmem_points.setText(profile.getMem_points().toString());
+
+        ImageView member_image = (ImageView) navView.findViewById(R.id.member_image);
+        //執行拿照片
+        String url = Common_RJ.URL + "MemberServlet";
+        int imageSize = 250;
+        new MemberImageGetTask(member_image).execute(url,mem_id,imageSize);
+//        member_image.setImageResource();
+
+
+
+
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -139,7 +177,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             setTitle("瀏覽活動");
                             break;
                         case R.id.mysusCofee:
-                            fragment = new SpndcoffeeListFragment();
+                            fragment = new MySpndcoffeeListFragment();
                             switchFragment(fragment);
                             setTitle("瀏覽我的寄杯");
                             break;
@@ -148,15 +186,15 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             switchFragment(fragment);
                             setTitle("我的訂單");
                             break;
-                        case R.id.memberInfo:
-                            fragment = new MyInfoFragent();
-                            switchFragment(fragment);
-                            setTitle("會員資料");
-                            break;
                         case R.id.susCoffeeStore:
                             fragment = new BrowserSpndcoffeeListFragment();
                             switchFragment(fragment);
                             setTitle("瀏覽寄杯活動");
+                            break;
+                        case R.id.collectedStore:
+                            fragment = new BrowseMyFavoriateStoreListFragment();
+                            switchFragment(fragment);
+                            setTitle("我的收藏店家");
                             break;
                         case R.id.registerout:
                             finish();
@@ -170,6 +208,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             });
         }
     }
+
 
 
 
@@ -197,7 +236,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    void switchFragment(Fragment fragment) {
+    public void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
 
