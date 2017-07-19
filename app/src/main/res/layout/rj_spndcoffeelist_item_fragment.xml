@@ -21,6 +21,13 @@
             android:layout_height="wrap_content"
             android:text="等幾個人咖啡店"/>
 
+        <TextView
+            android:id="@+id/MySpndStoreDetail"
+            android:layout_marginStart="10dp"
+            android:text="詳情"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
 
 
 

@@ -34,7 +34,7 @@ import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_member.MemberImageGetTask;
 import com.example.user.newcoffeepuzzle.rjchenl_order_list_takeout.OrderStatusListFragment;
 import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.BrowserSpndcoffeeListFragment;
-import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.SpndcoffeeListFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_spndcoffeelist.MySpndcoffeeListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -177,7 +177,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                             setTitle("瀏覽活動");
                             break;
                         case R.id.mysusCofee:
-                            fragment = new SpndcoffeeListFragment();
+                            fragment = new MySpndcoffeeListFragment();
                             switchFragment(fragment);
                             setTitle("瀏覽我的寄杯");
                             break;

@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +30,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.rjchenl_favoriatestore.getThisStoreInfoTask;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
+import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreFragment;
+import com.example.user.newcoffeepuzzle.rjchenl_search.StoreVO;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,8 +62,8 @@ import java.util.Map;
  * Created by user on 2017/7/1.
  */
 
-public class SpndcoffeeListFragment extends Fragment {
-    private static final String TAG = "SpndcoffeeListFragment";
+public class MySpndcoffeeListFragment extends Fragment {
+    private static final String TAG = "MySpndcoffeeListFragment";
     private ListView spndList_view;
     private List<SpndcoffeelistVO> spndcoffeelist_value;
     private String mem_id;
@@ -194,12 +199,40 @@ public class SpndcoffeeListFragment extends Fragment {
             TextView store_add = (TextView) convertView.findViewById(R.id.store_add);
             TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
             TextView originCount = (TextView) convertView.findViewById(R.id.originCount);
+            TextView MySpndStoreDetail = (TextView) convertView.findViewById(R.id.MySpndStoreDetail);
 
 
             sotre_name.setText(spndcoffeelistVO.getStore_name());
             store_add.setText(spndcoffeelistVO.getStore_add());
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
             originCount.setText(String.valueOf(spndcoffeelistVO.getList_amt()));
+            String htmlString="<u>詳情</u>";
+            MySpndStoreDetail.setText(Html.fromHtml(htmlString));
+            MySpndStoreDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String store_id = spndcoffeelistVO.getStore_id();
+                    StoreVO storevo = null;
+                    //有store_id 得到完整的StoreVO
+                    if(Common_RJ.networkConnected(getActivity())){
+                        String url = Common_RJ.URL + "StoreServlet";
+
+
+                        try {
+                            storevo = new getThisStoreInfoTask().execute(url,store_id).get();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Bundle bundle = new Bundle(getCount());
+                    StoreFragment storeFragment = new StoreFragment();
+                    bundle.putSerializable("StoreVO",storevo);
+                    storeFragment.setArguments(bundle);
+                    switchFragment(storeFragment);
+                }
+            });
+
 
             //按下導航
             ImageView MapNavigation = (ImageView) convertView.findViewById(R.id.MapNavigation);
@@ -220,9 +253,6 @@ public class SpndcoffeeListFragment extends Fragment {
 
                 }
             });
-
-
-
 
 
             //夾帶資訊到qrcode
@@ -250,6 +280,12 @@ public class SpndcoffeeListFragment extends Fragment {
 
 
             return convertView;
+        }
+
+
+        private void switchFragment(Fragment fragment) {
+            SearchActivity activity = (SearchActivity) getActivity();
+            activity.switchFragment(fragment);
         }
     }
 
@@ -290,8 +326,6 @@ public class SpndcoffeeListFragment extends Fragment {
             String json = gson.toJson(spndcoffeelistVO);
 
 
-            Log.d(TAG, "onCreateDialog: List_id : "+List_id);
-            Log.d(TAG, "onCreateDialog: List_left : "+List_left);
 
             //註冊離開button事件聆聽
             Button btleave = (Button) view.findViewById(R.id.btleave);

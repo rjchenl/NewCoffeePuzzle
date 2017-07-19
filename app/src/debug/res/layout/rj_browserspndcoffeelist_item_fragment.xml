@@ -46,6 +46,7 @@
 
         <TextView
             android:id="@+id/spndDetailInfo"
+            android:textColor="#0000ff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -84,6 +85,7 @@
 
         <TextView
             android:id="@+id/tv_spnd_prod"
+            android:textColor="#c42890"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -134,11 +136,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <Button
-            android:text="帶我去"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <Button
             android:layout_marginStart="20dp"
