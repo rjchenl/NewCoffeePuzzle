@@ -30,6 +30,7 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
     private RecyclerView ry_ordelist_2;
     private String store_id;
     Button Bt_GO;
+    private List<OrderlistVO> orderlistVOList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
         super.onStart();
         if (Common_ming.networkConnected(this)){
             String url = Common_ming.URL + "ming_Orderlist_Servlet";
-            List<OrderlistVO> orderlistVOList = null;
+            orderlistVOList = null;
 
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Loading...");
@@ -62,7 +63,7 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
             if (orderlistVOList == null || orderlistVOList.isEmpty()){
                 Common_ming.showToast(this, "no activity found");
             }else {
-                ry_ordelist_2.setAdapter(new Ordelist_2_Activtiy.Orders_2_RecyclerViewAdapter(this,orderlistVOList));
+                ry_ordelist_2.setAdapter(new Ordelist_2_Activtiy.Orders_2_RecyclerViewAdapter(this, orderlistVOList));
             }
         }else {
             Common_ming.showToast(this, "no network connection available");
@@ -81,13 +82,14 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
             actExpanded = new boolean[orderlistVOList.size()];
         }
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView ord_id_2,ord_total_2,ord_time_2,ord_shipping_2;
+            TextView ord_id_2,ord_total_2,ord_time_2,ord_shipping_2,ord_add_2;
             public ViewHolder(View itemView) {
                 super(itemView);
                 ord_id_2 = (TextView) itemView.findViewById(R.id.ord_id_2);
                 ord_total_2 = (TextView) itemView.findViewById(R.id.ord_total_2);
                 ord_time_2 = (TextView) itemView.findViewById(R.id.ord_time_2);
                 ord_shipping_2 = (TextView) itemView.findViewById(R.id.ord_shipping_2);
+                ord_add_2 = (TextView) itemView.findViewById(R.id.ord_add_2);
                 Bt_GO = (Button) itemView.findViewById(R.id.Bt_GO);
 
             }
@@ -101,7 +103,7 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(Ordelist_2_Activtiy.Orders_2_RecyclerViewAdapter.ViewHolder holder, int position) {
-            OrderlistVO orderlistVO = orderlistVOList.get(position);
+            final OrderlistVO orderlistVO = orderlistVOList.get(position);
 
             final String ord_id_2 = orderlistVO.getOrd_id();
             holder.ord_id_2.setText(ord_id_2);
@@ -109,8 +111,28 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
             holder.ord_total_2.setText(ord_total_2.toString());
             String ord_time_2 = orderlistVO.getOrd_time();
             holder.ord_time_2.setText(ord_time_2);
-            Integer ord_shipping_2 = orderlistVO.getOrd_shipping();
-            holder.ord_shipping_2.setText(ord_shipping_2.toString());
+            switch (orderlistVO.getOrd_shipping()){
+                case 1:
+                    holder.ord_shipping_2.setText("未處理");
+                    break;
+                case 2 :
+                    holder.ord_shipping_2.setText("審核此筆交易失敗");
+                    break;
+                case 3:
+                    holder.ord_shipping_2.setText("已接單");
+                    break;
+                case 4:
+                    holder.ord_shipping_2.setText("已出貨");
+                    break;
+                case 5:
+                    holder.ord_shipping_2.setText("交易完成");
+                    break;
+                default:
+                    holder.ord_shipping_2.setText("無法歸類");
+                    break;
+            }
+            String ord_add_2 = orderlistVO.getOrd_add();
+            holder.ord_add_2.setText(ord_add_2);
 
             Bt_GO.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,19 +146,24 @@ public class Ordelist_2_Activtiy extends AppCompatActivity {
                         progressDialog.show();
                         try{
                             orderlistVOList = new Ordelist_Get_GO_Update().execute(url,store_id,ord_id_2).get();
+                            Ordelist_2_Activtiy.this.orderlistVOList.remove(orderlistVO);
+                            notifyDataSetChanged();
                         }catch (Exception e){
                             e.printStackTrace();
                             Log.e(TAG, e.toString());
                         }
                         progressDialog.cancel();
                         if (orderlistVOList == null || orderlistVOList.isEmpty()){
-                            Common_ming.showToast(Ordelist_2_Activtiy.this, "訂單出貨");
+                            Common_ming.showToast(Ordelist_2_Activtiy.this, "訂單已出貨");
+
                         }else {
                             ry_ordelist_2.setAdapter(new Ordelist_2_Activtiy.Orders_2_RecyclerViewAdapter(Ordelist_2_Activtiy.this,orderlistVOList));
                         }
                     }else {
                         Common_ming.showToast(Ordelist_2_Activtiy.this, "no network connection available");
                     }
+                    orderlistVOList.remove(orderlistVO);
+                    notifyDataSetChanged();
                 }
             });
 

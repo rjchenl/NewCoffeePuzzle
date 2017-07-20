@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.ming_QRin.SpndcoffeelistGetUpdate_text;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
@@ -57,6 +59,7 @@ public class Delivery_Fragment extends Fragment{
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        String mem_name = null,ord_id = null,ord_shipping,ord_add = null,ord_time = null,store_id;
 
         if (requestCode == REQUEST_BARCODE_SCAN) {
             String message = "";
@@ -75,15 +78,32 @@ public class Delivery_Fragment extends Fragment{
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 JSONObject.quote(contents);
                 JSONObject json = new JSONObject(contents);
-                String ord_id = json.getString("ord_id");
-                Integer ord_shipping = json.getInt("ord_shipping");
+                mem_name = json.getString("mem_name");
+                ord_id = json.getString("ord_id");
+                ord_shipping = json.getString("ord_shipping");
+                ord_add = json.getString("ord_add");
+                ord_time = json.getString("ord_time");
+                store_id = json.getString("store_id");
 
-                intent = new DeliveryGetUpdate().execute(url, ord_id, ord_shipping, store_id).get();
+                if (Delivery_Fragment.this.store_id.equals(store_id)){
+                    new DeliveryGetUpdate().execute(url, ord_id, ord_shipping, store_id).get();
+                    Common_ming.showToast(getContext(),R.string.delivery_OK);
+                }else {
+                    Toast toast = Toast.makeText(getContext(), "錯誤訂單!!", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d(TAG, "intent: + intent" +intent);
             }
-            Common_ming.showToast(getContext(),R.string.delivery_OK);
+            final Bundle bundle = new Bundle();
+            bundle.putString("mem_name",mem_name);
+            bundle.putString("ord_id",ord_id);
+            bundle.putString("ord_add",ord_add);
+            bundle.putString("ord_time",ord_time);
+            Intent in = new Intent(getContext(),Delivery_Fragment_text.class);
+            in.putExtras(bundle);
+            startActivity(in);
         }
     }
 

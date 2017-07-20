@@ -30,6 +30,7 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
     private RecyclerView ry_ordelist;
     private String store_id;
     private Button Bt_yes,Bt_no;
+    private List<OrderlistVO> orderlistVOList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
         super.onStart();
         if (Common_ming.networkConnected(this)){
             String url = Common_ming.URL + "ming_Orderlist_Servlet";
-            List<OrderlistVO> orderlistVOList = null;
+            orderlistVOList = null;
 
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Loading...");
@@ -64,7 +65,7 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
             if (orderlistVOList == null || orderlistVOList.isEmpty()){
                 Common_ming.showToast(this, "no activity found");
             }else {
-                ry_ordelist.setAdapter(new Ordelist_1_Activtiy.Orders_RecyclerViewAdapter(this,orderlistVOList));
+                ry_ordelist.setAdapter(new Ordelist_1_Activtiy.Orders_RecyclerViewAdapter(this, orderlistVOList));
             }
         }else {
             Common_ming.showToast(this, "no network connection available");
@@ -85,13 +86,14 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView ord_id,ord_total,ord_time,ord_shipping;
+            TextView ord_id,ord_total,ord_time,ord_shipping,ord_add;
             public ViewHolder(View itemView) {
                 super(itemView);
                 ord_id = (TextView) itemView.findViewById(R.id.ord_id);
                 ord_total = (TextView) itemView.findViewById(R.id.ord_total);
                 ord_time = (TextView) itemView.findViewById(R.id.ord_time);
                 ord_shipping = (TextView) itemView.findViewById(R.id.ord_shipping);
+                ord_add = (TextView) itemView.findViewById(R.id.ord_add);
                 Bt_yes = (Button) itemView.findViewById(R.id.Bt_yes);
                 Bt_no = (Button) itemView.findViewById(R.id.Bt_no);
 
@@ -106,8 +108,8 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final Ordelist_1_Activtiy.Orders_RecyclerViewAdapter.ViewHolder holder, int position) {
-            OrderlistVO orderlistVO = orderlistVOList.get(position);
+        public void onBindViewHolder(final Ordelist_1_Activtiy.Orders_RecyclerViewAdapter.ViewHolder holder, final int position) {
+            final OrderlistVO orderlistVO = orderlistVOList.get(position);
 
             final String ord_id = orderlistVO.getOrd_id();
             holder.ord_id.setText(ord_id);
@@ -115,12 +117,33 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
             holder.ord_total.setText(ord_total.toString());
             String ord_time = orderlistVO.getOrd_time();
             holder.ord_time.setText(ord_time);
-            Integer ord_shipping = orderlistVO.getOrd_shipping();
-            holder.ord_shipping.setText(ord_shipping.toString());
+            switch (orderlistVO.getOrd_shipping()){
+                case 1:
+                    holder.ord_shipping.setText("未處理");
+                    break;
+                case 2 :
+                    holder.ord_shipping.setText("審核此筆交易失敗");
+                    break;
+                case 3:
+                    holder.ord_shipping.setText("已接單");
+                    break;
+                case 4:
+                    holder.ord_shipping.setText("已出貨");
+                    break;
+                case 5:
+                    holder.ord_shipping.setText("交易完成");
+                    break;
+                default:
+                    holder.ord_shipping.setText("無法歸類");
+                    break;
+            }
+            String ord_add = orderlistVO.getOrd_add();
+            holder.ord_add.setText(ord_add.toString());
 
             Bt_yes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d(TAG, "onClick: I have entered");
                     if (Common_ming.networkConnected(Ordelist_1_Activtiy.this)){
                         String url = Common_ming.URL + "ming_Orderlist_Servlet";
                         List<OrderlistVO> orderlistVOList = null;
@@ -129,7 +152,12 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
                         progressDialog.setMessage("Loading...");
                         progressDialog.show();
                         try{
+                            //沒有回傳值
                             orderlistVOList = new Ordelist_GetUpdate().execute(url,store_id,ord_id).get();
+                            //要找的是最開始GETALL的List
+                            Ordelist_1_Activtiy.this.orderlistVOList.remove(orderlistVO);
+                            notifyDataSetChanged();
+
                         }catch (Exception e){
                             e.printStackTrace();
                             Log.e(TAG, e.toString());
@@ -143,6 +171,8 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
                     }else {
                         Common_ming.showToast(Ordelist_1_Activtiy.this, "no network connection available");
                     }
+//                    orderlistVOList.remove(orderlistVO);
+//                    notifyDataSetChanged();
                 }
             });
 
@@ -158,6 +188,8 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
                         progressDialog.show();
                         try{
                             orderlistVOList = new Ordelist_Get_NO_Update().execute(url,store_id,ord_id).get();
+                            Ordelist_1_Activtiy.this.orderlistVOList.remove(orderlistVO);
+                            notifyDataSetChanged();
                         }catch (Exception e){
                             e.printStackTrace();
                             Log.e(TAG, e.toString());

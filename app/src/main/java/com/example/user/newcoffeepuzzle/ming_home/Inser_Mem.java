@@ -1,7 +1,6 @@
 package com.example.user.newcoffeepuzzle.ming_home;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.hompage.HomePageActivity;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 
 import static android.content.ContentValues.TAG;
@@ -62,6 +62,8 @@ public class Inser_Mem extends AppCompatActivity {
                         Log.d(TAG, "intent: + intent" + inser);
                     }
                     Common_ming.showToast(Inser_Mem.this,R.string.inser_ok);
+                    Intent intent = new Intent(Inser_Mem.this,HomePageActivity.class);
+                    startActivity(intent);
                 }
             }
         });

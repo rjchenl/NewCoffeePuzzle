@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.newcoffeepuzzle.ming_QRin.SpndcoffeelistGetUpdate_text">
+
+    <TextView
+        android:id="@+id/DELIVERY_MEM_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱："
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/delivery_mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/DELIVERY_MEM_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/DELIVERY_ORD_ADD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員地址："
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_MEM_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/delivery_ord_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員地址"
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_MEM_NAME"
+        android:layout_toRightOf="@+id/DELIVERY_ORD_ADD"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/DELIVERY_PROD_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品名稱："
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_ORD_ADD"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/delivery_prod_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="商品名稱"
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_ORD_ADD"
+        android:layout_toRightOf="@+id/DELIVERY_PROD_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/DELIVERY_PROD_PRICE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="單價："
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_PROD_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/delivery_prod_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="單價"
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_PROD_NAME"
+        android:layout_toRightOf="@+id/DELIVERY_PROD_PRICE"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/DELIVERY_DETAIL_AMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="數量："
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_PROD_PRICE"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/delivery_detail_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="數量"
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_PROD_PRICE"
+        android:layout_toRightOf="@+id/DELIVERY_DETAIL_AMT"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/DELIVERY_ORD_TIME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單時間："
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_DETAIL_AMT"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/delivery_ore_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="訂單時間"
+        android:textSize="20dp"
+        android:layout_below="@+id/DELIVERY_DETAIL_AMT"
+        android:layout_toRightOf="@+id/DELIVERY_ORD_TIME"
+        android:layout_marginTop="30dp"/>
+
+
+
+</RelativeLayout>

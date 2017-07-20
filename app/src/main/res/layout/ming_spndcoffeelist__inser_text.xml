@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffeelist_Inser_text">
+
+    <TextView
+        android:id="@+id/SPN_INSER_MEM_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱："
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_inser_mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/SPN_INSER_MEM_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_INSER_SPND_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活動名稱："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_MEM_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_inser_spnd_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活動名稱"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_MEM_NAME"
+        android:layout_toRightOf="@+id/SPN_INSER_SPND_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_INSER_SPND_AMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯總數："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_SPND_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spnd_inser_spnd_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯總數"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_SPND_NAME"
+        android:layout_toRightOf="@+id/SPN_INSER_SPND_AMT"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_INSER_SPND_PROD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活動商品："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_SPND_AMT"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_inser_spnd_prod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活动商品"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_SPND_AMT"
+        android:layout_toRightOf="@+id/SPN_INSER_SPND_PROD"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_INSER_SPND_ENDDATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活動截止日期："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_SPND_PROD"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_inser_spnd_enddate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活動截止日期"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_INSER_SPND_PROD"
+        android:layout_toRightOf="@+id/SPN_INSER_SPND_ENDDATE"
+        android:layout_marginTop="30dp"/>
+
+</RelativeLayout>

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
@@ -57,6 +58,7 @@ public class QRin_Fragment extends Fragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        String mem_name = null,list_id,list_left = null,spnd_prod = null,spnd_amt = null,store_id;
 
         if (requestCode == REQUEST_BARCODE_SCAN) {
             String message = "";
@@ -75,20 +77,33 @@ public class QRin_Fragment extends Fragment {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 JSONObject.quote(contents);
                 JSONObject json = new JSONObject(contents);
-                String list_id = json.getString("list_id");
-                Integer list_left = json.getInt("list_left");
+                mem_name = json.getString("mem_name");
+                list_id = json.getString("list_id");
+                list_left = json.getString("list_left");
+                spnd_prod = json.getString("spnd_prod");
+                store_id = json.getString("store_id");
+                spnd_amt = "5";
 
+                if (QRin_Fragment.this.store_id.equals(store_id)){
+                    new SpndcoffeelistGetUpdate().execute(url, list_id, list_left, store_id).get();
+                    Common_ming.showToast(getContext(),R.string.QR_OK);
 
-                Log.d(TAG, "list_id:  list_id" + list_id);
-                Log.d(TAG, "list_left: list_left" + list_left);
-
-                intent = new SpndcoffeelistGetUpdate().execute(url, list_id, list_left, store_id).get();
+                }else {
+                    Toast toast = Toast.makeText(getContext(), "走錯店咯!!", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d(TAG, "intent: + intent" +intent);
-                Log.d(TAG, "onActivityResult: error");
             }
-            Common_ming.showToast(getContext(),R.string.QR_OK);
+            final Bundle bundle = new Bundle();
+            bundle.putString("mem_name",mem_name);
+            bundle.putString("list_left",list_left);
+            bundle.putString("spnd_amt",spnd_amt);
+            bundle.putString("spnd_prod",spnd_prod);
+            Intent in = new Intent(getContext(),SpndcoffeelistGetUpdate_text.class);
+            in.putExtras(bundle);
+            startActivity(in);
         }
     }
 

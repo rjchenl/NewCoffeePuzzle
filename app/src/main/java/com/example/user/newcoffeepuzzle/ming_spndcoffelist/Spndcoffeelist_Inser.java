@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
+import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
 
@@ -81,6 +83,8 @@ public class Spndcoffeelist_Inser extends Fragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        String mem_name = null,mem_id,spnd_id,spnd_prod = null,store_id,spnd_enddate = null,spnd_amt = null,spnd_name = null;
+
         if (requestCode == REQUEST_BARCODE_SCAN) {
             String message = "";
             if (resultCode == RESULT_OK) {
@@ -98,17 +102,39 @@ public class Spndcoffeelist_Inser extends Fragment {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 JSONObject.quote(contents);
                 JSONObject json = new JSONObject(contents);
-                String mem_id = json.getString("mem_id");
-                String spnd_id = json.getString("spnd_id");
-                String spnd_prod = json.getString("spnd_prod");
+                mem_name = json.getString("mem_name");
+                mem_id = json.getString("mem_id");
+                spnd_id = json.getString("spnd_id");
+                spnd_prod = json.getString("spnd_prod");
+                store_id = json.getString("store_id");
+                spnd_name = json.getString("spnd_name");
+                spnd_enddate = json.getString("spnd_enddate");
+                spnd_amt = "5";
 
-                intent = new SpndcoffeelistGetInsert().execute(url,store_id,mem_id,spnd_id,spnd_prod).get();
+                if (Spndcoffeelist_Inser.this.store_id.equals(store_id)){
+                    new SpndcoffeelistGetInsert().execute(url,store_id,mem_id,spnd_id,spnd_prod).get();
+                    Common_ming.showToast(getContext(),R.string.spndcoffeQR);
+
+                }else {
+                    Toast toast = Toast.makeText(getContext(), "走錯店咯!!", Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "intent: + intent" +intent);
             }
 
-            Common_ming.showToast(getContext(),R.string.spndcoffeQR);
+            final Bundle bundle = new Bundle();
+            bundle.putString("mem_name",mem_name);
+            bundle.putString("spnd_name",spnd_name);
+            bundle.putString("spnd_amt",spnd_amt);
+            bundle.putString("spnd_prod",spnd_prod);
+            bundle.putString("spnd_enddate",spnd_enddate);
+            Intent in = new Intent(getContext(),Spndcoffeelist_Inser_text.class);
+            in.putExtras(bundle);
+            startActivity(in);
         }
     }
 }

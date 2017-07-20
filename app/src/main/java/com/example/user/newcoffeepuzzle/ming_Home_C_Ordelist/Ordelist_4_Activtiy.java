@@ -80,7 +80,7 @@ public class Ordelist_4_Activtiy extends AppCompatActivity {
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView ord_id_4,ord_total_4,ord_time_4,ord_shipping_4;
+            TextView ord_id_4,ord_total_4,ord_time_4,ord_shipping_4,ord_add_4;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -88,6 +88,7 @@ public class Ordelist_4_Activtiy extends AppCompatActivity {
                 ord_total_4 = (TextView) itemView.findViewById(R.id.ord_total_4);
                 ord_time_4 = (TextView) itemView.findViewById(R.id.ord_time_4);
                 ord_shipping_4 = (TextView) itemView.findViewById(R.id.ord_shipping_4);
+                ord_add_4 = (TextView) itemView.findViewById(R.id.ord_add_4);
 
             }
         }
@@ -108,8 +109,28 @@ public class Ordelist_4_Activtiy extends AppCompatActivity {
             holder.ord_total_4.setText(ord_total_4.toString());
             String ord_time_4 = orderlistVO.getOrd_time();
             holder.ord_time_4.setText(ord_time_4);
-            Integer ord_shipping_4 = orderlistVO.getOrd_shipping();
-            holder.ord_shipping_4.setText(ord_shipping_4.toString());
+            switch (orderlistVO.getOrd_shipping()){
+                case 1:
+                    holder.ord_shipping_4.setText("未處理");
+                    break;
+                case 2 :
+                    holder.ord_shipping_4.setText("審核此筆交易失敗");
+                    break;
+                case 3:
+                    holder.ord_shipping_4.setText("已接單");
+                    break;
+                case 4:
+                    holder.ord_shipping_4.setText("已出貨");
+                    break;
+                case 5:
+                    holder.ord_shipping_4.setText("交易完成");
+                    break;
+                default:
+                    holder.ord_shipping_4.setText("無法歸類");
+                    break;
+            }
+            String ord_add_4 = orderlistVO.getOrd_add();
+            holder.ord_add_4.setText(ord_add_4);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
