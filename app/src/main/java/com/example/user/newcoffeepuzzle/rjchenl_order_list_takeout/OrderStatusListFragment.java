@@ -74,6 +74,7 @@ public class OrderStatusListFragment extends Fragment {
 
         //開始分類
         for(OrderStatusVO orderstatusvo : orderStatusVOList_value){
+            Log.d(TAG, "onCreateView: orderstatusvo.getOrd_add():"+orderstatusvo.getOrd_add());
             if(orderstatusvo.getOrd_shipping() == 1){
 
                 orderStatusVOList_status_unhandle.add(orderstatusvo);

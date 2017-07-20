@@ -15,6 +15,15 @@ public class OrderStatusVO implements Serializable {
     Integer ord_shipping;
     Timestamp ord_time;
     String mem_name;
+    String ord_add;
+
+    public String getOrd_add() {
+        return ord_add;
+    }
+
+    public void setOrd_add(String ord_add) {
+        this.ord_add = ord_add;
+    }
 
     public String getMem_name() {
         return mem_name;
