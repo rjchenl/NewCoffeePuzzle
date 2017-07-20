@@ -4,13 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +21,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Common_RJ;
 import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
-import com.example.user.newcoffeepuzzle.rjchenl_search.SearchActivity;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -34,6 +36,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,11 @@ import java.util.Map;
 public class OrderStatusListFragment extends Fragment {
     private static final String TAG = "OrderStatusListFragment";
     List<OrderStatusVO> orderStatusVOList_value;
+    List<OrderStatusVO> orderStatusVOList_status_unhandle;
+    List<OrderStatusVO> orderStatusVOList_status_cancle;
+    List<OrderStatusVO> orderStatusVOList_status_accept;
+    List<OrderStatusVO> orderStatusVOList_status_shipped;
+    List<OrderStatusVO> orderStatusVOList_status_complete;
     private String mem_id;
     private ListView lvOrderStatusList;
 
@@ -55,11 +63,86 @@ public class OrderStatusListFragment extends Fragment {
         View view = inflater.inflate(R.layout.rj_orderstatuslist_fragment,container,false);
         lvOrderStatusList = (ListView) view.findViewById(R.id.lvOrderStatusList);
 
-        //會用到mem_id 先取得
-        Profile profile = new Profile(getContext());
-        mem_id = profile.getMemId();
+        getOrderListDBdata();
+        //開始分類
+        Log.d(TAG, "onCreateView: 分類之前");
+        orderStatusVOList_status_unhandle = new ArrayList<>();
+        orderStatusVOList_status_cancle = new ArrayList<>();
+        orderStatusVOList_status_accept = new ArrayList<>();
+        orderStatusVOList_status_shipped = new ArrayList<>();
+        orderStatusVOList_status_complete = new ArrayList<>();
+
+        //開始分類
+        for(OrderStatusVO orderstatusvo : orderStatusVOList_value){
+            if(orderstatusvo.getOrd_shipping() == 1){
+
+                orderStatusVOList_status_unhandle.add(orderstatusvo);
+
+            }else if(orderstatusvo.getOrd_shipping() == 2){
+
+                orderStatusVOList_status_cancle.add(orderstatusvo);
+            }else if(orderstatusvo.getOrd_shipping() == 3){
+
+                orderStatusVOList_status_accept.add(orderstatusvo);
+            }else if(orderstatusvo.getOrd_shipping() == 4){
+
+                orderStatusVOList_status_shipped.add(orderstatusvo);
+
+            }else if(orderstatusvo.getOrd_shipping() == 5){
+
+                orderStatusVOList_status_complete.add(orderstatusvo);
+            }
 
 
+
+
+
+        }
+
+        //預設選擇"未處理"的訂單
+        RadioButton rb_unhandle = (RadioButton) view.findViewById(R.id.rb_unhandle);
+        rb_unhandle.setChecked(true);
+
+        RadioGroup rgOrderStatus = (RadioGroup) view.findViewById(R.id.rgOrderStatus);
+        rgOrderStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+                String clickString = radioButton.getText().toString();
+                Log.d(TAG, "onCheckedChanged: clickString :"+clickString);
+                switch (clickString){
+                    case "未處理" :
+                        Log.d(TAG, "onCheckedChanged: enter 未處理");
+                        Log.d(TAG, "onCheckedChanged: orderStatusVOList_status_unhandle :"+orderStatusVOList_status_unhandle);
+                        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_status_unhandle));
+                        break;
+                    case "不接單" :
+                        Log.d(TAG, "onCheckedChanged: enter 不接單");
+                        Log.d(TAG, "onCheckedChanged: orderStatusVOList_status_cancle:"+orderStatusVOList_status_cancle);
+                        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_status_cancle));
+                        break;
+                    case "已接單":
+                        Log.d(TAG, "onCheckedChanged: enter 已接單");
+                        Log.d(TAG, "onCheckedChanged: orderStatusVOList_status_accept:"+orderStatusVOList_status_accept);
+                        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_status_accept));
+                        break;
+                    case "已出貨":
+                        Log.d(TAG, "onCheckedChanged: enter 已出貨");
+                        Log.d(TAG, "onCheckedChanged: orderStatusVOList_status_shipped :"+orderStatusVOList_status_shipped);
+                        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_status_shipped));
+                        break;
+                    case "完成訂單":
+                        Log.d(TAG, "onCheckedChanged: enter 完成訂單");
+                        Log.d(TAG, "onCheckedChanged: orderStatusVOList_status_complete :"+orderStatusVOList_status_complete);
+                        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_status_complete));
+                        break;
+                    default :
+                        Log.d(TAG, "onCheckedChanged: run default");
+
+                        break;
+                }
+            }
+        });
 
         return view;
     }
@@ -67,11 +150,15 @@ public class OrderStatusListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getOrderListDBdata();
-        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_value));
+        lvOrderStatusList.setAdapter(new OrderListStatusAdapter(getActivity(),orderStatusVOList_status_unhandle));
     }
 
     private void getOrderListDBdata() {
+
+        //會用到mem_id 先取得
+        Profile profile = new Profile(getContext());
+        mem_id = profile.getMemId();
+
         if (Common_RJ.networkConnected(getActivity())) {
             String url = Common_RJ.URL + "OrderlistServlet";
             orderStatusVOList_value = null;
@@ -128,7 +215,6 @@ public class OrderStatusListFragment extends Fragment {
             TextView tv_store_name = (TextView) convertView.findViewById(R.id.tv_store_name);
             tv_store_name.setText(orderStatusVO.getStore_name());
             TextView tv_ord_pick = (TextView) convertView.findViewById(R.id.tv_ord_pick);
-            Log.d(TAG, "getView: orderStatusVO.getOrd_pick() : "+orderStatusVO.getOrd_pick());
             switch (orderStatusVO.getOrd_pick()){
                 case 1:
                     tv_ord_pick.setText("購物");

@@ -143,7 +143,7 @@ public class StoreFragment extends Fragment {
 
 
 
-        cart = (ImageView) view.findViewById(R.id.cart);
+        cart = (ImageView) view.findViewById(R.id.ivcart);
 
         takeOutFunction(view);
         putCheckItems(view);
