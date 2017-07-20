@@ -181,6 +181,8 @@ public class BrowserSpndcoffeeListFragment extends Fragment {
             Log.d(TAG, "getView: mem_id : "+mem_id);
             //多加mem_id到vo上
             vo.setMem_id(mem_id);
+
+
             Log.d(TAG, "getView: vo.getMem_id() : "+vo.getMem_id());
 
             //夾帶資訊到qrcode

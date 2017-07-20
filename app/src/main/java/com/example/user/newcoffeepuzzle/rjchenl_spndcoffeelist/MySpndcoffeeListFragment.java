@@ -201,12 +201,14 @@ public class MySpndcoffeeListFragment extends Fragment {
             TextView list_left = (TextView) convertView.findViewById(R.id.list_left);
             TextView originCount = (TextView) convertView.findViewById(R.id.originCount);
             TextView MySpndStoreDetail = (TextView) convertView.findViewById(R.id.MySpndStoreDetail);
+            TextView tv_spnd_prod2 = (TextView) convertView.findViewById(R.id.tv_spnd_prod2);
 
 
             sotre_name.setText(spndcoffeelistVO.getStore_name());
             store_add.setText(spndcoffeelistVO.getStore_add());
             list_left.setText(String.valueOf(spndcoffeelistVO.getList_left()));
             originCount.setText(String.valueOf(spndcoffeelistVO.getList_amt()));
+            tv_spnd_prod2.setText(spndcoffeelistVO.getSpnd_prod());
             String htmlString="<u>詳情</u>";
             MySpndStoreDetail.setText(Html.fromHtml(htmlString));
             MySpndStoreDetail.setOnClickListener(new View.OnClickListener() {
