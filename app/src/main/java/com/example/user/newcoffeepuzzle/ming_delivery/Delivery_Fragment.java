@@ -85,6 +85,7 @@ public class Delivery_Fragment extends Fragment{
                 ord_time = json.getString("ord_time");
                 store_id = json.getString("store_id");
 
+
                 if (Delivery_Fragment.this.store_id.equals(store_id)){
                     new DeliveryGetUpdate().execute(url, ord_id, ord_shipping, store_id).get();
                     Common_ming.showToast(getContext(),R.string.delivery_OK);

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.newcoffeepuzzle.ming_delivery.Delivery_Fragment_text">
+
+    <TextView
+        android:id="@+id/SPN_UPDATE_MEM_NAME"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱："
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_update_mem_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員名稱"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/SPN_UPDATE_MEM_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_UPDATE_LIST_LEFT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剩餘杯數："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_UPDATE_MEM_NAME"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_update_list_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剩餘杯數"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_UPDATE_MEM_NAME"
+        android:layout_toRightOf="@+id/SPN_UPDATE_LIST_LEFT"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_UPDATE_SPND_PROD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯商品："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_UPDATE_LIST_LEFT"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spnd_update_spnd_prod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寄杯商品"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_UPDATE_LIST_LEFT"
+        android:layout_toRightOf="@+id/SPN_UPDATE_SPND_PROD"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/SPN_UPDATE_LIST_AMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="總寄杯數："
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_UPDATE_SPND_PROD"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/spn_update_list_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="總寄杯數"
+        android:textSize="20dp"
+        android:layout_below="@+id/SPN_UPDATE_SPND_PROD"
+        android:layout_toRightOf="@+id/SPN_UPDATE_LIST_AMT"
+        android:layout_marginTop="30dp"/>
+
+
+</RelativeLayout>

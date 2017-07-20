@@ -31,11 +31,11 @@ public class Delivery_Fragment_text extends AppCompatActivity {
         findText();
 
         if (Common_ming.networkConnected(this)) {
-            String url = Common_ming.URL + "ming_Spndcoffelist_Servlet";
+            String url = Common_ming.URL + "ming_Orderdetail_Servlet";
             deliveryVO = null;
 
             try {
-                deliveryVO = new Delivery_GetAllTask().execute(url,store_id,ord_id).get();
+                deliveryVO = new Delivery_GetAllTask().execute(url,ord_id).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -46,8 +46,8 @@ public class Delivery_Fragment_text extends AppCompatActivity {
         delivery_mem_name.setText(mem_name);
         delivery_ord_add.setText(ord_add);
         delivery_prod_name.setText(deliveryVO.getProd_name());
-        delivery_prod_price.setText(deliveryVO.getProd_price());
-        delivery_detail_amt.setText(deliveryVO.getDetail_amt());
+        delivery_prod_price.setText(deliveryVO.getProd_price().toString());
+        delivery_detail_amt.setText(deliveryVO.getDetail_amt().toString());
         delivery_ore_time.setText(ord_time);
     }
 

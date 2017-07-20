@@ -13,7 +13,7 @@ public class SpndcoffeelistGetUpdate_text extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ming_spndcoffeelist_get_update_text);
+        setContentView(R.layout.ming_spndcoffeelistgetupdate_text);
 
         Bundle bundle = getIntent().getExtras();
         mem_name = bundle.getString("mem_name");
