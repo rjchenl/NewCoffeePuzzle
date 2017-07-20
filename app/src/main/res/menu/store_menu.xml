@@ -9,17 +9,15 @@
             android:id="@+id/take_orders"
             android:title="@string/take_orders"
             android:icon="@drawable/shopping_bag"/>
-        <item
-            android:id="@+id/outbound_orders"
-            android:title="@string/outbound_orders"
-            android:icon="@drawable/scooter"/>
+
         <item
             android:id="@+id/delivery"
             android:title="@string/delivery"
             android:icon="@drawable/delivery"/>
         <item
             android:id="@+id/spndcoffeelist_inser"
-            android:title="@string/spndcoffeelist_inser"/>
+            android:title="@string/spndcoffeelist_inser"
+            android:icon="@drawable/spndcoffeelist_cart"/>
         <item
             android:id="@+id/spndcoffeelist"
             android:title="@string/spndcoffeelist"

@@ -53,7 +53,10 @@
         <activity android:name=".ming_Orderdetail.Orderdetail_2" />
         <activity android:name=".ming_Orderdetail.Orderdetail_3" />
         <activity android:name=".ming_Orderdetail.Orderdetail_4" />
-        <activity android:name=".ming_home.Inser_Mem"></activity>
+        <activity android:name=".ming_home.Inser_Mem" />
+        <activity android:name=".ming_spndcoffelist.Spndcoffeelist_Inser_text" />
+        <activity android:name=".ming_QRin.SpndcoffeelistGetUpdate_text" />
+        <activity android:name=".ming_delivery.Delivery_Fragment_text"></activity>
     </application>
 
 </manifest>

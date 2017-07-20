@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color01"
-    android:padding="12dp">
+    android:layout_marginTop="20dp">
 
     <TextView
         android:id="@+id/ORD_SHIPPING"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單狀態："
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_marginLeft="110dp"/>
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單狀態"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_toRightOf="@+id/ORD_SHIPPING"/>
 
     <TextView
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單編號："
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_below="@+id/ORD_SHIPPING"/>
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單編號"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_below="@+id/ORD_SHIPPING"
         android:layout_toRightOf="@+id/ORD_ID"/>
 
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="總金額："
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_below="@+id/ORD_ID"/>
 
     <TextView
@@ -52,26 +52,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="總金額"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_below="@+id/ord_id"
         android:layout_toRightOf="@+id/ORD_TOTAL"/>
+
+    <TextView
+        android:id="@+id/ORD_ADD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員地址："
+        android:textSize="20dp"
+        android:layout_below="@+id/ORD_TOTAL"/>
+
+    <TextView
+        android:id="@+id/ord_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員地址"
+        android:textSize="20dp"
+        android:layout_below="@+id/ord_total"
+        android:layout_toRightOf="@+id/ORD_ADD"/>
 
     <TextView
         android:id="@+id/ORD_TIME"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單日期："
-        android:textSize="16dp"
-        android:layout_below="@+id/ORD_TOTAL"/>
+        android:textSize="20dp"
+        android:layout_below="@+id/ORD_ADD"/>
 
     <TextView
         android:id="@+id/ord_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="訂單日期"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_toRightOf="@+id/ORD_TIME"
-        android:layout_below="@+id/ord_total"/>
+        android:layout_below="@+id/ord_add"/>
 
     <Button
         android:id="@+id/Bt_yes"

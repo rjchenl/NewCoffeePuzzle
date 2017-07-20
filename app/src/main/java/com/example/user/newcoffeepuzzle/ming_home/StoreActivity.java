@@ -94,7 +94,7 @@ public class StoreActivity extends AppCompatActivity {
                             finish();
                             break;
                         default:
-//                            store_Frame();
+//                            HomeFragment();
                             break;
                     }
                     return true;
