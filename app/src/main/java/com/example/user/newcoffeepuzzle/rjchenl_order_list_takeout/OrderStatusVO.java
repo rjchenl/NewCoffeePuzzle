@@ -16,6 +16,15 @@ public class OrderStatusVO implements Serializable {
     Timestamp ord_time;
     String mem_name;
     String ord_add;
+    String store_id;
+
+    public String getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
+    }
 
     public String getOrd_add() {
         return ord_add;
