@@ -1,19 +1,13 @@
 package com.example.user.newcoffeepuzzle.ming_delivery;
 
-import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.SpndcoffelistVO;
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_Fragment;
-import com.example.user.newcoffeepuzzle.ming_spndcoffelist.Spndcoffelist_GetAllTask;
 
-import java.util.List;
 
 public class Delivery_Fragment_text extends AppCompatActivity {
     String mem_name,ord_id,ord_add,ord_time,store_id;
