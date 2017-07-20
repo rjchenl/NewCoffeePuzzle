@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -150,6 +151,8 @@ public class StoreFragment extends Fragment {
         judgeMyFavoriateIsExist(view);
         NavigationFunction(view);
 
+
+        getProductVOList(view);
 
         return view;
     }
@@ -388,7 +391,7 @@ public class StoreFragment extends Fragment {
     public void onStart() {
         super.onStart();
         getStoreVOList();
-        getProductVOList();
+
 
     }
 
@@ -613,7 +616,7 @@ public class StoreFragment extends Fragment {
     }
 
 
-    private void getProductVOList() {
+    private void getProductVOList(View view) {
         String store_name = store.getStore_name();
 
         if (Common_RJ.networkConnected(getActivity())) {
@@ -629,6 +632,23 @@ public class StoreFragment extends Fragment {
 
             if (productVOList == null || productVOList.isEmpty()) {
                 Common_RJ.showToast(getActivity(), "No productVOList found");
+                //把該隱藏的物件隱藏起來
+                LinearLayout takeout_position_linearlayout = (LinearLayout) view.findViewById(R.id.takeout_position_linearlayout);
+                LinearLayout takeout_item_layout = (LinearLayout) view.findViewById(R.id.takeout_item_layout);
+                takeout_position_linearlayout.setVisibility(View.GONE);
+                takeout_item_layout.setVisibility(View.GONE);
+
+
+
+
+
+
+
+
+
+
+
+
             } else {
                 //前置作業 將可外帶外送的商品放入SpinnerView
                 String[] items = new String[productVOList.size()];
