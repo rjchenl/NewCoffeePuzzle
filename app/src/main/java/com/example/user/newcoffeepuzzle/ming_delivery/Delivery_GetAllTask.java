@@ -29,12 +29,14 @@ public class Delivery_GetAllTask extends AsyncTask<Object,Integer,DeliveryVO> {
     protected DeliveryVO doInBackground(Object... params) {
         Log.d(TAG, "doInBackground: (step1_1)");
         String url = params[0].toString();
-        String store_id = params[1].toString();
-        String ord_id = params[2].toString();
+//        String store_id = params[1].toString();
+//        String ord_id = params[2].toString();
+        String ord_id = params[1].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
-        jsonObject.addProperty("store_id", store_id);
+//        jsonObject.addProperty("store_id", store_id);
+//        jsonObject.addProperty("ord_id", ord_id);
         jsonObject.addProperty("ord_id", ord_id);
 
         try {
@@ -44,7 +46,7 @@ public class Delivery_GetAllTask extends AsyncTask<Object,Integer,DeliveryVO> {
             return null;
         }
         Gson gson=  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        Type listType = new TypeToken<List<OrderdetailVO>>() {}.getType();
+        Type listType = new TypeToken<DeliveryVO>() {}.getType();
 
         return gson.fromJson(jsonIn, listType);
     }
