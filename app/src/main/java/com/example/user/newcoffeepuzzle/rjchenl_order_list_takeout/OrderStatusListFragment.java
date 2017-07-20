@@ -330,10 +330,18 @@ public class OrderStatusListFragment extends Fragment {
         @Override
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
+
+
             Bundle bundle = getArguments();
             OrderStatusVO orderStatusVO = (OrderStatusVO) bundle.getSerializable("orderStatusVO");
+
+            //for ming
+            Profile profile = new Profile(getContext());
+            orderStatusVO.setMem_name(profile.getMem_name().toString());
             Gson gson = new Gson();
             jsonstr = gson.toJson(orderStatusVO);
+
+
 
             putQRcodeImage(view);
 

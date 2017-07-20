@@ -14,6 +14,8 @@ public class SpndcoffeeVO implements Serializable {
     private byte[] spnd_img;
     private String store_name;
     private String mem_id;
+    private String mem_name;
+
 
 
 
@@ -27,6 +29,14 @@ public class SpndcoffeeVO implements Serializable {
         this.spnd_enddate = spnd_enddate;
         this.spnd_amt = spnd_amt;
         this.spnd_img = spnd_img;
+    }
+
+    public String getMem_name() {
+        return mem_name;
+    }
+
+    public void setMem_name(String mem_name) {
+        this.mem_name = mem_name;
     }
 
     public String getMem_id() {

@@ -67,7 +67,7 @@ public class MySpndcoffeeListFragment extends Fragment {
     private ListView spndList_view;
     private List<SpndcoffeelistVO> spndcoffeelist_value;
     private String mem_id;
-    private Profile profile;
+    private  Profile profile;
     private Location lastLocation;
     private GoogleApiClient googleApiClient;
     private final static int REQUEST_CODE_RESOLUTION = 1;
@@ -83,7 +83,6 @@ public class MySpndcoffeeListFragment extends Fragment {
         //會用到mem_id 先取得
         profile = new Profile(getContext());
         mem_id = profile.getMemId();
-        Log.d(TAG, "onCreateView: mem_id : "+mem_id);
 
 
         return view;
@@ -192,6 +191,8 @@ public class MySpndcoffeeListFragment extends Fragment {
 
             //取到當下那個VO物件
             final SpndcoffeelistVO spndcoffeelistVO = spndList_data.get(position);
+
+            spndcoffeelistVO.setMem_name(profile.getMem_name().toString());
 
 
             //將抓到的view 設上其值
@@ -316,11 +317,15 @@ public class MySpndcoffeeListFragment extends Fragment {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
+            Profile profile = new Profile(getContext());
 
             Bundle bundle = getArguments();
             SpndcoffeelistVO spndcoffeelistVO = (SpndcoffeelistVO) bundle.getSerializable("spndcoffeelistVO");
             String List_id  =spndcoffeelistVO.getList_id();
             String List_left = spndcoffeelistVO.getList_left().toString();
+
+            //for ming
+            spndcoffeelistVO.setMem_name(profile.getMem_name().toString());
 
             Gson gson = new Gson();
             String json = gson.toJson(spndcoffeelistVO);

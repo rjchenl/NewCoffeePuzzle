@@ -234,6 +234,10 @@ public class BrowserSpndcoffeeListFragment extends Fragment {
             Bundle bundle = getArguments();
             SpndcoffeeVO spndcoffeevo = (SpndcoffeeVO) bundle.getSerializable("vo");
 
+            //for ming
+            Profile profile = new Profile(getContext());
+            spndcoffeevo.setMem_name(profile.getMem_name().toString());
+
             Gson gson = new Gson();
             String jsonin = gson.toJson(spndcoffeevo);
 

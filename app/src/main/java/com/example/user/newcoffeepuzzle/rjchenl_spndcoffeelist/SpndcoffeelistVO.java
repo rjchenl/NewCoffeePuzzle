@@ -19,6 +19,15 @@ public class SpndcoffeelistVO implements Serializable {
 
     private String store_name;
     private String store_add;
+    private String mem_name;
+
+    public String getMem_name() {
+        return mem_name;
+    }
+
+    public void setMem_name(String mem_name) {
+        this.mem_name = mem_name;
+    }
 
     public SpndcoffeelistVO(){}
 
