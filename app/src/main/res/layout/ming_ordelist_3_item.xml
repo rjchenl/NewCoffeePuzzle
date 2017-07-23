@@ -73,13 +73,7 @@
         android:layout_below="@+id/ord_total_3"
         android:layout_toRightOf="@+id/ORD_ADD"/>
 
-    <ImageView
-        android:id="@+id/ord_map_route"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/map_route"
-        android:layout_above="@+id/ord_add_3"
-        android:layout_toEndOf="@+id/ord_shipping_3" />
+
 
     <TextView
         android:id="@+id/ORD_TIME"

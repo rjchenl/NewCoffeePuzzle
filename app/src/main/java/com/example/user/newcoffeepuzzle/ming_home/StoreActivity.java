@@ -34,13 +34,18 @@ public class StoreActivity extends AppCompatActivity {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
 
-        store_Frame();
         initDrawer();
     }
 
     private void store_Frame() {
         Fragment frangment = new HomeFragment();
         switchFragment(frangment);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        store_Frame();
     }
 
     //有線條

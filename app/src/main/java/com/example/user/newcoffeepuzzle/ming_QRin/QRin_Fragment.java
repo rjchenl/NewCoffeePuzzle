@@ -69,7 +69,6 @@ public class QRin_Fragment extends Fragment {
             } else if (resultCode == RESULT_CANCELED) {
                 message = "Scan was Cancelled!";
             }
-            tvMessage.setText(message);
         }
         if(Common_ming.networkConnected(getActivity())){
             String url = Common_ming.URL + "ming_Spndcoffelist_Servlet";
@@ -96,6 +95,8 @@ public class QRin_Fragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
             final Bundle bundle = new Bundle();
             bundle.putString("mem_name",mem_name);
             bundle.putString("list_left",list_left);

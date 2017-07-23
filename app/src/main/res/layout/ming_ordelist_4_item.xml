@@ -56,6 +56,14 @@
         android:layout_below="@+id/ord_id_4"
         android:layout_toRightOf="@+id/ORD_TOTAL"/>
 
+    <ImageView
+        android:id="@+id/ord_map_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/map_route"
+        android:layout_above="@+id/ord_add_4"
+        android:layout_toEndOf="@+id/ord_shipping_4" />
+
     <TextView
         android:id="@+id/ORD_ADD"
         android:layout_width="wrap_content"
