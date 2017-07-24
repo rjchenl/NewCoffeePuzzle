@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class Common_ming {
     //    public static String URL = "http://192.168.196.189:8080/Spot_MySQL_Web/";
     public static String URL = "http://10.0.2.2:8081/NewCoffeePuzzle_java/";
-//    public static String URL = "http://192.168.75.1:8081/NewCoffeePuzzle_java/";
+//    public static String URL = "http://172.20.10.3:8081/NewCoffeePuzzle_java/";
 //    public static String URL = "http://127.0.0.1:8081/NewCoffeePuzzle_java/";
 
 //    public static String URL = "http://10.120.39.38:8081/NewCoffeePuzzle_java/";
