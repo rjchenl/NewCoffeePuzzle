@@ -59,6 +59,7 @@ public class QRin_Fragment extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         String mem_name = null,list_id,list_left = null,spnd_prod = null,spnd_amt = null,store_id;
+        Integer left = null;
 
         if (requestCode == REQUEST_BARCODE_SCAN) {
             String message = "";
@@ -86,6 +87,7 @@ public class QRin_Fragment extends Fragment {
                 if (QRin_Fragment.this.store_id.equals(store_id)){
                     new SpndcoffeelistGetUpdate().execute(url, list_id, list_left, store_id).get();
                     Common_ming.showToast(getContext(),R.string.QR_OK);
+                    left = Integer.valueOf(list_left);
 
                 }else {
                     Toast toast = Toast.makeText(getContext(), "走錯店咯!!", Toast.LENGTH_LONG);
@@ -99,7 +101,7 @@ public class QRin_Fragment extends Fragment {
 
             final Bundle bundle = new Bundle();
             bundle.putString("mem_name",mem_name);
-            bundle.putString("list_left",list_left);
+            bundle.putString("list_left", String.valueOf(left));
             bundle.putString("spnd_amt",spnd_amt);
             bundle.putString("spnd_prod",spnd_prod);
             Intent in = new Intent(getContext(),SpndcoffeelistGetUpdate_text.class);

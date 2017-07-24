@@ -29,7 +29,6 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
     private final static String TAG = "Ordelist_1_Activtiy";
     private RecyclerView ry_ordelist;
     private String store_id;
-    private Button Bt_yes,Bt_no;
     private List<OrderlistVO> orderlistVOList;
 
     @Override
@@ -87,6 +86,8 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView ord_id,ord_total,ord_time,ord_shipping,ord_add;
+            private Button Bt_yes,Bt_no;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 ord_id = (TextView) itemView.findViewById(R.id.ord_id);
@@ -140,7 +141,7 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
             String ord_add = orderlistVO.getOrd_add();
             holder.ord_add.setText(ord_add.toString());
 
-            Bt_yes.setOnClickListener(new View.OnClickListener() {
+            holder.Bt_yes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: I have entered");
@@ -176,7 +177,7 @@ public class Ordelist_1_Activtiy extends AppCompatActivity {
                 }
             });
 
-            Bt_no.setOnClickListener(new View.OnClickListener() {
+            holder.Bt_no.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (Common_ming.networkConnected(Ordelist_1_Activtiy.this)){
