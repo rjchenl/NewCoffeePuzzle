@@ -87,7 +87,7 @@ public class QRin_Fragment extends Fragment {
                 if (QRin_Fragment.this.store_id.equals(store_id)){
                     new SpndcoffeelistGetUpdate().execute(url, list_id, list_left, store_id).get();
                     Common_ming.showToast(getContext(),R.string.QR_OK);
-                    left = Integer.valueOf(list_left);
+                    left = Integer.valueOf(list_left)-1;
 
                 }else {
                     Toast toast = Toast.makeText(getContext(), "走錯店咯!!", Toast.LENGTH_LONG);
