@@ -1,8 +1,16 @@
 package com.example.user.newcoffeepuzzle.ming_Home_C_Ordelist;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.newcoffeepuzzle.R;
 import com.example.user.newcoffeepuzzle.ming_Orderdetail.Orderdetail;
@@ -21,6 +30,16 @@ import com.example.user.newcoffeepuzzle.ming_Orderlist.Ordelist_3_GetAllTask;
 import com.example.user.newcoffeepuzzle.ming_Orderlist.OrderlistVO;
 import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import com.example.user.newcoffeepuzzle.ming_main.Profile_ming;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Helper;
+import com.example.user.newcoffeepuzzle.rjchenl_main.Profile;
+import com.example.user.newcoffeepuzzle.rjchenl_search.GoogleMapFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -28,7 +47,7 @@ public class Ordelist_3_Activtiy extends AppCompatActivity {
     private final static String TAG = "Ordelist_3_Activtiy";
     private RecyclerView ry_ordelist_3;
     private String store_id;
-    ImageView ord_map_route;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +60,8 @@ public class Ordelist_3_Activtiy extends AppCompatActivity {
         Profile_ming profile_ming = new Profile_ming(this);
         store_id = profile_ming.getStoreId();
     }
+
+
 
     @Override
     public void onStart(){
@@ -143,12 +164,6 @@ public class Ordelist_3_Activtiy extends AppCompatActivity {
                 }
             });
 
-            ord_map_route.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
 
         @Override
