@@ -233,38 +233,11 @@ public class OrderStatusListFragment extends Fragment {
             }
 
 
-//            tv_ord_pick.setText(orderStatusVO.getOrd_pick().toString());
-            TextView tv_ord_time = (TextView) convertView.findViewById(R.id.tv_ord_time);
-            tv_ord_time.setText(orderStatusVO.getOrd_time().toString());
-            TextView tv_ord_total = (TextView) convertView.findViewById(R.id.tv_ord_total);
-            tv_ord_total.setText(orderStatusVO.getOrd_total().toString());
-            TextView tv_ord_shipping = (TextView) convertView.findViewById(R.id.tv_ord_shipping);
-            switch (orderStatusVO.getOrd_shipping()){
-                case 1:
-                    tv_ord_shipping.setText("未處理");
-                    break;
-                case 2 :
-                    tv_ord_shipping.setText("審核此筆交易失敗");
-                    break;
-                case 3:
-                    tv_ord_shipping.setText("已接單");
-                    break;
-                case 4:
-                    tv_ord_shipping.setText("已出貨");
-                    break;
-                case 5:
-                    tv_ord_shipping.setText("交易完成");
-                    break;
-                default:
-                    tv_ord_shipping.setText("無法歸類");
-                    break;
-            }
-//            tv_ord_shipping.setText(orderStatusVO.getOrd_shipping().toString());
-
+            //領取QR CODE BUTTON設定
+            Button btn = (Button) convertView.findViewById(R.id.bt_showIDqrcode);
             final Bundle bundle = new Bundle();
             bundle.putSerializable("orderStatusVO",orderStatusVO);
 
-            Button btn = (Button) convertView.findViewById(R.id.bt_showIDqrcode);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -274,6 +247,40 @@ public class OrderStatusListFragment extends Fragment {
                     orderlistdialogfragment.show(fragmentManager,"showQRcode");
                 }
             });
+
+
+            TextView tv_ord_time = (TextView) convertView.findViewById(R.id.tv_ord_time);
+            tv_ord_time.setText(orderStatusVO.getOrd_time().toString());
+            TextView tv_ord_total = (TextView) convertView.findViewById(R.id.tv_ord_total);
+            tv_ord_total.setText(orderStatusVO.getOrd_total().toString());
+            TextView tv_ord_shipping = (TextView) convertView.findViewById(R.id.tv_ord_shipping);
+            switch (orderStatusVO.getOrd_shipping()){
+                case 1:
+                    tv_ord_shipping.setText("未處理");
+                    btn.setVisibility(View.GONE);
+                    break;
+                case 2 :
+                    tv_ord_shipping.setText("審核此筆交易失敗");
+                    btn.setVisibility(View.GONE);
+                    break;
+                case 3:
+                    tv_ord_shipping.setText("已接單");
+                    btn.setVisibility(View.GONE);
+                    break;
+                case 4:
+                    tv_ord_shipping.setText("已出貨");
+                    break;
+                case 5:
+                    tv_ord_shipping.setText("交易完成");
+                    btn.setVisibility(View.GONE);
+                    break;
+                default:
+                    tv_ord_shipping.setText("無法歸類");
+                    break;
+            }
+//            tv_ord_shipping.setText(orderStatusVO.getOrd_shipping().toString());
+
+
 
 
             //點選詳情按紐時

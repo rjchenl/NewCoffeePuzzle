@@ -403,9 +403,10 @@ public class StoreFragment extends Fragment {
 
         Calendar calendar = Calendar.getInstance();
         int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+        Log.d(TAG, "isTodayOpenCheck: weekDay:"+weekDay);
         if (store != null) {
 
-            if (weekDay == Calendar.WEDNESDAY) {
+            if (weekDay   == Calendar.WEDNESDAY) {
 
                 if (store != null && store.getWed_isopen() != null) {
                     int open = store.getWed_isopen();
@@ -415,14 +416,17 @@ public class StoreFragment extends Fragment {
                         isTodayOpenCovertToTimestmp(opentime, closetime);
                     }
                 }
-            } else if (weekDay == Calendar.THURSDAY) {
-                if (store.getThu_isopen() != null && store != null) {
-
-                    int open = store.getThu_isopen();
+            } else if (weekDay == Calendar.TUESDAY) {
+                Log.d(TAG, "isTodayOpenCheck: step1");
+                if (store.getTue_isopen() != null && store != null) {
+                    Log.d(TAG, "isTodayOpenCheck: step2");
+                    int open = store.getTue_isopen();
                     if (open == 1) {
-                        Timestamp opentime = store.getThu_open();
-                        Timestamp closetime = store.getThu_close();
+                        Log.d(TAG, "isTodayOpenCheck: step3");
+                        Timestamp opentime = store.getTue_open();
+                        Timestamp closetime = store.getTue_close();
                         isTodayOpenCovertToTimestmp(opentime, closetime);
+                        Log.d(TAG, "isTodayOpenCheck: step4");
                     }
 
                 }
@@ -466,11 +470,11 @@ public class StoreFragment extends Fragment {
                     }
                 }
             } else if (weekDay == Calendar.THURSDAY) {
-                if (store.getTue_isopen() != null && store != null) {
-                    int open = store.getTue_isopen();
+                if (store.getThu_isopen() != null && store != null) {
+                    int open = store.getThu_isopen();
                     if (open == 1) {
-                        Timestamp opentime = store.getMon_open();
-                        Timestamp closetime = store.getMon_close();
+                        Timestamp opentime = store.getThu_open();
+                        Timestamp closetime = store.getThu_close();
                         isTodayOpenCovertToTimestmp(opentime, closetime);
                     }
                 }
@@ -492,19 +496,31 @@ public class StoreFragment extends Fragment {
         //取得營業時間後面時間STR
         String openFormatStr = simpleDateFormat2.format(opentime);
         String opensub = openFormatStr.substring(11);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: opensub:"+opensub);
 
         String closeFormatStr = simpleDateFormat2.format(closetime);
         String closesub = closeFormatStr.substring(11);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: closesub:"+closesub);
 
         //組合成timestamp物件
         String openformatset = nowDateStr + opensub;
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: openformatset:"+openformatset);
         Timestamp opentimestamp = Timestamp.valueOf(openformatset);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: opentimestamp:"+opentimestamp);
 
         String closeformatset = nowDateStr + closesub;
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: closeformatset:"+closeformatset);
         Timestamp closetimestamp = Timestamp.valueOf(closeformatset);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: closetimestamp:"+closetimestamp);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: opentimestamp.getTime():"+opentimestamp.getTime());
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: now:"+now);
+        Log.d(TAG, "isTodayOpenCovertToTimestmp: closetimestamp.getTime():"+closetimestamp.getTime());
+
+
 
         if (now > opentimestamp.getTime() && now < closetimestamp.getTime()) {
             isTodayOpen = true;
+            Log.d(TAG, "isTodayOpenCovertToTimestmp: isTodayOpen:"+isTodayOpen);
         }
 
         return isTodayOpen;

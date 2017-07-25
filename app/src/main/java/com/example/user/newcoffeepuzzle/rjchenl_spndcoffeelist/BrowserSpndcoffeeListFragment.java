@@ -171,14 +171,12 @@ public class BrowserSpndcoffeeListFragment extends Fragment {
             TextView tv_spnd_prod = (TextView) convertView.findViewById(R.id.tv_spnd_prod);
             Log.d(TAG, "getView: vo.getSpnd_prod() : "+vo.getSpnd_prod());
             tv_spnd_prod.setText(vo.getSpnd_prod());
-            TextView spnd_enddate = (TextView) convertView.findViewById(R.id.spnd_enddate);
-            Log.d(TAG, "getView: vo.getSpnd_enddate() : "+vo.getSpnd_enddate());
-            spnd_enddate.setText(vo.getSpnd_enddate());
-            TextView tv_spnd_amt = (TextView) convertView.findViewById(R.id.tv_spnd_amt);
-            Log.d(TAG, "getView: vo.getSpnd_amt() : "+vo.getSpnd_amt().toString());
-            tv_spnd_amt.setText(vo.getSpnd_amt().toString());
+//            TextView spnd_enddate = (TextView) convertView.findViewById(R.id.spnd_enddate);
+//            Log.d(TAG, "getView: vo.getSpnd_enddate() : "+vo.getSpnd_enddate());
+//            spnd_enddate.setText(vo.getSpnd_enddate());
+//            TextView tv_spnd_amt = (TextView) convertView.findViewById(R.id.tv_spnd_amt);
+//            tv_spnd_amt.setText(vo.getSpnd_amt().toString());
 
-            Log.d(TAG, "getView: mem_id : "+mem_id);
             //多加mem_id到vo上
             vo.setMem_id(mem_id);
 
