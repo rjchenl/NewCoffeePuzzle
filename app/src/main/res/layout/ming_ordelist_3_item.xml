@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color01"
+    android:background="#DEFCF9"
     android:layout_marginTop="20dp">
 
     <TextView
@@ -60,7 +60,7 @@
         android:id="@+id/ORD_ADD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="會員地址："
+        android:text="外送地址："
         android:textSize="20dp"
         android:layout_below="@+id/ORD_TOTAL"/>
 
@@ -82,7 +82,7 @@
         android:text="訂單日期："
         android:textSize="20dp"
         android:layout_below="@+id/ORD_ADD"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:id="@+id/ord_time_3"
@@ -90,9 +90,9 @@
         android:layout_height="wrap_content"
         android:text="訂單日期"
         android:textSize="20dp"
-        android:layout_toRightOf="@+id/ORD_TIME"
-        android:layout_below="@+id/ord_add_3"
-        android:layout_marginTop="20dp"/>
+        android:layout_alignBaseline="@+id/ORD_TIME"
+        android:layout_alignBottom="@+id/ORD_TIME"
+        android:layout_toEndOf="@+id/ORD_TIME" />
 
 
 
