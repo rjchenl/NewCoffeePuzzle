@@ -28,6 +28,7 @@ public class MemGetInsert extends AsyncTask<Object,Integer,Intent> {
         String inser_mem_name = params[3].toString();
         String inser_mem_nanber = params[4].toString();
         String inser_mem_mail = params[5].toString();
+        String inser_mem_add = params[6].toString();
         String jsonIn;
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", ACTION);
@@ -36,6 +37,7 @@ public class MemGetInsert extends AsyncTask<Object,Integer,Intent> {
         jsonObject.addProperty("inser_mem_name", inser_mem_name);
         jsonObject.addProperty("inser_mem_nanber", inser_mem_nanber);
         jsonObject.addProperty("inser_mem_mail", inser_mem_mail);
+        jsonObject.addProperty("inser_mem_add", inser_mem_add);
 
         try {
             jsonIn = getRemoteData(url, jsonObject.toString());

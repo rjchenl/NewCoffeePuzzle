@@ -16,7 +16,7 @@ import com.example.user.newcoffeepuzzle.ming_main.Common_ming;
 import static android.content.ContentValues.TAG;
 
 public class Inser_Mem extends AppCompatActivity {
-    EditText inser_memid,inser_mem_psw,inser_mem_name,inser_mem_nanber,inser_mem_mail;
+    EditText inser_memid,inser_mem_psw,inser_mem_name,inser_mem_nanber,inser_mem_mail,inser_mem_add;
     Button inser_bt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class Inser_Mem extends AppCompatActivity {
             public void onClick(View v) {
                 if (inser_memid.getText().toString().matches("") || inser_mem_psw.getText().toString().matches("") ||
                         inser_mem_name.getText().toString().matches("") || inser_mem_nanber.getText().toString().matches("") ||
-                        inser_mem_mail.getText().toString().matches("") ){
+                        inser_mem_mail.getText().toString().matches("") || inser_mem_add.getText().toString().matches("")){
                     Toast toast = Toast.makeText(Inser_Mem.this, "欄位不能是空白!!", Toast.LENGTH_LONG);
                     toast.show();
                     return;
@@ -51,10 +51,11 @@ public class Inser_Mem extends AppCompatActivity {
                     String mem_name = inser_mem_name.getText().toString();
                     String mem_nanber = inser_mem_nanber.getText().toString();
                     String mem_mail = inser_mem_mail.getText().toString();
+                    String mem_add = inser_mem_add.getText().toString();
 
                     Object inser = null;
                     try {
-                        inser = new MemGetInsert().execute(url,mem_id,mem_psw,mem_name,mem_nanber,mem_mail).get();
+                        inser = new MemGetInsert().execute(url,mem_id,mem_psw,mem_name,mem_nanber,mem_mail,mem_add).get();
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast toast = Toast.makeText(Inser_Mem.this, "此帳號以存在!!", Toast.LENGTH_LONG);
@@ -75,6 +76,7 @@ public class Inser_Mem extends AppCompatActivity {
         inser_mem_name = (EditText) findViewById(R.id.inser_mem_name);
         inser_mem_nanber = (EditText) findViewById(R.id.inser_mem_nanber);
         inser_mem_mail = (EditText) findViewById(R.id.inser_mem_mail);
+        inser_mem_add = (EditText) findViewById(R.id.inser_mem_add);
 
         inser_bt = (Button) findViewById(R.id.inser_bt);
     }

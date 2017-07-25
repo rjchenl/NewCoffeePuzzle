@@ -105,12 +105,36 @@
         />
 
     <TextView
+        android:id="@+id/INSER_MEM_ADD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="會員地址："
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/inser_mem_add"
+        android:layout_alignBottom="@+id/inser_mem_add"
+        android:layout_toStartOf="@+id/inser_mem_add" />
+
+    <EditText
+        android:id="@+id/inser_mem_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:maxLength="20"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_below="@+id/inser_mem_nanber"
+        android:layout_marginTop="30dp"
+        android:layout_alignStart="@+id/inser_mem_nanber"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
         android:id="@+id/INSER_MEM_MAIL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="e-mail"
         android:textSize="30dp"
-        android:layout_below="@+id/inser_mem_nanber"
+        android:layout_below="@+id/inser_mem_add"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp" />
 
@@ -124,7 +148,6 @@
         android:gravity="center"
         android:textSize="20dp"
         android:maxLength="80"
-        android:layout_marginTop="30dp"
         android:inputType="textMultiLine"/>
 
 
