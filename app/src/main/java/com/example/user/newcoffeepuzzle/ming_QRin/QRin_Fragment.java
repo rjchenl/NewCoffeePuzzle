@@ -108,7 +108,27 @@ public class QRin_Fragment extends Fragment {
             in.putExtras(bundle);
             startActivity(in);
         }
-    }
+            if(Common_ming.networkConnected(getActivity())) {
+                String url = Common_ming.URL + "ming_Spndcoffeercd_Servlet";
+                try {
+                    String contents = intent.getStringExtra("SCAN_RESULT");
+                    JSONObject.quote(contents);
+                    JSONObject json = new JSONObject(contents);
+                    list_id = json.getString("list_id");
+                    store_id = json.getString("store_id");
+
+                    if (QRin_Fragment.this.store_id.equals(store_id)) {
+                        new SpndcoffeercdGetInser().execute(url, list_id).get();
+                    } else {
+                        Toast toast = Toast.makeText(getContext(), "走錯店咯!!", Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     private void showDownloadDialog() {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(getContext());
